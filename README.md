@@ -19,6 +19,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 | Skill | Description |
 | --- | --- |
 | [prompt-engineer](productivity/prompt-engineer/) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
+| [podcast-script](productivity/podcast-script/) | Turns a report or raw notes into a podcast script and a kokoro-tone speech request. Covers solo, two-host, and panel shows. |
 
 ## Install
 
@@ -156,6 +157,57 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 `productivity/prompt-engineer/SKILL.md` always loads. The file carries the frameworks and the style rules. The model files add the mechanics each family needs.
 
+## podcast-script
+
+Turns a report, document, or raw notes into a podcast script and the exact kokoro-tone speech request. It covers solo narration, two-host shows, and panels of three or more hosts. The script carries voice, emotion, rate, pause, and pronunciation tags. The request carries the alias map, pronunciation map, normalisation, and ambiguity policy.
+
+Emotion uses the default baseline only until the deployment is tuned for the presets. Variety comes from rate, pause, sentence length, and word choice.
+
+The skill stops at the request. Research, rendering, mastering, and publishing belong elsewhere.
+
+Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
+
+### Files
+
+- `productivity/podcast-script/SKILL.md`, the workflow and handoff.
+- `PROFILE.md`, the typed host profile and gate.
+- `PERFORMANCE.md`, pacing, emotion, emphasis, and performance moves.
+- `TICKS.md`, the tick library, density rules, and banlist.
+- `REQUEST.md`, the kokoro-tone contract, request shapes, limits, and curl.
+- `SCRIPT-CRAFT.md`, structure, prose, punctuation, and attribution.
+- `VOICE.md`, casting, presets, rate, and pause.
+- `MULTIHOST.md`, two-host relationship and handoffs.
+- `PANEL.md`, three or more hosts.
+- `VERIFY.md`, the release gate.
+- `examples/`, worked examples for a host profile, a beat map, a solo script, a two-host script, and a panel script.
+- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
+
+### Install
+
+OpenCode:
+
+1. Copy the `podcast-script` folder into a skills directory.
+   - Project scope: `<your-project>/.opencode/skills/podcast-script/`
+   - Global scope: `~/.config/opencode/skills/podcast-script/`
+2. Keep the folder layout intact, so `SKILL.md` and the reference files stay together.
+3. Start a new OpenCode session so the session discovers the skill.
+4. Ask in plain language, for example: turn this report into a two-host podcast script for kokoro-tone.
+
+Other platforms:
+
+- Microsoft 365 Copilot: paste the `SKILL.md` body into the agent instructions and add the reference files as knowledge.
+- ChatGPT: paste the `SKILL.md` body into a Custom GPT and upload the reference files.
+- Gemini: paste the `SKILL.md` body into a Gem and attach the reference files.
+- Claude: paste the `SKILL.md` body into a Project and add the reference files to project knowledge.
+
+### Verify
+
+Send a short report or a page of raw notes and ask for a solo podcast script. Check three things:
+
+- The reply writes `<source-stem>-podcast-script.md`, `<source-stem>-request.json`, and `<source-stem>-script-notes.md` next to the source.
+- The script starts with a cold open, not a title, and ends with a closing line, not `END`.
+- The request carries `model`, `voice`, `instructions`, `normalise`, `pronunciations`, `ambiguity`, and `response_format`.
+
 ## Repository layout
 
 ```text
@@ -167,6 +219,19 @@ productivity/
     MODEL-GEMINI.md                 Gemini mechanics
     MODEL-DEEPSEEK.md               DeepSeek mechanics
     MODEL-QWEN.md                   Qwen mechanics
+    agents/openai.yaml              OpenAI and Codex interface manifest
+  podcast-script/
+    SKILL.md                        workflow and handoff
+    PROFILE.md                      typed host profile and gate
+    PERFORMANCE.md                  pacing, emotion, emphasis, moves
+    TICKS.md                        tick library, density, banlist
+    REQUEST.md                      kokoro-tone contract and request shapes
+    SCRIPT-CRAFT.md                 structure, prose, punctuation, attribution
+    VOICE.md                        casting, presets, rate, pause
+    MULTIHOST.md                    two-host relationship and handoffs
+    PANEL.md                        three or more hosts
+    VERIFY.md                       release gate
+    examples/                       host profile, beat map, solo, two-host, panel
     agents/openai.yaml              OpenAI and Codex interface manifest
 
 docs/
