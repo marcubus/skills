@@ -25,6 +25,7 @@ A check that names a search term is a detector, not an example.
 - A16 Check numbers
 - A17 Variant capability table
 - A18 Step map
+- A19 Manifest label
 
 ## Law map
 
@@ -174,6 +175,8 @@ Every hit is replaced with the specific thing. A hit kept on purpose is recorded
 
 Every file over 100 lines opens with a contents list. Every heading after it appears in the list, and every list entry names a heading.
 
+A contents list is exempt from R11: it serves the reader, and the model reads the file whole.
+
 ## A16 Check numbers
 
 Every reference to a check number resolves.
@@ -195,3 +198,14 @@ A skill with no variant marks this not applicable.
 Read the gate. It carries a step map, every step appears in it, and every check appears at least once.
 
 A skill with no gate marks this not applicable.
+
+## A19 Manifest label
+
+Read the harness manifest. Pass when its short description states the same outcome as the entry file's description, in fewer words, and names no branch the description lacks.
+
+```bash
+sed -n 's/^  short_description: "\(.*\)"/\1/p' agents/openai.yaml
+sed -n 's/^description: //p' SKILL.md
+```
+
+A skill with no manifest marks this not applicable.

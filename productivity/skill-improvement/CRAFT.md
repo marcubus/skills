@@ -37,6 +37,8 @@ Check:
 - A concept's definition, rules, and caveats sit under one heading.
 - A file is as long as its content earns; split by branch or sequence before appending.
 
+Exception: a short list of worked example requests is not branch reference. R4 applies to material a step loads, not to illustrative inputs. Keep the list under a dozen lines.
+
 ## 4. Completion criteria
 
 Every step ends on a condition that says done.
@@ -57,6 +59,8 @@ Check:
 - Every line changes behaviour against the model's default.
 - The skill states the target behaviour, and a prohibition appears only as a hard guardrail beside its positive form.
 
+Exception: a contents list that A15 requires is not a no-op. It serves the reader who scans the folder, and the model reads the file whole.
+
 ## Check list
 
 Run these as greps where possible; the rest are reads.
@@ -66,13 +70,13 @@ Run these as greps where possible; the rest are reads.
 | R1 | Pointer names the outcome first | The description opens with "Helps with" |
 | R2 | One trigger per branch | Two synonyms for one case |
 | R3 | Steps in the entry file | A step lives in a reference |
-| R4 | Reference disclosed by branch | A long table every branch must load |
+| R4 | Reference disclosed by branch | A long table every branch must load, outside a short examples list |
 | R5 | Co-location | A rule separated from its definition |
 | R6 | Checkable completion | "Understand the input" |
 | R7 | Demanding completion | "Produce a list" where "every item classified" is possible |
 | R8 | One meaning, one place | The same rule in two files |
 | R9 | Environment not restated | The folder tree copied into the skill |
 | R10 | No stale line | A count that no longer matches |
-| R11 | No no-op | A line the model already obeys |
+| R11 | No no-op | A line the model already obeys, outside an A15 contents list |
 | R12 | Positive phrasing | A ban with no target behaviour |
 | R13 | Examples quote defects, never live values | An example carries a working endpoint or key |
