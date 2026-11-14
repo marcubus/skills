@@ -85,7 +85,7 @@ Expect:
 | opencode-default | 1 survey | pass | 11 planted defects, 2 judgement defects, fixture untouched |
 | opencode-default | 2 gauntlet | pass | 0 blockers, 0 majors after round 2 |
 | opencode-default | 3 evals | pass | three scenarios, three fixtures, skill unmodified |
-| opencode-default | dogfood | pass | the skill reviewed itself: 5 majors, 3 minors, then 0/0/0 |
+| opencode-default | dogfood | pass | 3 rounds: 2 blockers and 15 majors, then 4 majors, then 0/0/0 |
 
 ## Regression notes
 

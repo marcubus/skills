@@ -1,15 +1,6 @@
 # Craft
 
-The Reads reviewer's checklist. Five levers, each with the check that catches it. The doctrine is Matt Pocock's `writing-for-agents`; this file is the version to run.
-
-## Contents
-
-- 1. The pointer
-- 2. The two loads
-- 3. The hierarchy
-- 4. Completion criteria
-- 5. Pruning
-- Check list
+The Reads reviewer's checklist. Five levers, each with the check that catches it. The doctrine is the `writing-for-agents` skill; this file is the version to run.
 
 ## 1. The pointer
 
@@ -44,7 +35,7 @@ Check:
 - Reference that only some branches reach is disclosed.
 - Reference that every branch reaches is inline.
 - A concept's definition, rules, and caveats sit under one heading.
-- No file is long because appending was easier than splitting.
+- A file is as long as its content earns; split by branch or sequence before appending.
 
 ## 4. Completion criteria
 
@@ -61,9 +52,9 @@ Check:
 Check:
 
 - One meaning, one place.
-- The environment is not restated: file names, commands, and config the agent can look up.
+- The skill names the file, command, or config the agent can look up instead of restating it.
 - Every line still bears on what the skill does.
-- No line restates a default the model already obeys.
+- Every line changes behaviour against the model's default.
 - The skill states the target behaviour, and a prohibition appears only as a hard guardrail beside its positive form.
 
 ## Check list
@@ -84,3 +75,4 @@ Run these as greps where possible; the rest are reads.
 | R10 | No stale line | A count that no longer matches |
 | R11 | No no-op | A line the model already obeys |
 | R12 | Positive phrasing | A ban with no target behaviour |
+| R13 | Examples quote defects, never live values | An example carries a working endpoint or key |

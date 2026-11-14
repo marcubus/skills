@@ -2,6 +2,8 @@
 
 Phase 3. A gate is the skill checking its own output. It turns every rule into a numbered check.
 
+The gate lives at `<skill>/GATE.md`. A skill with no other reference files carries the gate as a section in its entry file. The step map sits with the gate.
+
 ## Contents
 
 - Shape

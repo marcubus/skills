@@ -8,7 +8,6 @@ Phase 2. Rounds of three reviewers, each in a fresh context, until a round retur
 - Runs
 - Reads
 - Audit
-- Findings
 - Fixing
 - Exit
 
@@ -19,6 +18,8 @@ Run the three reviewers in parallel subagents where the harness supports it. Oth
 Each reviewer returns findings only. No reviewer edits a file. The main agent fixes.
 
 Cap each reviewer at 400 words. A reviewer that writes more is summarising, not finding.
+
+Write every finding as a row in the report's findings table. The shape and the rules for a row are in `REPORT.md`.
 
 ## Runs
 
@@ -38,20 +39,7 @@ Brief:
 
 Brief:
 
-> Run every check in `AUDIT.md`. Report each hit with its command and output. No judgement, no fixes. Under 400 words.
-
-## Findings
-
-One row per finding.
-
-| id | severity | file:line | what | why | fix |
-|---|---|---|---|---|---|
-
-- `what` quotes the text or names the missing thing.
-- `why` names the law or the check it breaks.
-- `fix` is the smallest change that removes the class of problem, not just this instance.
-
-A finding without a file and a line is not a finding. A finding without a fix is a complaint.
+> Run every check in `AUDIT.md` from inside the target folder. Report each hit with its command and output. List cross-file duplicate headings and hand them to Reads; do not judge them. No fixes. Under 400 words.
 
 ## Fixing
 
@@ -59,7 +47,7 @@ Fix in severity order. After a fix, re-run the check that caught it, not the who
 
 When two findings share a cause, fix the cause once. Two stale counts are one missing rule about derived numbers.
 
-When a fix would add a file, first ask what the file replaces.
+When a fix would add a file, name the file it replaces, or say why nothing replaces it.
 
 ## Exit
 

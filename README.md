@@ -230,7 +230,7 @@ User-invoked: type `/skill-improvement` or name it. It stays out of the model's 
 - `GATE.md`, designing numbered checks and a step map.
 - `EVALS.md`, scenarios, fixtures, runs, and regression.
 - `VARIANTS.md`, neutral core, variant files, and capability tables.
-- `AUDIT.md`, sixteen mechanical checks with commands.
+- `AUDIT.md`, eighteen checks, five of them reads.
 - `REPORT.md`, the review template.
 - `examples/`, a filled report, a gate, and an eval README.
 - `agents/openai.yaml`, the OpenAI and Codex interface manifest.
@@ -289,7 +289,7 @@ productivity/
     GATE.md                         numbered checks and step map
     EVALS.md                        scenarios, fixtures, runs
     VARIANTS.md                     core, variant files, capability tables
-    AUDIT.md                        sixteen mechanical checks
+    AUDIT.md                        eighteen checks, five of them reads
     REPORT.md                       review template
     examples/                       report, gate, eval README
     agents/openai.yaml              OpenAI and Codex interface manifest

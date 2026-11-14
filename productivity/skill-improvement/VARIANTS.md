@@ -58,7 +58,7 @@ A drop is not a failure. It is a documented loss. Every drop appears in the deli
 
 ## Check
 
-- No mechanism in the core.
-- No intent in a variant.
+- The core carries the procedure; the mechanism lives in the variant.
+- The variant carries the mechanism; the procedure stays in the core.
 - Every element in every capability table is keep, translate, or drop.
 - Every drop is recorded somewhere the reader will look.

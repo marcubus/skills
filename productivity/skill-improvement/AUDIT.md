@@ -1,8 +1,8 @@
 # Audit
 
-Mechanical checks. No judgement. Run these before reading for judgement, and again after every round.
+Checks a command can settle, plus five short reads. Run these before reading for judgement, and again after every round, from inside the target folder.
 
-Run each against the skill under review. A check that names a search term is a detector, not an example.
+A check that names a search term is a detector, not an example.
 
 ## Contents
 
@@ -22,18 +22,20 @@ Run each against the skill under review. A check that names a search term is a d
 - A13 Duplicate headings
 - A14 Vague words
 - A15 Contents list
-- A16 Cross-references
+- A16 Check numbers
+- A17 Variant capability table
+- A18 Step map
 
 ## Law map
 
-Five laws are mechanical and three need a read. This table is the contract between `SKILL.md` and this file.
+Each law names its check. Some are greps; some are reads.
 
 | Law | Check |
 |---|---|
 | 1 Placement is the mechanism | A11 |
-| 2 Every rule has a check | A16, and the target's step map |
+| 2 Every rule has a check | A16, A18, and the step map |
 | 3 One meaning, one place | A8, A13, and R8 in `CRAFT.md` |
-| 4 State the loss | read: every transform records its drop |
+| 4 State the loss | read: every transform records its drop in the report's Decisions |
 | 5 Recompute every number | A9 |
 | 6 Delete before you add | read: the file count after a fix |
 | 7 Fix the file that should have prevented it | read: the eval section of the report |
@@ -50,7 +52,7 @@ Pass when `name` matches `^[a-z0-9]+(-[a-z0-9]+)*$` and equals the folder name.
 
 ## A2 Description
 
-Read the description. Pass when it names the outcome in its first clause and lists the branches that should trigger it. A description that opens with "Helps with" fails.
+Read the description. Pass when it names the outcome in its first clause and lists the modes or branches a person picks it for. A description that opens with "Helps with" fails.
 
 ## A3 Line budget
 
@@ -58,7 +60,7 @@ Read the description. Pass when it names the outcome in its first clause and lis
 wc -l SKILL.md
 ```
 
-Pass under 500. A reference file over 300 lines needs a contents list.
+Pass under 500. A file over 100 lines needs a contents list; A15 checks it.
 
 ## A4 References resolve
 
@@ -89,7 +91,7 @@ grep -rniE 'curl |authorization:|bearer [A-Za-z0-9$]|api[_-]?key *[:=]|content-t
 
 Pass with no output. A request body, a URL, an auth header, and a response field all belong to the tool that makes the call.
 
-`examples/` is excluded because a report may quote the payload it found. The Reads reviewer checks that no example quotes a live one.
+`examples/` is excluded because a report may quote the payload it found. R13 in `CRAFT.md` checks that no example quotes a live one.
 
 ## A7 No secrets
 
@@ -105,7 +107,7 @@ Pass with no output.
 grep -rn '^#' .
 ```
 
-Read the heading list. Pass when no concept carries two names across files. Two headings that name one concept are one concept in two places.
+Read the heading list. This is the one check that needs judgement: pass when no concept carries two names across files, and no two headings name one concept.
 
 ## A9 Numbers
 
@@ -122,10 +124,11 @@ Pass when every stated count matches its artifact. A count with no artifact is a
 ```bash
 comm -23 \
   <(find . -type f | sed 's|^\./||' | sort) \
-  <(grep -rhoE '`[A-Za-z0-9._/-]+`' . | tr -d '`' | sort -u)
+  <(grep -rhoE '`[A-Za-z0-9._/-]+`' . | tr -d '`' | sort -u) |
+  grep -v '^examples/'
 ```
 
-Pass when every orphan is loaded by a harness or named in the report. The entry file is always an orphan: nothing points at it.
+Pass when every orphan is loaded by a harness or named in the report. The entry file is always an orphan; a harness manifest, when present, is expected too. `examples/` is excluded: the entry file points at the folder, and the files inside it are illustrative.
 
 ## A11 Evals placement
 
@@ -151,11 +154,12 @@ Within one file, a heading appears once:
 
 ```bash
 for f in $(find . -name '*.md'); do
-  grep '^## ' "$f" | sort | uniq -d | sed "s|^|$f: |"
+  awk '/^```/{fence=!fence; next} !fence && /^## /' "$f" |
+    sort | uniq -d | sed "s|^|$f: |"
 done
 ```
 
-Pass with no output. A heading repeated across files is a signal, not a failure: R8 decides whether the content is duplicated.
+Pass with no output. Fenced blocks are skipped. A heading repeated across files is a signal, not a failure: R8 decides whether the content is duplicated.
 
 ## A14 Vague words
 
@@ -164,18 +168,30 @@ grep -rniE '\b(appropriate|proper|robust|seamless|leverage|utilise|ensure|good|n
   --exclude=AUDIT.md --exclude-dir=examples
 ```
 
-Every hit is replaced with the specific thing, or justified in the report.
+Every hit is replaced with the specific thing. A hit kept on purpose is recorded as an accepted finding in the report.
 
 ## A15 Contents list
 
-Every file over 100 lines opens with a contents list. Every heading in the file appears in that list, and every list entry names a heading.
+Every file over 100 lines opens with a contents list. Every heading after it appears in the list, and every list entry names a heading.
 
-## A16 Cross-references
+## A16 Check numbers
 
-Every reference to a check number, a file name, or a step number resolves.
+Every reference to a check number resolves.
 
 ```bash
 grep -rnoE 'check [0-9]+' . --exclude-dir=examples
 ```
 
-Pass when every number exists in the gate. A skill with no gate marks this check not applicable, and says so in the report.
+Pass when every number exists in the gate. File names are A4; step numbers are A18. A skill with no gate marks A16 and A18 not applicable, and says so in the report.
+
+## A17 Variant capability table
+
+Read the registry. For each variant it names, the variant opens with a capability table, and every row is keep, translate, or drop.
+
+A skill with no variant marks this not applicable.
+
+## A18 Step map
+
+Read the gate. It carries a step map, every step appears in it, and every check appears at least once.
+
+A skill with no gate marks this not applicable.
