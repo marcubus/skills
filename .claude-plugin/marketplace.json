@@ -1,0 +1,23 @@
+{
+  "name": "marcubus",
+  "owner": {
+    "name": "Marcus Ford",
+    "url": "https://github.com/marcubus"
+  },
+  "description": "Agent skills for prompting, podcast production, and skill improvement.",
+  "plugins": [
+    {
+      "name": "marcubus-skills",
+      "source": "./",
+      "description": "Prompt engineering, podcast scripting, host personas, and a skill-improvement gauntlet.",
+      "category": "productivity",
+      "keywords": [
+        "skills",
+        "prompting",
+        "podcast",
+        "text-to-speech",
+        "evals"
+      ]
+    }
+  ]
+}
