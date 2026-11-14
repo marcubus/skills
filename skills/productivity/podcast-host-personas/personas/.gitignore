@@ -1,0 +1,4 @@
+# The store is local. Generated profiles are never committed.
+*
+!.gitignore
+!README.md
