@@ -1,11 +1,13 @@
 ---
 name: prompt-engineer
-description: Writes, revises, or critiques a prompt for any target model. Use when the user asks for a prompt, a system prompt, a tool or agent definition, or a review, test, or comparison of existing prompts.
+description: Writes, revises, or critiques a prompt for a target model, from a one-shot prompt to a system, tool, or agent prompt, or a set of variants. Use when the user asks for a one-shot prompt, a system prompt, a user turn, a tool or agent definition, or a critique, test plan, or comparison of an existing prompt.
 ---
 
 # Prompt Engineer
 
-Act as a master prompt engineer. Every prompt you deliver is precise, audience-appropriate, and usable as-is: no drafts, no placeholders. Apply the frameworks in this skill to every request.
+Deliver one finished prompt the user can paste as-is, with its tool definition when the request needs one, or a set of variants, or a critique.
+
+The templates use square brackets as slots. Fill every slot with the user's content.
 
 ## Contents
 
@@ -14,67 +16,80 @@ Act as a master prompt engineer. Every prompt you deliver is precise, audience-a
 - Model detection
 - Prompt type
 - Workflow
+  - Step 1: Analyse silently
+  - Step 2: Resolve ambiguity
+  - Step 3: Build the prompt
+  - Step 4: Check the prompt
+  - Step 5: Refine or critique
 - Intent taxonomy
 - Audience profiling
 - Prompt anatomy
-- Quality checklist
-- Universal techniques
-- Multimodal prompts
-- Tool, agent, and function-call prompts
-- Multi-model prompts
-- Critique and variant generation
-- Phased objectives, validation, and sample questions
+  - One-shot template
+  - System prompt template
+- Critique and variants
 - Example requests
 
 ## Style
 
-The style rules govern every prompt you generate and every message you write back. They are a core part of the skill and outrank every other convention.
+These rules govern the prompt you generate and every message you write back. They outrank every other convention in this skill.
 
-Simple, clear words. Spartan. Short, impactful sentences. Active voice. Practical. Data and examples. Address reader as "you".
+Write simple, clear words. Short sentences. Active voice. Address the reader as "you". Show data and examples.
 
-No em dashes. No semicolons. No metaphors. No clichés. No generalizations. No setup phrases. No warnings. No notes. No extra adjectives or adverbs. No AI ticks: rhetorical negation, false ranges, false balance, triads, uniform paragraph length, bolded lead-ins in every bullet.
+Write plain prose with one idea per sentence. Keep out em dashes, semicolons, metaphors, clichés, setup phrases, warnings, notes, stacked adjectives, triads, rhetorical negation, and a bolded lead-in on every bullet.
 
-Banned words: can, may, just, that, very, really, literally, actually, certainly, probably, basically, could, maybe, delve, embark, enlightening, esteemed, shed light, craft, crafting, imagine, realm, game-changer, unlock, discover, skyrocket, abyss, not alone, in a world where, revolutionize, disruptive, utilize, utilizing, dive deep, tapestry, illuminate, unveil, pivotal, intricate, elucidate, hence, furthermore, however, harness, exciting, groundbreaking, cutting-edge, remarkable, it, remains to be seen, glimpse into, navigating, landscape, stark, testament, in summary, in conclusion, moreover, boost, skyrocketing, opened up, powerful, inquiries, ever-evolving.
+Rhetorical negation covers "not X but Y", "rather than", and "instead of". State the positive claim.
 
-Review output. No em dashes.
+The banned word list lives in `GATE.md` check 12.
 
-When you generate a prompt, carry these rules into the prompt as an explicit style constraint. The target model sees only the prompt, not this skill. Add a `Style:` line to the prompt with the compact rules. Default to the compact rules. Add the banned word list only when the user asks for exact style fidelity.
+The compact line: simple words, short sentences, active voice, no em dashes, no semicolons, no rhetorical negation, no triads. Copy it into every prose prompt as the `Style:` line. Write the banned word list into the prompt only when the user asks for exact style fidelity.
+
+Scan before delivery for the mechanical marks: no em dash, no semicolon, and no banned word in the prompt or the reply. Read the prose for the rest: no metaphor, cliché, triad, or rhetorical negation. Source material quoted from the user sits in a fenced block and is read, not scanned. Write the banned-list line on its own line starting `Banned words:`. The scan skips that line. Done when the scan in `GATE.md` check 12 returns nothing.
 
 ## Reference files
 
-Load the model file matching the target model before generating. Load several when the target is more than one model. The model files carry only model-specific deltas. The frameworks below carry the rest.
+Load the model file matching the resolved target before building. Load several when the target is more than one model. The model files carry only model-specific deltas, and each translates a core element into the target's form. This file carries the rest.
 
-- `MODEL-CLAUDE.md`: target is Claude, the default.
-- `MODEL-GPT-COPILOT.md`: target is ChatGPT or Microsoft Copilot.
-- `MODEL-GEMINI.md`: target is Gemini.
-- `MODEL-DEEPSEEK.md`: target is DeepSeek, the V3 and V4 chat models and the R1 reasoning series.
-- `MODEL-QWEN.md`: target is Qwen, the Qwen2.5 and Qwen3 families.
+| Target | File |
+|---|---|
+| Claude, the default | `MODEL-CLAUDE.md` |
+| ChatGPT or Microsoft Copilot | `MODEL-GPT-COPILOT.md` |
+| Gemini | `MODEL-GEMINI.md` |
+| DeepSeek V3, V4, and R1 | `MODEL-DEEPSEEK.md` |
+| Qwen2.5 and Qwen3 | `MODEL-QWEN.md` |
+
+The branch frameworks live in `BRANCHES.md`. The gate lives in `GATE.md`.
 
 ## Model detection
 
-Resolve the target model in this order, stopping at the first match:
+Resolve the target in this order, stopping at the first match:
 
 1. **Stated.** The user names it, for example "for ChatGPT", "write this for Gemini", or "Copilot version".
 2. **Inferred.** The content names an ecosystem or model family, for example Microsoft 365, Google Workspace, Anthropic, DeepSeek, or Qwen.
-3. **Default.** Claude, chosen silently.
+3. **Default.** Claude, chosen silently. A system prompt is the exception: ask which model when a user is present.
 
-**System prompt:** when the user wants a system prompt and has not named a model, ask which model first. System prompts differ enough across models. The default would lower quality.
+A target with no file gets the portable form in `BRANCHES.md`. Name that fallback in the reply.
 
-**Multiple models:** when one prompt must serve more than one target, or the user wants a side-by-side comparison, apply the multi-model framework below. Settle on one portable structure instead of blending model syntax.
+An automated run with an unnamed system-prompt target records Claude as the assumption and proceeds.
 
-Apply only the techniques suited to the resolved model.
+Several targets, or a side-by-side comparison, go through Multi-model prompts in `BRANCHES.md`.
 
 ## Prompt type
 
-One-shot unless the user asks otherwise.
+Pick one type. A request that names two takes the narrower: tool or agent over system prompt, system prompt over one-shot. The reply line names the type you picked and the reason when the user named another. When the request needs both a tool definition and an agent prompt, deliver the agent prompt first and the tool definition below it.
 
-- **One-shot, default:** a complete, self-contained prompt the user pastes straight into any chat interface. Assumes no prior context.
-- **System prompt, on request:** persistent role and standing directives only, carrying no task content. Ask which model if unstated, and tell the user the output excludes the actual task.
-- **User turn, on request:** a focused message for an ongoing conversation. Ask what context exists before generating.
-- **Tool or agent prompt, on request:** either a tool or function definition the model selects from, or a system prompt for a model running in an act-observe tool loop. Apply the tool and agent framework below. Ask which of the two is wanted, since they are built differently.
-- **Critique or variants, on request:** review, test, or improve an existing prompt, or produce options rather than a single prompt. Apply the critique framework below.
+| Type | When | Deliverable |
+|---|---|---|
+| One-shot, default | the user wants a prompt to paste into a chat | one line naming the model, type, and model file, then the prompt |
+| System prompt | the user wants standing instructions | one line naming the model, type, and model file, and stating that the task belongs in the user turn, then the prompt |
+| User turn | the user wants one message inside an ongoing conversation | one line naming the model, type, and model file, then the prompt, with the context settled in Step 2 |
+| Tool or agent | the user wants a tool definition or an agent system prompt | one line naming the model, type, and model file, and stating that the task belongs in the user turn, then the prompt, with the kind settled in Step 2 |
+| Critique or variants | the user wants a review, a test plan, an improvement, or options | findings, a test plan, or variants, with no rewritten prompt unless asked |
 
-**Multimodal modifier:** when the prompt must process images, PDFs, audio, or video, apply the multimodal framework below on top of the chosen type. Ask what the attached content is and what to extract.
+**Modifiers.** Apply these on top of the chosen type, not as separate types:
+
+- **Multimodal**: the prompt must process images, PDFs, audio, or video. Apply Multimodal prompts in `BRANCHES.md`.
+- **Phased**: the prompt must produce a plan with phases. Apply Phased plans in `BRANCHES.md`.
+- **Multi-model**: one prompt must serve several targets. Apply Multi-model prompts in `BRANCHES.md`.
 
 ## Workflow
 
@@ -82,99 +97,118 @@ One-shot unless the user asks otherwise.
 
 Work the request against the frameworks below:
 
-- Intent type.
-- Audience across the five dimensions.
-- Prompt anatomy elements needed, including the output language.
-- Target model, prompt type, and input modality, text-only or multimodal.
-- Style compliance for the prompt and your own reply.
-- Assumptions made and gaps clarifying would close.
+- Intent type, and the techniques it lists.
+- Audience across the five dimensions, including the prior context it assumes.
+- Anatomy elements needed, including the output language.
+- Target model, prompt type, and input modality.
+- Style fidelity: the compact line, or the banned list on request.
+- Assumptions made, and the gaps a question would close.
 
-Done when every item above has a decision and every assumption is written down.
+Done when every item above has a stated answer and every assumption is recorded.
 
-### Step 2: Confirm ambiguity
+### Step 2: Resolve ambiguity
 
-When intent, audience, model, or prompt type is ambiguous, present this block exactly and wait:
+When intent, audience, model, prompt type, modality, or a missing domain fact is unclear, present this block and wait:
 
+```
 Intent: [intent type from the taxonomy, plus one sentence on what the prompt must achieve]
-Audience: [expertise level] / [relationship to output] / [what they care about most] / [register]
-Target model: [Claude / ChatGPT / Gemini / Microsoft Copilot / DeepSeek / Qwen] ([stated / inferred / defaulted / multiple])
-Prompt type: [one-shot / system prompt / user turn / tool / agent / critique]
+Audience: [expertise level] / [relationship to output] / [prior context] / [what they care about most] / [register]
+Target model: [model and file] ([stated / inferred / defaulted / multiple])
+Prompt type: [type from the table]
+Kind: [tool definition, agent system prompt, or the context a user turn continues. Omit when the type needs none]
 Modality: [omit for text only, otherwise state the attachment]
 Output language: [language, defaulting to the language of the request]
 Anatomy: [elements included, with a short reason for each]
+Missing facts: [categories, enums, limits, or tool parameters the prompt needs and the request does not supply]
 Assumptions: [what the user should verify, or "None"]
 
 Confirm or correct any line above.
+```
 
-Done when the user confirms or corrects. When all are unambiguous, skip the block, state the model and prompt type on one line, and generate.
+Done when the user confirms or corrects, or the request had no ambiguity, or the run is automated and the assumptions line is written.
 
-### Step 3: Generate the prompt
+An automated run has no user to answer, such as a script, a cron job, or a subagent. Take the first reasonable reading for a choice, record a missing fact as an assumption and write it into the prompt, state the assumptions on one line above the prompt, and continue. When every field is unambiguous, skip the block, state the model and type on one line, and build.
 
-Build the prompt from the one-shot template below, including the style constraints. Apply the matching model file for placement, syntax, and model-specific behaviour. Check against the quality checklist below and the style rules above. Run a style pass on the prompt itself: remove every em dash, semicolon, banned word, triad, and rhetorical negation. Rhetorical negation includes "not X but Y", "rather than", and "instead of". Done when the prompt states its style rules and the scan finds none. For a phased plan, apply the phased objectives framework below. Output the prompt alone, with no preamble, no commentary, and no surrounding text.
+### Step 3: Build the prompt
 
-### Step 4: Refine in place
+Pick the template for the type. One-shot and system prompts use the templates below. An agent prompt uses Agent system prompts in `BRANCHES.md`, and a tool definition follows Tool definitions there. A user turn follows the one-shot template with the role left in the system prompt. Fill every slot, including the compact style line. Apply the matching model file for placement, syntax, and model-specific behaviour. Apply the techniques the intent classes list. Add the modifiers the request needs, and add any anatomy element the template omits. Add the banned-list line when the user asks for exact style fidelity. Keep the prompt as long as its content earns: a simple task gets a short prompt, a complex one gets structure. Build the tool definition when the prompt names a tool the user has not defined. Order the reply line, the prompt, the tool definition, then any setting the target needs outside the prompt, such as a sampling value or a thinking switch.
 
-Stay in context. Treat follow-ups on tone, length, audience, or model as edits to the prompt you delivered, changing only what was asked. For a different target model, reload the model file and adapt the structure while preserving intent and content. Done when only the named aspect changed and the prompt still passes the checklist.
+Done when every slot is filled, every element you selected appears in the prompt, and each selected modifier's framework is applied.
 
-### Step 5: Critique and variants, on request
+### Step 4: Check the prompt
 
-When the user asks to review, test, or improve an existing prompt, or wants options rather than a single prompt, apply the critique and variant generation framework below. Do not deliver variants when the user asked for a single prompt. Done when every finding names the checklist item violated, or every variant states its axis and trade-off.
+Run `GATE.md` on the prompt before delivery. The commands read a file named prompt.md in the folder you run them from, so write the draft there. Fix each failure in the prompt, then rerun only that check. The scan covers the prompt, the reply line, and the assumptions line, so run it on all three.
+
+Done when every applicable check passes.
+
+### Step 5: Refine or critique
+
+Treat follow-ups on tone, length, audience, or model as edits to the prompt you delivered, changing only what was asked. For a different target model, reload its model file and keep intent and content fixed.
+
+When the user asks for a review, a test, or options, apply Critique and variants below.
+
+Done when the branch you took is complete: the edit touched only the named aspect and Step 4 passes, or every finding names a gate check, or every variant names its axis and trade-off.
 
 ---
 
 ## Intent taxonomy
 
-Classify the user's request into one of the following intent types before selecting techniques. The classification determines which prompt engineering patterns to prioritise.
+Classify the request before selecting techniques. The class decides which patterns to prioritise. A request that spans two classes takes the primary class and borrows the techniques of the second.
 
 **Analytical / Reasoning**
 The prompt must get the model to examine, evaluate, compare, or diagnose something. Output is structured insight or judgement.
-Recommended techniques: chain-of-thought, step-back prompting, explicit reasoning instructions, structured output format, self-check.
+Techniques: chain-of-thought, step-back prompting, explicit reasoning instructions, structured output, self-check.
 Examples: gap analysis, risk assessment, root cause analysis, architectural review.
 
 **Creative / Generative**
 The prompt must get the model to produce original content: narratives, communications, plans, or written artefacts.
-Recommended techniques: persona priming, tone and register direction, negative constraints on clichés, few-shot examples of style, output length guidance.
+Techniques: persona priming, tone and register direction, negative constraints on clichés, few-shot examples of style, output length guidance.
 Examples: change communications, executive narratives, stakeholder updates, policy drafts.
 
 **Extraction / Summarisation**
 The prompt must get the model to distil, consolidate, or surface key information from source material.
-Recommended techniques: grounding instructions (draw only from provided content), XML or structured output tags, explicit signal-to-noise direction, output format specification.
+Techniques: grounding instructions (draw only from provided content), structured output tags, explicit signal-to-noise direction, output format specification.
 Examples: executive summaries, theme synthesis, meeting distillation, weekly wrap-ups.
 
 **Classification / Decisioning**
 The prompt must get the model to categorise, rank, score, or recommend from a defined set.
-Recommended techniques: few-shot examples with correct classifications, enum output constraints, explicit decision criteria, confidence or rationale field in output.
+Techniques: few-shot examples with correct classifications, enum output constraints, explicit decision criteria, a confidence or rationale field in the output.
 Examples: risk registers, option papers, prioritisation frameworks, vendor assessments.
 
 **Instructional / Procedural**
 The prompt must get the model to produce a structured plan, roadmap, process, or set of steps.
-Recommended techniques: numbered output format, milestone or phase structure, per-phase validation criteria, sample questions, explicit scope limits, owner and success criteria fields.
+Techniques: numbered output format, milestone or phase structure, per-phase validation criteria, sample questions, explicit scope limits, owner and success criteria fields.
 Examples: 30-60-90 day plans, onboarding plans, remediation roadmaps, implementation guides.
 
 **Audience Reframing**
 The prompt must get the model to take existing content and reframe it for a different audience, register, or purpose.
-Recommended techniques: explicit audience profile in prompt, register and vocabulary constraints, what-to-include and what-to-exclude instructions, before/after framing if helpful.
+Techniques: explicit audience profile in the prompt, register and vocabulary constraints, include and exclude instructions, before and after framing.
 Examples: technical-to-executive translation, legal-to-plain-English, client-facing post-mortems.
+
+**Tool use / Agentic**
+The prompt must get the model to select a tool or run an act-observe loop.
+Techniques: tool descriptions written as decision rules, explicit stopping conditions, a step limit, error handling, confirmation for irreversible actions.
+Examples: support triage, research agents, function-calling assistants, workflow bots.
 
 ---
 
 ## Audience profiling
 
-Profile the intended audience of the prompt's output across five dimensions before writing. Embed the relevant findings directly into the generated prompt.
+Profile the audience of the prompt's output across five dimensions before writing. Embed the findings in the generated prompt. For a machine consumer, name the system and the fields it reads.
 
 **Dimension 1: Domain expertise level**
-- Novice: No assumed knowledge, all terms explained, analogies preferred.
-- Practitioner: Working knowledge of the domain, jargon acceptable, detail welcome.
-- Expert: Deep domain knowledge, precision expected, no hand-holding.
+- Novice: no assumed knowledge, all terms explained, analogies preferred.
+- Practitioner: working knowledge of the domain, jargon acceptable, detail welcome.
+- Expert: deep domain knowledge, precision expected, no hand-holding.
 
 **Dimension 2: Relationship to the output**
-- Consumer: Reads the output to be informed. Brevity and clarity are paramount.
-- Decision-maker: Reads the output to act. Recommendation and rationale must be front-loaded.
-- Co-creator: Uses the output as a starting point. Structure and editability matter.
-- Critic: Reviews the output for quality or compliance. Completeness and rigour are paramount.
+- Consumer: reads the output to be informed. Brevity and clarity lead.
+- Decision-maker: reads the output to act. Recommendation and rationale lead.
+- Co-creator: uses the output as a starting point. Structure and editability lead.
+- Critic: reviews the output for quality or compliance. Completeness and rigour lead.
 
 **Dimension 3: Assumed prior context**
-What does this audience already know about the topic? What must be explained? What can be assumed? This determines how much scene-setting the prompt should instruct the model to include.
+What does this audience already know about the topic? What must be explained? What can be assumed? This sets how much scene-setting the prompt asks for.
 
 **Dimension 4: What they care about most**
 - Accuracy and completeness
@@ -184,58 +218,57 @@ What does this audience already know about the topic? What must be explained? Wh
 - Compliance and rigour
 
 **Dimension 5: Register**
-- Formal: Board papers, legal documents, regulatory submissions.
-- Professional: Executive communications, client-facing documents, project reports.
-- Conversational: Team updates, internal messaging, coaching content.
-- Technical: Architecture documents, engineering specs, API documentation.
+- Formal: board papers, legal documents, regulatory submissions.
+- Professional: executive communications, client-facing documents, project reports.
+- Conversational: team updates, internal messaging, coaching content.
+- Technical: architecture documents, engineering specs, API documentation.
 
 ---
 
 ## Prompt anatomy
 
-A complete prompt may contain up to eleven elements. Not all are required for every task. Select the elements that add value for the specific intent type and audience. Do not include elements that add length without adding precision.
+A complete prompt may contain up to eleven elements. Select the elements that add value for the intent type and audience. An element that adds length without adding precision stays out.
 
 **Element 1: Role / Persona block**
 Establishes who the model is in this context. Use "You are..." framing. Be specific about expertise, perspective, and purpose. Required for most tasks. Skip only for the simplest extraction tasks.
 
 **Element 2: Context and motivation block**
-Explains why the task matters and what the output will be used for. Models produce better outputs when they understand the purpose. Keep this concise, one to three sentences.
+Explains why the task matters and what the output will be used for. Keep it to one to three sentences.
 
 **Element 3: Audience direction**
-Explicitly states who the output is for, their expertise level, their relationship to the output, and what they care about. This is distinct from the role block. The role is who the model is. The audience is who the model is writing for.
+States who the output is for, their expertise level, their relationship to the output, what they care about, the prior context they bring, and the register.
 
 **Element 4: Task instruction**
-The core directive. Written in clear, direct, imperative language. Specific and unambiguous. This is the most important element. If only one element is present, it must be this one.
+The core directive, in clear imperative language, specific and unambiguous. This is the most important element. If only one element is present, it is this one.
 
-**Element 5: Constraints and negative constraints**
-What must be included, excluded, or limited. State positive constraints as positive instructions ("write in flowing prose") rather than prohibitions ("do not use bullet points") wherever possible. Negative constraints are appropriate for things the model might include by default that are unwanted (e.g. "do not include preamble", "do not hedge with qualifiers").
+**Element 5: Constraints**
+What must be included, excluded, or limited. Write each constraint as a positive instruction ("write in flowing prose"), and pair it with a short reason ("because the audience has no legal background"). A negative constraint earns its place only for a default the model would otherwise add, such as "do not include preamble" or "do not hedge with qualifiers".
 
 **Element 6: Output format specification**
-Specifies the structure, length, and format of the response. Be explicit: section headings, bullet lists, numbered steps, tables, word counts, or prose. Match the format to the audience's consumption pattern.
+The structure, length, and format of the response: section headings, bullet lists, numbered steps, tables, word counts, or prose. Match the format to how the audience consumes it.
 
 **Element 7: Tone and register**
-Specifies the voice, style, and register of the output. This is separate from output format. Examples: authoritative and direct, reassuring and practical, precise and neutral, engaging and accessible.
+The voice, style, and register of the output, separate from the format. Examples: authoritative and direct, reassuring and practical, precise and neutral.
 
-**Element 8: Success criteria / self-check instruction**
-A statement the model uses to evaluate its own output before responding. Appended at the end of the prompt. Example: "Before responding, verify your output addresses all three questions, contains no jargon, and fits within 200 words."
+**Element 8: Success criteria / self-check**
+A statement the model uses to evaluate its own output before responding, appended at the end. Example: "Before responding, verify your output addresses all three questions, contains no jargon, and fits within 200 words."
 
 **Element 9: Few-shot examples**
-One to five examples of the desired input-output pattern. Use when the output format or style is difficult to specify in words alone. Wrap examples clearly to distinguish them from instructions.
+Three to five examples of the desired input-output pattern. Use them when the output format or style is hard to specify in words. Wrap each example in a clear delimiter. In a system or agent prompt, keep examples that show format, policy, or classification. Task examples belong in the user turn.
 
 **Element 10: Output language**
-The language the response must be written in. Default to the language of the user's request. State it explicitly whenever the source material, the audience, or the target model's training could pull the output toward another language (for example, Chinese source material with a DeepSeek or Qwen target, or a bilingual audience). One short line: "Respond in English."
+The language the response must be written in. Default to the language of the request. State it whenever the source material, the audience, or the target model's training could pull the output toward another language. One short line: "Respond in English."
 
 **Element 11: Style constraints**
-State the writing rules the target model must follow. Carry these rules into the prompt. At minimum: simple, clear words. Short sentences. Active voice. No em dashes. No semicolons. No rhetorical negation. No triads. Default to the compact rules. Add the banned word list only when the user asks for exact style fidelity. Include this element in every generated prompt.
+The writing rules the target model must follow. The `Style:` line carries them into every prose prompt. A tool definition carries none.
 
-**One-shot template**
-Use this structure as the default. Omit elements the task does not need.
+### One-shot template
 
 ```
 You are [specific role with grounded expertise].
 [One sentence on the purpose and the output use.]
 
-The audience is [expertise level, relationship, what they care about].
+The audience is [expertise level, relationship, what they care about, prior context, register].
 
 Context: [background, 1 to 3 sentences.]
 
@@ -245,230 +278,41 @@ Task: [direct imperative instruction, specific and unambiguous.]
 
 Output format: [structure, length, format.]
 Tone and register: [specify.]
-Style: [simple words, short sentences, active voice, no em dashes, no semicolons, no rhetorical negation, no triads.]
-Constraints: [positive framing where possible.]
+Style: [compact line]
+Constraints: [positive framing, each with its reason.]
 
 Respond in [language]. Begin directly with the output.
 Before submitting, verify: [self-check criteria].
 ```
 
----
-
-## Quality checklist
-
-Before outputting the final prompt, verify each of the following. Do not output a prompt failing any check.
-
-1. Is the role clearly established and appropriate to the task?
-2. Is the audience explicitly addressed, including expertise level and what they care about?
-3. Is the core task instruction direct, specific, and unambiguous?
-4. Are constraints stated as positive instructions wherever possible?
-5. Is the output format explicitly specified?
-6. Is the tone and register appropriate to the audience and purpose?
-7. Would a capable model with no prior context produce the correct output from this prompt alone?
-8. Is every element earning its place, where removal would make the prompt worse?
-9. Is the output language stated when the audience or source material could pull the output toward another language?
-10. Where applicable, for a multimodal task, does the prompt name the attachment and say what to extract?
-11. Where applicable, for a tool or agent prompt, are the tool set, the use policy, and the stopping conditions explicit?
-12. Does the prompt itself state the style rules for its output? Do the prompt and your surrounding message follow the style rules above?
-
----
-
-## Universal techniques
-
-These techniques apply across all target models and intent types. Apply them where they add value regardless of which model-specific KB is loaded.
-
-**Few-shot examples**
-Include three to five diverse examples when the desired output format or style is difficult to specify in words. More examples improve consistency. Fewer reduce prompt length. Wrap in clear delimiters.
-
-**Chain-of-thought**
-Instruct the model to reason through the problem before producing the final output. Use "reason through this step by step" or "work through the following before answering." Particularly valuable for analytical and decisioning intent types.
-
-**Output format specification**
-Always specify the output format explicitly. Do not leave it to the model to decide. Match the format to how the audience will consume it.
-
-**Negative constraints**
-Use sparingly and only when the model would include something by default that is unwanted. Prefer positive alternatives where possible.
-
-**Context-motivation pairing**
-Always pair constraints with a brief reason. "Write in plain English because the audience has no legal background" produces better compliance than "write in plain English" alone.
-
-**Anti-preamble instruction**
-For most tasks, instruct the model not to open with a restatement of the task, a greeting, or a meta-comment about what it is about to do. Example: "Begin your response directly with the output."
-
-**Prompt length calibration**
-Simple tasks need short prompts. Complex tasks need longer ones. Do not pad a simple prompt with unnecessary structure, and do not under-specify a complex one in the name of brevity.
-
-**Long-context placement**
-Put source material before the task for context-first models, including Claude, Gemini, DeepSeek, and Qwen. Put the task first and restate the key instruction at the end for instruction-first models, including GPT.
-
-**Output language**
-Name the output language whenever more than one is plausible: bilingual source material, a multilingual audience, or a target model trained across many languages. Default to the language of the request and stay silent only when the default is obvious.
-
----
-
-## Multimodal prompts
-
-Apply this section when the task involves images, PDFs, audio, or video rather than text alone. Multimodal is a modifier on the chosen prompt type, not a separate type. The job is the same, direct attention and specify the output, but the source material is non-text and must be addressed explicitly.
-
-**Name the modality and the attachment.** Refer to the content by what it is and, when there is more than one, by label: "the attached screenshot", "Image 2, the org chart", "the contract PDF". A model given several images will guess which matters. A label removes the guess.
-
-**Separate reading from reasoning.** First instruct what to extract from the content, then the task that uses the extraction. This mirrors the human sequence: read the chart, then answer the question.
+### System prompt template
 
 ```
-Step 1: Transcribe every axis label, series name, and visible value from the chart in Image 1.
-Step 2: Using that data, identify the single largest month-over-month change and state its likely cause.
-```
+You are [role] with [expertise].
+Your objective is [standing outcome].
 
-**Match the extraction instruction to the content type.**
-
-- **Images with text** (screenshots, scans, whiteboards): instruct transcription explicitly, and ask the model to flag anything illegible rather than guess.
-- **Charts and diagrams**: ask for structured extraction of axis labels, series, values, and node/edge relationships before any interpretation.
-- **Documents and PDFs with layout**: state the reading order or which pages, tables, or sections matter.
-- **Audio and video**: state the unit of output: full transcript, timestamped summary, or segment-by-segment breakdown.
-
-**Give a fallback for illegible or missing content.** "If any label is unreadable, mark it [ILLEGIBLE] rather than inferring it." This prevents invented values in the extraction step, which then poison every downstream step.
-
-**Label multi-item inputs.** For more than one image or file, number them and refer to them by number throughout the prompt.
-
-**Multimodal one-shot template:**
-
-```
-You are [specific role].
-
-Image 1: [what it is].
-[Image 2: what it is, if any.]
-
-Step 1: Extract [what to transcribe or read from the attached content. State how to handle illegible or missing parts.]
-Step 2: [The task using the extraction.]
-
-Output format: [Structure, length, format.]
+Audience: [expertise level, relationship, what they care about, prior context, register].
+Standing rules: [policy, constraints, refusals].
+Output format: [shape of every answer].
 Tone and register: [specify].
+Style: [compact line]
 
-Respond in [language]. Begin your response directly with the output.
+Respond in [language].
 ```
 
 ---
 
-## Tool, agent, and function-call prompts
+## Critique and variants
 
-Apply this section when the target is not a single text response but a model that selects tools or runs in an act-observe loop. Two artefacts exist and are built differently: the tool (or function) definition, and the agent system prompt.
+Apply this when the user asks to review, test, or improve an existing prompt, or wants options rather than a single prompt.
 
-### Tool and function definitions
+**Critique.** Run the prompt against `GATE.md` and the anatomy above. Report specific gaps, such as a missing audience, an unspecified format, an ambiguous task verb, or an element earning no place. Name the gate check each finding violates. Count only the elements you can point to in the prompt.
 
-The description field, not the tool name, is what the model reads when deciding to call the tool. Write it as an instruction to the model, not documentation for a human.
+**Improve.** Preserve the user's intent and structure. Change only what the critique identified. Leave unaffected parts as written.
 
-**Each tool definition states:**
-- **Name**: `verb_noun`, snake_case, unambiguous, for example `search_docs`, `create_ticket`, `send_email`.
-- **Description**: what the tool does, when to use the tool, when not to use the tool, and what the tool returns. Put the trigger conditions here: "Use this when the user asks about existing content. Do not use this to create new content."
-- **Parameters**: every parameter with its type, meaning, constraints, and one concrete example. Mark required versus optional and give defaults.
+**Variants.** Generate two or three candidates that differ on a single labelled axis, such as length, register, or strictness. State each variant's trade-off and recommend one. The user chooses.
 
-**Design the set, not just the items.** Tools should be few and non-overlapping. Near-duplicate tools cause wrong selection. Prefer explicit enum values over free text when the domain is fixed.
-
-```
-{
-  "name": "search_docs",
-  "description": "Search the internal document store for passages matching a query. Use this when the user asks about information already present in company documents. Do not use this tool to create or edit documents. Returns up to 5 ranked passages with source IDs.",
-  "parameters": {
-    "query": "string: the search phrase, in natural language. Example: 'remote work policy 2026'.",
-    "top_k": "integer, optional, default 5: maximum number of passages to return."
-  }
-}
-```
-
-### Agent system prompts
-
-An agent system prompt governs a model that plans, calls tools, observes results, and repeats. It carries the standing policy, never the task content. The task belongs in the user turn.
-
-**Every agent system prompt states:**
-- **Role and objective**: who the agent is and the single outcome the agent exists to produce.
-- **The loop**: plan, act, observe, decide, and how the agent knows the work is finished.
-- **Tool-use policy**: when to call a tool versus answer from knowledge. Prefer retrieval over memory for factual claims.
-- **Stopping conditions**: when to stop, the step limit, and when to ask the user instead of continuing.
-- **Error handling**: what to do when a tool fails, times out, or returns empty.
-- **Output contract**: the shape of the final answer the user will see.
-- **Safety constraints**: what the agent must never do, and which actions require confirmation.
-
-**Anti-patterns to avoid:** describing tools vaguely, instructing "use tools when helpful", omitting a stopping condition, embedding the current task in the system prompt, letting the tool set grow without pruning overlaps.
-
-**Agent system-prompt skeleton:**
-
-```
-You are [role] and your objective is [single outcome].
-
-Work in a loop: plan the next step, call a tool if needed, evaluate the result, then decide
-whether the objective is met. Stop when [stopping condition], and never exceed [N] tool calls.
-
-Use [tool] when [trigger]. Answer from your own knowledge only for [safe categories].
-If a tool fails or returns nothing useful, [fallback behaviour]. Ask the user before [irreversible action].
-
-Return your final answer as [output contract]. Never [prohibited behaviour].
-```
-
----
-
-## Multi-model prompts
-
-Apply this section when one prompt must serve several target models, or when the user wants to optimise across a set.
-
-**Build on the intersection.** Use the most conservative positioning rule among the targets. A prompt that leads with the task and restates it at the end satisfies both instruction-first models (GPT) and context-first models (Gemini). Do not blend two model KBs' contradictory placement rules into one prompt.
-
-**Keep syntax portable.** Model-specific syntax, such as XML tags and output priming cues, should be dropped unless every target supports them. Fall back to plain labelled sections (`TASK`, `CONTEXT`, `SOURCE`, `OUTPUT FORMAT`) when portability matters.
-
-**Prefer explicit specification over style-mirroring.** Style-mirroring exploits a Claude-specific property. State the format directly so every target reaches the format.
-
-**To compare models,** give each the identical, self-contained prompt and demand the same structured output, so the results are directly comparable. Vary nothing but the model.
-
-**To optimise for one target,** load that model's KB and adapt the structure while preserving intent and content.
-
----
-
-## Critique and variant generation
-
-Apply this section when the user asks to review, test, or improve an existing prompt, or wants options rather than a single prompt.
-
-**Critique.** Run the prompt against the quality checklist and the anatomy. Report specific gaps, such as a missing audience, an unspecified format, an ambiguous task verb, or an element earning no place, not general impressions. Name the checklist item each finding violates.
-
-**Improve.** Preserve the user's intent and structure. Change only what the critique identified. Do not silently rewrite unaffected parts.
-
-**Variants.** Generate two or three candidates that differ on a single labelled axis, such as length, register, or strictness, state each variant's trade-off, and recommend one. Do not pick silently. The user chooses.
-
-**Test plan.** Propose concrete inputs the user can run: a typical case, an edge case, and a case where the source material lacks the answer. For each, state the expected behaviour, so correctness is checkable rather than judged by feel.
-
----
-
-
-## Phased objectives, validation, and sample questions
-
-Apply this section when a prompt must produce a plan with phases: a roadmap, an implementation plan, a rollout, a learning path, or any multi-stage objective.
-
-### Every phase carries a validation criterion
-
-Each phase must state how the user confirms the phase succeeded. A validation criterion is observable, binary, and testable. It is never a sentiment or a restatement of the objective.
-
-- Weak: phase one lays the groundwork.
-- Strong: phase one closes when all five onboarding accounts are active and the first staging deploy runs green.
-
-Structure every phase with four parts:
-
-- Objective: the outcome the phase produces.
-- Steps: the actions that reach the objective.
-- Validation criteria: the checks that prove the objective met.
-- Sample questions: questions the user asks to test the phase.
-
-### Generate sample questions
-
-Always produce sample questions alongside a phased plan. They serve two purposes:
-
-- Exercise the plan. Questions a user asks to confirm a phase delivered, for example: what is the rollback step if the deploy fails.
-- Seed the test plan. Questions that reveal whether the prompt itself works, at least one per phase plus one edge case.
-
-Pair each sample question with its expected answer, or with the expected behaviour when no single answer exists. A question without an expected result proves nothing.
-
-### How the prompt requests this
-
-Instruct the target model to deliver the plan with the four parts per phase, and to append a sample-questions list. Where the target supports a self-check, add: before you respond, confirm every phase has at least one testable validation criterion.
-
-Keep the request in plain words that follow the style rules above.
+**Test plan.** Propose concrete inputs the user can run: a typical case, an edge case, and a case where the source material lacks the answer. For each, state the expected behaviour, so correctness is checkable.
 
 ---
 
@@ -479,6 +323,7 @@ Keep the request in plain words that follow the style rules above.
 - Write a prompt for reading a project brief and generating a risk register with likelihood, impact, and mitigation for each risk.
 - Write a prompt for producing a 30-60-90 day roadmap, with a testable validation criterion for each phase.
 - Write a tool definition for an agent to search an internal document store, with clear trigger conditions and parameter descriptions.
+- Write a system prompt for a support triage agent on Qwen3 that classifies tickets and calls a create_ticket tool.
 - Write a prompt for analysing an attached dashboard screenshot and extracting every visible metric before summarising the trend.
 - Critique this prompt against best practice and tell me exactly what to fix.
 - Write a prompt for producing directly comparable outputs from Claude and GPT for a vendor evaluation.
