@@ -351,8 +351,6 @@ docs/
   prompt-engineer-flow.excalidraw   editable diagram source
   prompt-engineer-flow.png          rendered diagram
 
-productivity -> skills/productivity  compatibility symlink for older configs
-
 evals/
   skills/productivity/
     prompt-engineer/                three scenarios and their fixtures
@@ -362,6 +360,18 @@ evals/
 ```
 
 Review reports are written to `reviews/`, which is local and gitignored.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Run `make check` before opening a pull request. It checks frontmatter, the plugin manifests, relative links, the version, and that no persona, review report, or secret is tracked.
+
+## Versioning
+
+Releases use CalVer, `YYYY.MM.MICRO`, tagged `vYYYY.MM.MICRO`. `VERSION` holds the current release and [CHANGELOG.md](CHANGELOG.md) records every one. To cut a release, move the unreleased entries into a dated section, update `VERSION`, then run `make tag`.
+
+## Security
+
+See [SECURITY.md](SECURITY.md). Report a secret, a destructive instruction, or impersonation privately through a GitHub security advisory.
 
 ## License
 
