@@ -1,51 +1,31 @@
 # Example solo script
 
-Guidance only. The script body is the text between the markers. The request is the handoff.
+Guidance only. An excerpt: a full episode runs 8 to 12 minutes. The body shows the marker mechanics.
 
 ## Script
 
 ```text
-[voice:narrator] [emotion:neutral] The bridge failed on its first day. Not in a storm. In a light breeze.
+[voice:host_a] The bridge failed on its first day. Not in a storm. Not under a crowd, or a truck, or a flood. In a light breeze, on a Tuesday, while the market below it was open and the second staircase was empty.
 
 [pause:400ms]
 
-[emotion:neutral] The load model assumed nobody would ever walk on it. The engineer who signed the drawing assumed the same thing.
+The load model assumed nobody would ever walk on it. The engineer who signed the drawing assumed the same thing.
 
 [pause:600ms]
 
-[emotion:neutral] [rate:0.95] The second staircase is the one that tells you whether anybody read the drawings.
+[rate:0.95] The second staircase is the one that tells you whether anybody read the drawings.
 
 [pause:1000ms]
 
-[emotion:neutral] Local news now. The council has reopened the eastern footpath.
+[rate:1.0] Local news now. The council has reopened the eastern footpath.
 
 [pause:600ms]
 
-[emotion:neutral] [rate:0.9] One line. Ask who signed the drawing before you ask who built the bridge.
-```
-
-## Request
-
-```json
-{
-  "model": "kokoro-v1_0",
-  "voice": {"id": "narrator", "narrator": "bm_lewis"},
-  "input": "<script body>",
-  "normalise": {"lexicon": true, "acronyms": true, "numbers": true},
-  "pronunciations": {"Lachie": "Locky"},
-  "ambiguity": "error",
-  "response_format": "mp3"
-}
+[rate:0.9] One line. Ask who signed the drawing before you ask who built the bridge.
 ```
 
 ## Handoff
 
-```bash
-curl -sS http://kokoro-tone:8000/v1/audio/speech \
-  -H "Authorization: Bearer $KOKORO_TONE_API_KEY" \
-  -H 'Content-Type: application/json' \
-  --data-binary @solo-request.json \
-  -o solo.mp3
-```
+Compile with the model file. Write `<source-stem>-tts-<model>.txt`.
 
-Word count: about 110. Runtime: about 45 seconds at the default baseline. Voices: `narrator` to `bm_lewis`. Baseline: default. Section break: weather to local news at 1000ms.
+Word count: 99. Runtime: about 44 seconds including pauses. Voices: `host_a`. Target: `kokoro-tone`. Baseline: 145 wpm. Section break: bridge story to local news at 1000ms.

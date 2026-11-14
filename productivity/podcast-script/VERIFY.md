@@ -2,18 +2,61 @@
 
 The release gate. Run every check before handing the script back. A failed check is unfinished work.
 
+## Contents
+
+- Step map
+- 1. Files exist
+- 2. Source order
+- 3. Profile gate
+- 4. Pacing sheet
+- 5. Script shape
+- 6. Word count and runtime
+- 7. Markers
+- 8. Forbidden characters
+- 9. Section breaks
+- 10. Same-speaker tone changes
+- 11. Speaker changes
+- 12. Interjections
+- 13. Emphasis and moves
+- 14. Ticks
+- 15. Banlist and meta-commentary
+- 16. Text matches the script and the model
+- 17. Text only
+- 18. Pronunciation
+- 19. Panel checks
+- 20. Claims trace to the source
+- 21. Handoff summary
+
+## Step map
+
+Run the checks for the step you just closed, then the full gate before delivery. For a brought-in script, run checks 7 to 21 and skip checks 1 to 4.
+
+| Step | Checks |
+|---|---|
+| 1 Source | 2, 20 |
+| 2 Profiles | 3 |
+| 3 Model | none; read the capability table |
+| 4 Beats | none; the beat map has no check of its own |
+| 5 Pacing | 4 |
+| 6 Script | 5, 6, 8, 15 |
+| 7 Markers and ticks | 7, 9, 10, 11, 12, 13, 14 |
+| 8 Pronunciation | 18 |
+| 9 Compile | 16, 17 |
+| 10 Verify | 1, 19, 21 |
+
 ## 1. Files exist
 
 - `<source-stem>-podcast-script.md`
-- `<source-stem>-request.json`
-- `<source-stem>-script-notes.md`
-- One host profile per host, if the script is two-host or panel.
+- `<source-stem>-tts-<model>.txt`, the compiled text
+- `<source-stem>-script-notes.md`, or `<source-stem>-script-notes-<model>.md` for a retarget
+- One host profile per host, solo included.
+- `<source-stem>-panel-plan.md`, for three or more hosts.
 
 Done when every file exists next to the source.
 
 ## 2. Source order
 
-The source must be older than the script.
+The source must be older than the script. Skip this check for a retarget.
 
 ```bash
 stat -c '%Y %n' <source> <script>
@@ -28,21 +71,22 @@ Read every profile against `PROFILE.md`. Done when every row in the profile gate
 Check especially:
 
 - `pace_wpm_estimate` is numeric and agrees with the calibration line.
-- `tick_inventory` has six to eight IDs, max two per type.
-- No two hosts share a signature, opener, or bridge phrase.
-- `takes_floor: waits`.
+- `tick_inventory` has six to eight IDs, max two per type, and one `signature_tick` from it.
+- No two hosts share a signature tick, opener, or bridge phrase.
+- Two-host and panel: `takes_floor: waits`.
+- The `show` block matches the shape: solo has no co-host fields, panel has moderator and panelists.
 - No field is an adjective-only description.
 
 ## 4. Pacing sheet
 
 Read the pacing sheet in the script notes or the beat map. Done when:
 
-- Every segment has a function, pace band, preset, rate, effective wpm, words, duration, pause, handoff, emphasis, and move.
+- Every segment has a function, pace band, emotion, rate, effective wpm, words, duration, pause, handoff, emphasis, and move.
 - The words and durations sum to the target within 15 percent.
-- Every segment's word count and duration match the sheet within 15 percent.
+- The script's segments match the sheet's word count and duration within 15 percent.
 - Sentence lengths match the pace band.
 - Rate changes are within the two to four per 10 minutes budget.
-- The preset is the default throughout. `neutral` is used only to clear an override.
+- Every emotion is one of the eight. A value the model does not carry is dropped and recorded.
 - Performance moves are within their budgets.
 
 ## 5. Script shape
@@ -50,7 +94,7 @@ Read the pacing sheet in the script notes or the beat map. Done when:
 Read the first five lines and the last five lines.
 
 - The first line is the cold open, not a title.
-- The last line is spoken prose, unless the target pipeline requires a sentinel. If it does, use that sentinel exactly as the pipeline specifies (for example `END`), with nothing after it.
+- The last line is spoken prose. No sentinel such as `END`, which the engine would speak.
 - No title line, heading, episode number, or markdown.
 - No bullet lists, numbered lists, tables, links, or code fences.
 
@@ -59,12 +103,12 @@ Done when the script starts and ends as the target pipeline expects.
 ## 6. Word count and runtime
 
 ```bash
-wc -w <script>
+sed -E 's/\[[^]]*\]//g' <script> | wc -w
 ```
 
-Count spoken words, not tags. Done when the word count is within 15 percent of the declared target and the runtime matches the pacing sheet.
+Count spoken words, not markers. Done when the word count is within 15 percent of the declared target and the runtime matches the pacing sheet.
 
-## 7. Tags
+## 7. Markers
 
 List every tag.
 
@@ -82,16 +126,24 @@ Done when every tag is one of:
 
 Fail on any other bracket pair. Unknown tags are spoken.
 
-Check emotion values: `neutral` only. The default baseline is no override. Every preset is disabled until the deployment is tuned. Fail on any other value.
+Check for a bracket with no colon:
 
-Check rate values: 0.75 to 1.3.
+```bash
+grep -oE '\[[^]]*\]' <script> | grep -v ':'
+```
 
-Heteronym check. List every word in the script that is spelt the same as another word but said differently: record, separate, live, read, lead, close, address, does, bass, minute, wind, tear, row, bow, sewer, and so on. For each, decide the sense from the sentence. Add a `[sense:word=sense]` tag to the script or request, or a `pronunciations` rule to the request. Do not rely on the gateway's guess. After the render, read the `X-Kokoro-Tone-Guessed` header and repair any wrong guess before delivery.
+Expect no output. A bare bracket such as `[wheeze]` would be spoken.
+
+Check every emotion value against the eight in `PERFORMANCE.md`. Fail on any value outside the eight. A value the model does not carry is dropped and recorded.
+
+Check every rate value is within 0.75 to 1.3.
+
+Heteronym check. List every word in the script that is spelt the same as another word but said differently: record, separate, live, read, lead, close, address, does, bass, minute, wind, tear, row, bow, sewer, and so on. For each, decide the sense from the sentence. Resolve it the way the model file says. Do not rely on the engine's guess.
 
 ## 8. Forbidden characters
 
 ```bash
-grep -nE '\(|\)|"|—|–|--|/|[\x{1F300}-\x{1FAFF}]|!!|\?\?' <script>
+grep -nP '\(|\)|"|—|–|--|/|[\x{1F300}-\x{1FAFF}]|!!|\?\?' <script>
 ```
 
 Expect no output. Also check for markdown:
@@ -102,11 +154,11 @@ grep -nE '^#|^\*|^- |^\|' <script>
 
 Expect no output. The script is plain spoken prose.
 
-No ALL CAPS for emphasis. Uppercase is for acronyms the normaliser will spell. No stage directions. No parentheses. No bracketed notes.
+No ALL CAPS for emphasis. Uppercase is for acronyms the model spells out. No stage directions. No parentheses. No bracketed notes.
 
 ## 9. Section breaks
 
-Read the script and mark every logical section boundary. Done when every boundary has an explicit `[pause:...]` of 800 to 1200ms between the last turn of the section and the first turn of the next section.
+Read the script and mark every logical section boundary. Done when every boundary has an explicit `[pause:...]` between the last turn of the section and the first turn of the next section: 800 to 1200ms, or 1000 to 1200ms for a panel.
 
 Example: a weather update followed by local news is two sections. The boundary needs a section-break pause.
 
@@ -127,8 +179,8 @@ Done when every same-speaker change has a pause and lands at a sentence boundary
 For every `[voice:]` change:
 
 - Pass if the previous turn ends with a question mark.
-- Pass if the next turn starts with a permitted interjection or discourse marker.
-- Pass if the preceding line carries `[pause:...]` of at least 300ms.
+- Pass if the first word after the voice and rate tags is a permitted interjection or discourse marker.
+- Pass if the preceding line carries `[pause:...]` of at least 300ms, or 200 to 300ms after an interjection handoff.
 - Fail if none of the three is present.
 - Fail if the interjection is a banned tick.
 - Fail if the question is not answered by the next speaker.
@@ -143,35 +195,36 @@ For every interjection handoff:
 - One to four words.
 - `[rate:1.05]` to `[rate:1.1]`.
 - A short pause after it: 200 to 300ms.
-- The next turn resets to `[rate:1.0]` or the host's baseline.
+- The next turn resets to `[rate:1.0]`, the host's baseline, or the rate the host used before the interjection.
 - The interjection is a permitted tick with `Pace: faster`, or the host's `bridge_in` phrase.
 
 Done when every interjection is fast and the rate resets.
 
 ## 13. Emphasis and moves
 
-- Level 5: unavailable. The raised-voice preset is disabled.
+- Level 5: only where the model carries `angry`.
 - Underline: three to six words, 150 to 250ms between words, zero or one per episode.
-- Deadpan aside: one to two lines at `[rate:0.95]`, returns to `[rate:1.0]`, two to three per 10 minutes.
-- Drop: zero or two per episode.
-- Direct address: zero or two per episode.
-- Quote: zero or two per episode.
+- Deadpan aside: one to two lines at `[rate:0.95]`, and the next line sets its own rate. Two to three per 10 minutes.
+- Build: zero or one per episode.
+- Drop: zero to two per episode.
+- Direct address: zero to two per episode.
+- Quote: zero to two per episode.
 - Confession: zero or one per episode.
 - Rapid-fire list: zero or one per episode.
 - Callback: zero or one per episode.
 - Warning: zero or one per episode.
 - Relief: zero or one per episode.
 
-Done when every move is within budget and every underline and deadpan aside fits its shape. Fail on any disabled preset.
+Done when every move is within budget and every underline and deadpan aside fits its shape. A move that needs an emotion the model does not carry is recorded as dropped.
 
 ## 14. Ticks
 
 Read `TICKS.md`. Done when:
 
 - Every tick in the script is a row with `Banned: no`.
-- Every tick is in the host's `tick_inventory`.
-- The tick density is at or below 5.5 per 100 words.
-- No tick is in a sentence under six words.
+- Every tick is in the host's `tick_inventory`, or in that host's `emotion_behaviour.ticks_under_load`, or is one of the host's `bridge_in` or `bridge_out` literals.
+- The tick density is at or below the host's `tick_density` for the segment's state: baseline, or strained when the segment carries `angry` or `excited`. A panel uses 2.0 baseline, 3.5 strained, 5.0 ceiling.
+- No tick is inside a sentence under six words. A tick that is its own sentence is allowed.
 - No more than two ticks are in any 20-word window.
 - A sign-off appears once.
 - A phrase tic appears no more than three times.
@@ -232,7 +285,7 @@ grep -inF \
   -e "stakeholder alignment" \
   -e "it is what it is" \
   -e "when push comes to shove" \
-  script.md
+  <script>
 ```
 
 Expect no output. Also check the host's `never_says` list.
@@ -277,78 +330,86 @@ grep -inE \
   -e "the script says" \
   -e "the instructions say" \
   -e "the prompt says" \
-  script.md
+  <script>
 ```
 
 Expect no output. Done when the banlist, the host `never_says` list, and the meta-commentary check are all clean.
 
-## 16. Request matches script
+## 16. Text matches the script and the model
 
-Read the request JSON. Done when:
+Read the compiled text and the model file. Done when:
 
-- `model` is `kokoro-v1_0`.
-- `input` equals the script body.
-- `voice` is an alias map with an `id` entry.
-- `instructions` is omitted for the default baseline. It is never a preset word or a prose direction.
-- `normalise` is on when the script uses digits or acronyms.
-- `pronunciations` carries names and word-said acronyms.
-- `ambiguity` is `guess`, with the `X-Kokoro-Tone-Guessed` header read after the render. Use `error` only where the deployment implements it.
-- `response_format` is `mp3` or `wav`.
-- `speed` is 1.0.
+- The model is named in the notes and matches the text file name.
+- Every marker is resolved: none survives unless the model reads it as text.
+- The spoken words equal the script body after the compile rules.
+- Every difference from the script is one the model file allows.
+
+Compare the text to the script body after removing every marker the model resolves:
 
 ```bash
-jq -r '.input' request.json > /tmp/request-input.txt
-diff -u script.md /tmp/request-input.txt
+sed -E 's/\[[^]]*\]//g' <script-body> > /tmp/script-words.txt
+sed -E 's/\[[^]]*\]//g' <compiled-text> > /tmp/text-words.txt
+diff -u /tmp/script-words.txt /tmp/text-words.txt
 ```
 
-Expect no difference. If `jq` is unavailable, use a Python one-liner.
+Expect differences only where a marker became punctuation or a blank line, or where a name was respelt. Every other word matches.
 
-## 17. Limits
+Then apply the model file's own text rules. It is the authority on the dialect.
 
-Read the request and the script. Done when:
+## 17. Text only
 
-- Input characters fit `MAX_INPUT_CHARS`.
-- Turn count fits `MAX_TURNS`.
-- Total explicit pause fits `MAX_TOTAL_PAUSE_MS`.
-- One pause fits `MAX_PAUSE_MS`.
-- Every `[rate:]` fits 0.75 to 1.3.
-- The body fits `MAX_BODY_BYTES`.
+Read the compiled text. Done when:
 
-For a full episode, raise `MAX_INPUT_CHARS` and `MAX_TURNS` in `.env` before rendering. A 10-minute script is roughly 8500 characters before tags. A panel can exceed 100 turns.
+- It holds the spoken words and the model's inline controls, and nothing else.
+- No front matter, headings, comments, or code fences.
+- No payload: no JSON, no keys, no endpoint, no header, no command.
+- No marker the model does not read.
+
+The skill delivers text. A payload belongs to the tool that renders it.
 
 ## 18. Pronunciation
 
 - Every proper noun, acronym, and heteronym has a route.
-- Names and word-said acronyms are in `pronunciations`.
-- Heteronyms use `[sense:word=sense]` or a context rule.
-- No unresolved `[sense:]` marker survives.
-- `ambiguity: "guess"` returns 200 with no `X-Kokoro-Tone-Guessed` header, or the header is checked and accepted.
+- The model file says how to resolve a name or a heteronym.
+- Every `[sense:]` tag is resolved. None is left ambiguous.
 
-If the user is ready to render, run the request with `ambiguity: "guess"`. A 200 is both the preflight and the render. Read `X-Kokoro-Tone-Guessed`. If the header names a word, fix the script or add a `[sense:]` tag and render again. Where the deployment implements `error`, use it and paste the returned tags.
+If a word is still ambiguous, add a `[sense:]` marker or respell it, then compile again.
 
 ## 19. Panel checks
 
 For three or more hosts:
 
-- Every host has a profile, a distinct voice, a signature, and a bridge phrase.
+- Every host has a profile, a distinct voice, a signature tick, and a bridge phrase.
 - The moderator opens and closes.
 - The panel plan covers every host and every segment.
 - Every panelist turn is one to three sentences.
 - Backchannels are one per turn and within budget.
-- No two panelists share a signature, opener, or bridge phrase.
-- The turn count, input chars, and pause total fit the limits.
+- No two panelists share a signature tick, opener, or bridge phrase.
+- Every speaker change has a pause, a question, or an interjection.
 
-## 20. Handoff summary
+## 20. Claims trace to the source
+
+Read every spoken claim against the source. Done when:
+
+- Every number, name, date, and quotation appears in the source.
+- Every causal claim is one the source makes, not one the script infers.
+- An inference the script draws from the source is stated as an inference, not as a fact.
+- No figure is rounded into a different figure, and no margin, deadline, or count is invented.
+
+A figure the source does not carry is a failure, even when it is plausible. Cut it, or say what the source does say.
+
+## 21. Handoff summary
 
 State:
 
 - The script path.
-- The request path.
+- The compiled text path.
+- The model and its text dialect.
 - The word count.
 - The estimated runtime.
-- The voices and aliases.
-- The baseline preset.
+- The voices and casting.
+- The turn map, when the model drops `[voice:]`.
+- Every dropped marker.
 - Any unresolved guesses or gaps.
-- The curl command.
 
 Do not claim audio exists. The render is the next step.

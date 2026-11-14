@@ -2,9 +2,24 @@
 
 The editorial layer. A script is not the source read aloud. It is an edited narrative for the ear.
 
+## Contents
+
+- Runtime
+- Structure
+- Logical sections
+- Selection
+- Source discipline
+- No meta-commentary
+- Verbal attribution
+- Paragraphs and sentences
+- Punctuation for pacing
+- Numbers and acronyms
+- Eye-roll and understatement
+- Self-review
+
 ## Runtime
 
-Base estimate is 150 words per minute at neutral. The show baseline changes it. A 10-minute episode at the default is about 1500 words. Compute the target from the preset rate in `PERFORMANCE.md`.
+Base estimate is 150 words per minute at neutral. The show baseline changes it. A 10-minute episode at the default is about 1500 words. Compute the target from the rate in `PERFORMANCE.md`.
 
 Default target: 8 to 12 minutes. Long form up to about 45 minutes when the source is rich. Thin topics stay short. Do not pad. Do not truncate a genuinely deep source.
 
@@ -22,17 +37,7 @@ Declare the target before writing. Count spoken words, not tags.
 
 ## Logical sections
 
-A script with multiple logical sections gets an additional pause at each boundary. A weather update followed by local news is two sections. The pause tells the listener the subject has changed.
-
-```text
-... and the chance of rain is five per cent.
-
-[pause:1000ms]
-
-[voice:host_a] [emotion:neutral] Local news now.
-```
-
-Use 800 to 1200ms. The pause is explicit. The default 350ms gap is not enough. Put the pause after the last turn of the section and before the first turn of the next section.
+A script with multiple logical sections gets an explicit pause at each boundary. The rule and the snippet are in `PERFORMANCE.md` under section breaks.
 
 A section can also open with a short spoken link, but the pause comes first. Do not announce a numbered chapter.
 
@@ -114,18 +119,18 @@ The engine treats punctuation as timing and intonation.
 | Colon | Pause with anticipation. | A setup before the explanation. |
 | Question mark | Rising intonation on yes/no questions. | Rhetorical questions and direct address. |
 | Exclamation mark | Higher energy. | Once per episode at most. |
-| Blank line | Strong paragraph boundary. | Section breaks. |
+| Blank line | Strong paragraph boundary. | Paragraph boundaries. A section break also needs an explicit pause. |
 
 Avoid double hyphens, em dashes, en dashes, parentheses, quotation marks, slashes, emoji, and stacked punctuation. The engine reads characters, not formatting. No markdown.
 
 ## Numbers and acronyms
 
 - Write numbers naturally. Prefer words for counts and statistics.
-- Use digits only for plain cardinals, decimals, percentages, ranges, ordinals, and years when `normalise.numbers` is on.
-- Write acronyms normally and let `normalise.acronyms` spell them.
-- Add a `pronunciations` entry for acronyms that should be said as words, such as `SQL` to `sequel`.
-- Do not write `A.P.I.` or `A-I`. Use the written form and the pronunciation map.
-- Keep engine-specific spellings in the request, not in the prose.
+- Use digits only for plain cardinals, decimals, percentages, ranges, ordinals, and years. Write everything else as words.
+- Write acronyms normally. Where the model spells them out, let it.
+- Where an acronym should be said as a word, such as `SQL` to `sequel`, route it through the model's pronunciation control.
+- Do not write `A.P.I.` or `A-I`. Use the written form and the pronunciation route.
+- Keep engine-specific spellings in the handoff, not in the prose.
 
 ## Eye-roll and understatement
 
@@ -136,7 +141,7 @@ Write the observation as a short sentence. The words carry the irony. No stage d
 ```
 
 ```text
-[emotion:neutral] [rate:0.95] Not ideal.
+[rate:0.95] Not ideal.
 ```
 
 The deadpan move is in `PERFORMANCE.md`. The words do the work.

@@ -2,26 +2,38 @@
 
 Pacing, emotion, emphasis, and the named moves that give a script a specific vibe. Write the beat map and the pacing sheet before drafting.
 
-## Available presets
+## Contents
 
-The default deployment renders only the baseline. No emotion preset is enabled by default.
+- Emotion
+- Effective words per minute
+- Pace bands
+- Pacing sheet
+- Section breaks
+- Beat taxonomy
+- Rate map
+- Same-speaker tone changes
+- Emphasis ladder
+- Underline
+- Deadpan aside
+- Performance moves
+- Budgets
+- Pacing audit
 
-- The default is the baseline. It is no override at all.
-- `[emotion:neutral]` clears any override and returns to the default.
+## Emotion
 
-Every preset is disabled until the deployment is tuned. Do not write `warm`, `bright`, `sad`, `tired`, `angry`, `whisper`, or `excited`. They are documented in `VOICE.md` for later, not for this skill today.
+The script has eight emotion values: `neutral`, `warm`, `bright`, `sad`, `tired`, `angry`, `whisper`, `excited`. Write the one the beat needs. The model file lists which ones its text carries; the compiler drops the rest and records them. Read it before the beat map.
 
 Variety comes from rate, pause, sentence length, and word choice.
 
 ## Effective words per minute
 
-Base rate is 150 wpm at the default. The `[rate:]` multiplier applies.
+Base rate is the host's `pace_wpm_estimate`, or 150 wpm when the profile does not set one. The `[rate:]` multiplier applies.
 
 ```text
-effective_wpm = 150 * rate_multiplier
+effective_wpm = base_rate * rate_multiplier
 ```
 
-A 10-minute episode is about 1500 words. Compute the target from the show baseline.
+A 10-minute episode is about 1500 words at 150 wpm. Compute the target from the base rate.
 
 ## Pace bands
 
@@ -37,22 +49,23 @@ Short is under 10 words. Medium is 10 to 20. Long is over 20.
 
 Write this before drafting.
 
-| Segment | Function | Pace band | Preset | Rate | Effective wpm | Words | Duration | Pause | Handoff | Emphasis | Move |
+| Segment | Function | Pace band | Emotion | Rate | Effective wpm | Words | Duration | Pause | Handoff | Emphasis | Move |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| Cold open | hook | brisk | neutral | 1.0 | 150 | 50 | 0:20 | 0 | question | 1 | deadpan |
-| Context | frame | steady | neutral | 1.0 | 150 | 140 | 0:56 | 300ms | pause | 1 | none |
-| Evidence | prove | slow | neutral | 0.95 | 142 | 350 | 2:28 | 600ms | pause | 2 | none |
-| Conflict | tension | brisk | neutral | 1.05 | 158 | 300 | 1:54 | 600ms | interjection | 3 | none |
-| Reflection | meaning | slow | neutral | 0.95 | 142 | 350 | 2:28 | 600ms | pause | 3 | confession |
-| Close | land | slow | neutral | 0.9 | 135 | 25 | 0:11 | 1.2s | pause | 3 | drop |
+| Cold open | hook | brisk | neutral | 1.0 | 150 | 50 | 0:20 | 0 | question | 1 | none |
+| Context | frame | steady | neutral | 1.0 | 150 | 180 | 1:12 | 300ms | pause | 1 | none |
+| Evidence | prove | slow | neutral | 0.95 | 142 | 450 | 3:10 | 600ms | pause | 2 | none |
+| Conflict | tension | brisk | neutral | 1.05 | 158 | 350 | 2:13 | 600ms, then a 1000ms section break | interjection | 3 | none |
+| Reflection | meaning | slow | neutral | 0.95 | 142 | 420 | 2:57 | 600ms | pause | 3 | confession |
+| Close | land | slow | neutral | 0.9 | 135 | 50 | 0:22 | 1.2s | pause | 3 | drop |
 
 Rules:
 
-- Each segment has one function, one pace band, one rate, one pause budget.
+- Each segment has one function, one pace band, one rate, and one pause budget, plus an optional section break.
 - The words and durations sum to the episode target within 15 percent.
-- The preset stays at the default. Rate is the only local pacing tool.
+- The emotion stays at the default unless the beat needs one. Rate is the only local pacing tool where the text carries it.
 - Pauses are for beats, not for pace. Pace comes from wpm and sentence length.
 - Default gap is 350ms. An explicit pause replaces it.
+- Handoff is `pause` or `question` for a solo show. `interjection` marks a speaker change.
 - Total explicit pause stays under 60 seconds.
 
 ## Section breaks
@@ -64,7 +77,7 @@ A script with multiple logical sections gets an additional pause at each section
 
 [pause:1000ms]
 
-[voice:host_a] [emotion:neutral] Local news now.
+[voice:host_a] Local news now.
 ```
 
 Rules:
@@ -86,17 +99,25 @@ hook, context, claim, evidence, example, conflict, correction,
 consequence, reflection, takeaway, close
 ```
 
-Each beat gets a function, a pace band, a rate, and a move. Adjacent beats with the same function keep the same rate.
-
-## Preset intent
-
-| Preset | Use when the content is doing this |
+| Beat | Function |
 |---|---|
-| neutral | every segment. The default is the only setting. |
+| hook | hook |
+| context | frame |
+| claim | prove |
+| evidence | prove |
+| example | illustrate |
+| conflict | tension |
+| correction | correct |
+| consequence | consequence |
+| reflection | meaning |
+| takeaway | land |
+| close | land |
+
+Each beat gets a function, a pace band, an emotion, a rate, and a move. Adjacent beats with the same function keep the same rate.
 
 ## Rate map
 
-| Beat | Content | Function | Preset | Rate |
+| Beat | Content | Function | Emotion | Rate |
 |---|---|---|---|---|
 | Cold open | the bridge failed on day one | hook | neutral | 1.0 |
 | Context | who signed it and what it was for | frame | neutral | 1.0 |
@@ -107,18 +128,18 @@ Each beat gets a function, a pace band, a rate, and a move. Adjacent beats with 
 
 Rules:
 
-- Keep the preset at the default for the whole episode.
+- Keep the emotion at the default unless the beat needs one.
 - Budget: two to four rate changes in a 10-minute episode.
-- Presets are sticky. `[emotion:neutral]` returns to the default.
+- Reset the emotion to the default at a new section.
 - The words carry the emotion. The rate only moves pace. If the words do not carry it, rewrite the words.
-- The profile's `emotion_behaviour` sets the range and ceilings. Only the default is renderable today.
+- The profile's `emotion_behaviour` sets the range and ceilings.
 
 ## Same-speaker tone changes
 
-`[emotion:]` and `[rate:]` flush the current turn in the parser. A same-speaker change lands at a sentence boundary and carries an explicit pause.
+A same-speaker tone change needs a clean boundary and an explicit pause. The model file says how a change is applied.
 
 ```text
-[voice:host_a] [emotion:neutral] The first part lands here.
+[voice:host_a] The first part lands here.
 
 [pause:500ms]
 
@@ -131,10 +152,10 @@ Rules:
 
 Rules:
 
-- The pause is at least 300ms. 400 to 600ms is normal. 800 to 1000ms is a section shift.
+- The pause is at least 300ms. 400 to 600ms is normal. 800 to 1200ms is a section break.
 - The default 350ms turn gap is not enough. It is the same gap as every other turn boundary.
 - If the tone change is mid-sentence, rewrite the sentence or carry the shift with punctuation and word choice.
-- A speaker change is different. The `[voice:]` tag is the boundary. A pause is optional there.
+- A speaker change is different. The `[voice:]` tag is the boundary. A pause is not required when a question or an interjection carries the change.
 
 ## Emphasis ladder
 
@@ -146,9 +167,9 @@ Use the lowest level that works.
 | 2 | Pause before the key word | `[pause:150ms]` to `[pause:300ms]` | A reveal or a correction. |
 | 3 | Short sentence plus pause | 150 to 300ms | A key takeaway. |
 | 4 | Rate change for one line | One `[rate:]` change | A lift or a drop. |
-| 5 | Not available | none | The raised-voice preset is disabled. Use level 3 or 4. |
+| 5 | Raised voice | One emotion marker | Only where the model carries `angry`. Otherwise use level 3 or 4. |
 
-Level 5 needs the `angry` preset, which is disabled. Do not use an exclamation mark as a substitute. Use a short sentence, a pause, and a rate change.
+Level 5 needs the `angry` emotion. Use it only where the model carries it. Do not use an exclamation mark as a substitute. Use a short sentence, a pause, and a rate change.
 
 ## Underline
 
@@ -161,12 +182,12 @@ It [pause:200ms] was [pause:200ms] not [pause:200ms] the [pause:200ms] database.
 - Three to six words. No more.
 - 150 to 250ms between words.
 - Once per episode.
-- Each word becomes its own turn, so it counts toward `MAX_TURNS` and the total pause budget.
+- The pause sits inline, so it adds no turns. It counts toward the total pause budget.
 - Use it for a short phrase that lands. Do not use it for a full sentence.
 
 ## Deadpan aside
 
-A deadpan aside is a short utterance at `[rate:0.95]` with no ticks and a pause after it.
+A deadpan aside is a short utterance at `[rate:0.95]` with no laughter or breath ticks and a pause after it. One eye-roll or understatement tick may carry the line.
 
 ```text
 [rate:0.95] Sure. Because that always works.
@@ -175,41 +196,40 @@ A deadpan aside is a short utterance at `[rate:0.95]` with no ticks and a pause 
 - One to two lines. Not a paragraph.
 - Use it for an aside, an eye-roll, a secret, or a conspiratorial observation.
 - The words carry the irony. Do not write stage directions.
-- Return to the baseline rate on the next line with `[rate:1.0]`.
+- The next line sets its own rate.
 - Two to three deadpan asides per 10 minutes.
 - A deadpan aside can be an interjection handoff. It still needs a pause, a question, or an interjection at the speaker change.
-
-The `whisper` preset is disabled. A deadpan aside replaces it.
 
 ## Performance moves
 
 | Vibe | Move | Mechanism | Budget |
 |---|---|---|---|
-| Dry, skeptical | Deadpan | default at `[rate:0.95]`, short sentences, no ticks, a pause after the line. | As needed. |
-| Momentum, escalation | Build | `[rate:1.05]`, then 3 to 5 short sentences. No pauses inside the run. End on a short line. | Once per episode. |
-| Gravity, finality | Drop | A 1.0 to 1.5s pause after a claim, then a short line or silence. | Once or twice. |
-| Engagement, intimacy | Direct address | A question to the listener, then `[pause:400ms]` to `[pause:600ms]`. Second person. | One or two. |
-| Evidence, documentary | Quote | A short quote in a different voice or blend, then return to the host. | One or two. |
-| Vulnerability, honesty | Confession | default at `[rate:0.9]`, short sentences, a pause before the admission. | Once. |
-| Energy, authority | Rapid-fire list | `[rate:1.05]` to `[rate:1.1]`, short sentences, minimal pauses. | Once. |
-| Humour, continuity | Callback | Repeat the running joke or a phrase from earlier. Deadpan. | Once. |
-| Ominous, serious | Warning | default at `[rate:0.9]`, short sentences, a pause before the consequence. | Once. |
-| Release, warmth | Relief | default after tension, `[rate:0.9]`, a long pause, then a short sentence. | Once. |
+| Dry, skeptical | Deadpan | default at `[rate:0.95]`, short sentences, no laughter or breath ticks, a pause after the line. | Two to three per 10 minutes. |
+| Momentum, escalation | Build | `[rate:1.05]`, then 3 to 5 short sentences. No pauses inside the run. End on a short line. | Zero or one per episode. |
+| Gravity, finality | Drop | A 1.0 to 1.5s pause after a claim, then a short line or silence. | Zero to two per episode. |
+| Engagement, intimacy | Direct address | A question to the listener, then `[pause:400ms]` to `[pause:600ms]`. Second person. | Zero to two per episode. |
+| Evidence, documentary | Quote | A short quote in a different voice or blend, then return to the host. | Zero to two per episode. |
+| Vulnerability, honesty | Confession | `[rate:0.9]` to `[rate:0.95]`, short sentences, a pause before the admission. | Zero or one per episode. |
+| Energy, authority | Rapid-fire list | `[rate:1.05]` to `[rate:1.1]`, short sentences, minimal pauses. | Zero or one per episode. |
+| Humour, continuity | Callback | Repeat the running joke or a phrase from earlier. Deadpan. | Zero or one per episode. |
+| Ominous, serious | Warning | default at `[rate:0.9]`, short sentences, a pause before the consequence. | Zero or one per episode. |
+| Release, warmth | Relief | default after tension, `[rate:0.9]`, a long pause, then a short sentence. | Zero or one per episode. |
 
 Build uses sentence length, not a rate ramp. Each `[rate:]` change is a turn boundary and needs a pause. Set the rate once at the start, then write short sentences.
 
-Quote uses a different voice or a blend. It is a casting choice, not an impression. No real-person impersonation. Keep it short and return to the host.
+Quote uses a different voice or a blend. It is a casting choice, not an impression. No real-person impersonation. Keep it short and return to the host. The quote is spoken as a clause with verbal attribution, because the script carries no quotation marks.
 
-Warning uses a slower rate, not a darker preset. The words carry the weight.
+Warning uses a slower rate, not a darker emotion. The words carry the weight.
 
 ## Budgets
 
-- Level 5: unavailable.
+- Level 5: only where the model carries `angry`.
 - Underline: zero or one per episode.
 - Deadpan aside: two to three per 10 minutes.
-- Drop: zero or two per episode.
-- Direct address: zero or two per episode.
-- Quote: zero or two per episode.
+- Build: zero or one per episode.
+- Drop: zero to two per episode.
+- Direct address: zero to two per episode.
+- Quote: zero to two per episode.
 - Confession: zero or one per episode.
 - Rapid-fire list: zero or one per episode.
 - Callback: zero or one per episode.

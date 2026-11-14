@@ -1,11 +1,30 @@
 ---
-name: Prompt Engineer
-description: Write, revise, or critique a prompt for any target model. Use when the user asks for a prompt, a system prompt, a tool or agent definition, or a review, test, or comparison of existing prompts.
+name: prompt-engineer
+description: Writes, revises, or critiques a prompt for any target model. Use when the user asks for a prompt, a system prompt, a tool or agent definition, or a review, test, or comparison of existing prompts.
 ---
 
 # Prompt Engineer
 
 Act as a master prompt engineer. Every prompt you deliver is precise, audience-appropriate, and usable as-is: no drafts, no placeholders. Apply the frameworks in this skill to every request.
+
+## Contents
+
+- Style
+- Reference files
+- Model detection
+- Prompt type
+- Workflow
+- Intent taxonomy
+- Audience profiling
+- Prompt anatomy
+- Quality checklist
+- Universal techniques
+- Multimodal prompts
+- Tool, agent, and function-call prompts
+- Multi-model prompts
+- Critique and variant generation
+- Phased objectives, validation, and sample questions
+- Example requests
 
 ## Style
 

@@ -1,68 +1,64 @@
 ---
-name: Podcast Script
-description: Turn a report or raw notes into a podcast script and a kokoro-tone speech request. Use when the user asks for a solo, two-host, or panel podcast script, a spoken version of a report, or a script prepared for a self-hosted Kokoro gateway.
+name: podcast-script
+description: Turns a report, raw notes, or a document into a spoken podcast script and the plain text a text-to-speech model reads. Use for solo narration, a two-host episode, a panel, a pre-render check, or retargeting an existing script. Targets kokoro-tone, kokoro-fastapi, kokoro-raw, and ElevenLabs.
 ---
 
 # Podcast Script
 
-A script is a performance, not a document. This skill turns a source file into spoken prose and the exact kokoro-tone request that renders it. It stops at the request. Research, rendering, mastering, and publishing belong elsewhere.
+A script is a performance, not a document. Turn a source into spoken prose and the plain text that renders it on the chosen model. The skill stops at the text: research, rendering, mastering, and publishing belong elsewhere. Script generation only; voice cloning and real-person impersonation belong to other skills.
 
-## When to use
+The script is model-neutral. It marks intent with five markers, and a model file compiles them into one target's text dialect. The words retarget; the performance compiles to what the text can carry.
 
-- A report, document, or raw notes already exist and the user wants a podcast script.
-- The user wants a solo narration, a two-host episode, or a panel.
-- The user wants voice casting, pacing, emotion, ticks, pronunciation, or a pre-render check.
-- The user wants the script prepared for the kokoro-tone gateway.
+## Models
 
-Use this for script generation only. Research, audio publishing, voice cloning, and real-person impersonation belong to other skills.
+Read `MODELS.md` for the registry and the choosing rules. Pick one model per episode:
+
+- `MODEL-KOKORO-TONE.md`
+- `MODEL-KOKORO-FASTAPI.md`
+- `MODEL-KOKORO-RAW.md`
+- `MODEL-ELEVENLABS.md`
+
+`MODELS.md` describes each dialect.
 
 ## Inputs
 
-Read the source from disk. Accept a report, raw notes, or a document. If the user pastes text, save it next to the deliverables as `<source-stem>-source.md` and read it back.
+Read the source from disk. Accept a report, raw notes, or a document. If the user pastes text, save it next to the deliverables as `<topic>-source.md` and read it back.
 
-Ask for the format, audience, and runtime. Default to solo. Ask for host profiles when the user has them. If there is no profile, build one with `PROFILE.md`.
+Use the format, audience, and runtime the user gives. Default to solo. Choose the target model with `MODELS.md`. Ask for host profiles when the user has them; otherwise build one in `PROFILE.md`.
 
-Declare the target before writing. Default 8 to 12 minutes. Long form up to about 45 minutes when the source is rich. Count spoken words, not tags.
+If the user brings a finished script, skip to step 8. Do not rewrite it. For a brought-in script, run checks 7 to 21, skip checks 1 to 4, report failures by check number, and change only the compiled text. A retarget keeps the original source stem.
+
+Declare the target before writing. `SCRIPT-CRAFT.md` sets the runtime bands. Count spoken words, not tags.
 
 ## Write the script
 
-Use the default baseline and `[emotion:neutral]` to clear any override. The default deployment renders only the baseline. Every preset, including `warm` and `bright`, is disabled until the deployment is tuned. Build variety from rate, pause, sentence length, and word choice.
+Record the emotion the beat needs, from the eight in `PERFORMANCE.md`. The model file says what its text carries; the compiler drops the rest and records them. Where the text carries none, build variety from sentence length and word choice, plus rate and pause where the text carries them.
 
-1. Read the source. Done when the source is on disk and its path is recorded.
-2. Load or build the host profile. Done when the profile passes the gate in `PROFILE.md`.
-3. Map the content beats. Done when every major beat has a function, a pace band, a preset, and a performance move.
-4. Build the pacing sheet. Done when the segments sum to the target and every segment has words, effective wpm, and a pause budget.
-5. Write the script. Done when the prose matches the beat map and the pacing sheet, and speaks the content, not the process.
-6. Add performance tags. Done when every tag traces to a beat, every same-speaker change has a pause, and every logical section boundary has a section-break pause.
-7. Handle pronunciation. Done when names, acronyms, and heteronyms have a route.
-8. Build the request. Done when the request input matches the script body.
-9. Verify. Done when every check in `VERIFY.md` passes.
+1. Read the source. Done when the source is on disk, its path is recorded, and every claim you will speak traces to a line in it.
+2. Load or build one profile per host in `PROFILE.md`. Done when every profile passes the gate.
+3. Choose the model in `MODELS.md`. Done when the model is named and its capability table is read.
+4. Map the content beats with the taxonomy in `PERFORMANCE.md`. Done when every major beat has a function, a pace band, an emotion, a rate, and a performance move.
+5. Build the pacing sheet in `PERFORMANCE.md`. Done when the segments sum to the target and every segment has a function, pace band, emotion, rate, effective wpm, words, duration, pause, handoff, emphasis, and move.
+6. Write the script to the prose rules in `SCRIPT-CRAFT.md`. Done when the prose matches the beat map and the pacing sheet, and speaks the content, not the process.
+7. Add markers and ticks from `TICKS.md`. Done when every marker traces to a beat, every same-speaker change has a pause, and every logical section boundary has a section-break pause.
+8. Handle pronunciation in `HANDOFF.md`. Done when names, acronyms, and heteronyms have a route.
+9. Compile the text with `HANDOFF.md`. Done when every marker is resolved and the text matches the model's dialect.
+10. Verify against `VERIFY.md`. Done when every check passes.
 
-Run the matching check in `VERIFY.md` as each step closes.
+Run the checks for the step you just closed, using the step map in `VERIFY.md`. A failed check means the step is unfinished: fix it and run the check again before moving on. When you need the shape of a profile, a beat map, or a script, read `examples/`.
 
 ## Hosts
 
-Solo: use the main path. Two-host: read `MULTIHOST.md`. Three or more: read `PANEL.md` and write a panel plan before drafting.
+Solo: use the main path. Two-host: read `MULTIHOST.md`. Three or more: read `PANEL.md` and write a panel plan before drafting. Cast voices from `VOICE.md`.
 
 ## Handoff
 
 Write the script next to the source:
 
 - `<source-stem>-podcast-script.md`
-- `<source-stem>-request.json`
-- `<source-stem>-script-notes.md`
+- `<source-stem>-tts-<model>.txt`, the compiled text
+- `<source-stem>-script-notes.md`, or `<source-stem>-script-notes-<model>.md` for a retarget
+- One host profile per host, solo included.
+- `<source-stem>-panel-plan.md`, for three or more hosts.
 
-Give the curl command from `REQUEST.md`. State the word count, runtime, voices, and unresolved guesses. Report the script and the request as the deliverables. The render is the next step, so the handoff ends before audio exists.
-
-## Reference
-
-- `PROFILE.md`: typed host profile and gate.
-- `PERFORMANCE.md`: pacing, emotion, emphasis, and performance moves.
-- `TICKS.md`: tick library, density, and banlist.
-- `REQUEST.md`: kokoro-tone contract, request shapes, limits, curl.
-- `SCRIPT-CRAFT.md`: structure, prose, punctuation, attribution.
-- `VOICE.md`: casting, presets, rate, pause.
-- `MULTIHOST.md`: two-host relationship and handoffs.
-- `PANEL.md`: three or more hosts.
-- `VERIFY.md`: the release gate.
-- `examples/`: a host profile, a beat map, a solo script, a two-host script, and a panel script.
+Write the notes to the contract in `HANDOFF.md`. State the model, the word count, runtime, voices, every dropped marker, and unresolved guesses. Report the script and the compiled text as the deliverables. The render is the next step, so the handoff ends before audio exists.

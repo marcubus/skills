@@ -1,12 +1,23 @@
 # Ticks
 
-One library. Every row is a tick. The `Banned` column is the only distinction. IDs are stable and sequential.
+One library. Every row is a tick. The `Banned` column is the only permitted-or-banned distinction. IDs are stable and sequential.
 
 A tick is either permitted or banned. A banned tick keeps its type and its ID. The banlist is every row with `Banned: yes`.
 
+A tick earns its place by adding a human beat. A phrase that only announces structure, praises the question, or describes the document is not a tick; it is a gap where content should be.
+
+## Contents
+
+- Library
+- Selection rules
+- Density
+- Banlist
+- Tick sheet
+- Non-verbal ticks
+
 ## Library
 
-| ID | Tick | Type | Banned | Pace | Kokoro-tone use |
+| ID | Tick | Type | Banned | Pace | Use |
 |---|---|---|---|---|---|
 | TICK-001 | um | filler | no | normal | Write the word. |
 | TICK-002 | uh | filler | no | normal | Write the word. |
@@ -40,19 +51,19 @@ A tick is either permitted or banned. A banned tick keeps its type and its ID. T
 | TICK-030 | heh | laugh | no | normal | Write the sound. |
 | TICK-031 | hm-hm | laugh | no | normal | Write the sound. |
 | TICK-032 | pfft | laugh | no | normal | Write the sound. |
-| TICK-033 | [wheeze] | laugh | no | normal | Cut. Use a spoken laugh. |
-| TICK-034 | [cackle] | laugh | no | normal | Cut. Use a spoken laugh. |
-| TICK-035 | [snort] | laugh | no | normal | Cut. Use a spoken laugh. |
-| TICK-036 | [silent shake] | laugh | no | normal | Cut. Use a pause. |
+| TICK-033 | [wheeze] | laugh | yes | normal | Cut. Use a spoken laugh. |
+| TICK-034 | [cackle] | laugh | yes | normal | Cut. Use a spoken laugh. |
+| TICK-035 | [snort] | laugh | yes | normal | Cut. Use a spoken laugh. |
+| TICK-036 | [silent shake] | laugh | yes | normal | Cut. Use a pause. |
 | TICK-037 | [inhale] | breath | no | slower | Map to `[pause:300ms]`. |
 | TICK-038 | [exhale] | breath | no | slower | Map to `[pause:300ms]`. |
 | TICK-039 | [sigh] | breath | no | slower | Map to `[pause:600ms]` plus words. |
-| TICK-040 | [lip smack] | breath | no | slower | Cut. |
+| TICK-040 | [lip smack] | breath | yes | slower | Cut. |
 | TICK-041 | [nose exhale] | breath | no | slower | Map to `[pause:300ms]`. |
 | TICK-042 | [held breath] | breath | no | slower | Map to `[pause:600ms]`. |
-| TICK-043 | [breathy onset] | breath | no | slower | Cut. |
-| TICK-044 | [vocal fry] | breath | no | slower | Cut. |
-| TICK-045 | [swallow] | breath | no | slower | Cut. |
+| TICK-043 | [breathy onset] | breath | yes | slower | Cut. |
+| TICK-044 | [vocal fry] | breath | yes | slower | Cut. |
+| TICK-045 | [swallow] | breath | yes | slower | Cut. |
 | TICK-046 | sorry, sorry | self-interruption | no | faster | Write the words. |
 | TICK-047 | no wait | self-interruption | no | faster | Write the words. |
 | TICK-048 | scratch that | self-interruption | no | faster | Write the words. |
@@ -241,13 +252,13 @@ A tick is either permitted or banned. A banned tick keeps its type and its ID. T
 ## Selection rules
 
 - Six to eight ticks per host. Max two per type.
-- Exactly one signature interjection or phrase tic.
-- No two hosts share a signature.
+- Exactly one `signature_tick` from the host's inventory.
+- No two hosts share a signature tick.
 - No two hosts share more than three ticks.
 - Regional ticks require a matching nationality and voice.
 - Eye-roll and understatement ticks pair with the deadpan aside.
 - Curiosity ticks pair with the curious follow-up.
-- Backchannels are for the second host. Max two per host. They are not content.
+- Backchannels are for any non-moderator host. Max two per host. They are not content.
 - A tick is either permitted or banned. Never both.
 
 ## Density
@@ -257,7 +268,9 @@ A tick is either permitted or banned. A banned tick keeps its type and its ID. T
 | Baseline calm | 2.5 | One tick every 40 words. |
 | Strained state | 4.0 | One tick every 25 words. |
 | Ceiling | 5.5 | Never exceed. |
-| Short sentence | 0 | No tick in a sentence under six words. |
+| Short sentence | 0 | No tick inside a sentence under six words. A tick that is its own sentence is allowed. |
+
+A segment is baseline unless it carries `angry` or `excited`, which are strained. No segment sits at the ceiling.
 
 Additional rules:
 
@@ -265,96 +278,15 @@ Additional rules:
 - Ticks cluster at turn boundaries and clause breaks, never inside a noun phrase.
 - A sign-off appears once per episode.
 - A phrase tic appears at most three times per episode.
-- Rotate four of the host's six to eight ticks across an episode.
+- Use four of the host's six to eight ticks in an episode; the rest stay available.
 - If the script exceeds the cap, cut ticks before cutting words.
 - A panel uses 2.0 baseline, 3.5 strained, 5.0 ceiling.
 
 ## Banlist
 
-The banlist is every row with `Banned: yes`. For verification, use these literals:
+The banlist is every row in the library with `Banned: yes`. The table is authoritative; do not keep a second copy of it.
 
-- TICK-071 at the end of the day
-- TICK-149 Let's take this offline.
-- TICK-150 Let's circle back.
-- TICK-151 Touch base.
-- TICK-152 Close the loop.
-- TICK-153 Keep me in the loop.
-- TICK-154 Reach out.
-- TICK-155 Heads up.
-- TICK-156 Ping me.
-- TICK-157 Sync up.
-- TICK-158 Level set.
-- TICK-159 Pulse check.
-- TICK-160 Parking lot.
-- TICK-161 Double-click on that.
-- TICK-162 Deep dive.
-- TICK-163 Move the needle.
-- TICK-164 Low-hanging fruit.
-- TICK-165 Boil the ocean.
-- TICK-166 Think outside the box.
-- TICK-167 Paradigm shift.
-- TICK-168 Game changer.
-- TICK-169 Best-in-class.
-- TICK-170 Value add.
-- TICK-171 Mission critical.
-- TICK-172 Stakeholder alignment.
-- TICK-173 It is what it is.
-- TICK-174 When push comes to shove.
-- TICK-175 That's a really great point.
-- TICK-176 Absolutely, one hundred percent.
-- TICK-177 Couldn't agree more.
-- TICK-178 That's a really good question.
-- TICK-179 Let's unpack that.
-- TICK-180 In today's episode.
-- TICK-181 Dive into.
-- TICK-182 It's important to note that.
-- TICK-183 When it comes to.
-- TICK-184 The fact of the matter is.
-- TICK-185 Needless to say.
-- TICK-186 As we discussed earlier.
-- TICK-187 As I mentioned.
-- TICK-188 In conclusion.
-- TICK-189 To sum up.
-- TICK-190 Without further ado.
-- TICK-191 Thanks for watching.
-- TICK-192 Stay tuned.
-- TICK-193 I hear you.
-- TICK-194 That's a valid point.
-- TICK-195 Great question.
-- TICK-196 I appreciate that.
-- TICK-197 Let me explain.
-- TICK-198 I'll walk you through.
-- TICK-199 First, I'll...
-- TICK-200 Next, I'll...
-- TICK-201 As I said earlier.
-- TICK-202 As I said.
-- TICK-203 In this episode.
-- TICK-204 The next section.
-- TICK-205 This section.
-- TICK-206 Let's break this down.
-- TICK-207 Let's get into it.
-- TICK-208 Here's what we'll cover.
-- TICK-209 By the end of this episode.
-- TICK-210 I'm going to tell you.
-- TICK-211 I want to talk about.
-- TICK-212 Today we're going to.
-- TICK-213 The point of this episode.
-- TICK-214 Before we begin.
-- TICK-215 Let's start with.
-- TICK-216 Let's move on.
-- TICK-217 As mentioned.
-- TICK-218 As discussed.
-- TICK-219 To recap.
-- TICK-220 To summarise.
-- TICK-221 In this section.
-- TICK-222 In the next section.
-- TICK-223 The source says.
-- TICK-224 The report says.
-- TICK-225 The document says.
-- TICK-226 The research shows.
-- TICK-227 According to the report.
-- TICK-228 According to the document.
-- TICK-229 According to the source.
+`VERIFY.md` holds the grep literals for the common phrases. The bracketed breath and laugh entries are caught by the bare-bracket check, because a script may contain only the five known tags.
 
 ## Tick sheet
 
@@ -369,6 +301,6 @@ Never: you know, like, absolutely, great point
 
 ## Non-verbal ticks
 
-Bracketed breath and laugh ticks are library entries, not script text. The kokoro-tone gateway reads unknown brackets aloud. Map them to a pause or cut them, as the `Kokoro-tone use` column says.
+Bracketed breath and laugh ticks are library entries, not script text. A model that does not read a bracket says it aloud. Map them to a pause or cut them, as the `Use` column says.
 
 The only brackets a script may contain are `[voice:]`, `[emotion:]`, `[rate:]`, `[pause:]`, and `[sense:]`.

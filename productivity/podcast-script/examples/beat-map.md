@@ -1,22 +1,21 @@
 # Example beat map
 
-Guidance only. A 10-minute episode at the default baseline. The target is about 1500 words.
+Guidance only. A 10-minute episode at the default baseline. The target is 1500 words.
 
-Only the default is renderable. Variety comes from rate, pause, sentence length, and word choice.
+Every beat keeps the default emotion. The model file says what renders; variety comes from rate, pause, sentence length, and word choice.
 
-| Segment | Function | Content | Pace band | Preset | Rate | Effective wpm | Words | Duration | Pause | Handoff | Emphasis | Move |
+| Segment | Function | Content | Pace band | Emotion | Rate | Effective wpm | Words | Duration | Pause | Handoff | Emphasis | Move |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Cold open | hook | the bridge failed on day one | brisk | neutral | 1.0 | 150 | 50 | 0:20 | 0 | question | 1 | deadpan |
-| Context | frame | who signed it and what it was for | steady | neutral | 1.0 | 150 | 140 | 0:56 | 300ms | pause | 1 | none |
-| Evidence | prove | the load model assumed no pedestrians | slow | neutral | 0.95 | 142 | 350 | 2:28 | 600ms | pause | 2 | none |
-| Conflict | tension | the engineer who refused to sign | brisk | neutral | 1.05 | 158 | 300 | 1:54 | 600ms | interjection | 3 | none |
-| Section break | transition | weather update to local news | steady | neutral | 1.0 | 150 | 0 | 0:00 | 1000ms | pause | 0 | none |
-| Reflection | meaning | what it says about sign-off | slow | neutral | 0.95 | 142 | 350 | 2:28 | 600ms | pause | 3 | confession |
-| Close | land | one line | slow | neutral | 0.9 | 135 | 25 | 0:11 | 1.2s | pause | 3 | drop |
+| Cold open | hook | the bridge failed on day one | brisk | neutral | 1.0 | 150 | 50 | 0:20 | 0 | question | 1 | none |
+| Context | frame | who signed it and what it was for | steady | neutral | 1.0 | 150 | 180 | 1:12 | 300ms | pause | 1 | none |
+| Evidence | prove | the load model assumed no pedestrians | slow | neutral | 0.95 | 142 | 450 | 3:10 | 600ms | pause | 2 | none |
+| Conflict | tension | the engineer who refused to sign | brisk | neutral | 1.05 | 158 | 350 | 2:13 | 600ms, then a 1000ms section break | pause | 3 | none |
+| Reflection | meaning | what it says about sign-off | slow | neutral | 0.95 | 142 | 420 | 2:57 | 600ms | pause | 3 | confession |
+| Close | land | one line | slow | neutral | 0.9 | 135 | 50 | 0:22 | 1.2s | pause | 3 | drop |
 
 ## Rate map
 
-| Beat | Function | Preset | Rate | Why it moves |
+| Beat | Function | Emotion | Rate | Why it moves |
 |---|---|---|---|---|
 | Cold open | hook | neutral | 1.0 | baseline |
 | Context | frame | neutral | 1.0 | settle |
@@ -27,8 +26,9 @@ Only the default is renderable. Variety comes from rate, pause, sentence length,
 
 ## Checks
 
-- Total words: 1215. Add 285 words to reach the 1500 target, or lower the declared runtime.
-- Rate changes: 4. Within the two to four budget for 10 minutes.
-- Level 5: 0. The raised-voice preset is disabled.
+- Total words: 1500. Within 15 percent of the target.
+- Runtime: 10:14 of speech plus 4.3s of explicit pause, about 10:18.
+- Rate changes: 4, at 1.0 to 0.95, 0.95 to 1.05, 1.05 to 0.95, and 0.95 to 0.9. Within the two to four budget for 10 minutes.
+- Level 5: 0. This episode uses levels 1 to 3.
 - Section break: 1000ms. Within 800 to 1200ms.
-- Total explicit pause: 3.1s. Within 60s.
+- Total explicit pause: 4.3s. Within 60s.

@@ -19,7 +19,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 | Skill | Description |
 | --- | --- |
 | [prompt-engineer](productivity/prompt-engineer/) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
-| [podcast-script](productivity/podcast-script/) | Turns a report or raw notes into a podcast script and a kokoro-tone speech request. Covers solo, two-host, and panel shows. |
+| [podcast-script](productivity/podcast-script/) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
 
 ## Install
 
@@ -159,27 +159,32 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 ## podcast-script
 
-Turns a report, document, or raw notes into a podcast script and the exact kokoro-tone speech request. It covers solo narration, two-host shows, and panels of three or more hosts. The script carries voice, emotion, rate, pause, and pronunciation tags. The request carries the alias map, pronunciation map, normalisation, and ambiguity policy.
+Turns a report, document, or raw notes into a podcast script and the plain text the chosen model reads. It covers solo narration, two-host shows, and panels of three or more hosts. The script is model-neutral: it carries voice, emotion, rate, pause, and pronunciation markers, and a model file compiles them into the target's text dialect. Targets kokoro-tone, kokoro-fastapi, kokoro-raw, and ElevenLabs.
 
-Emotion uses the default baseline only until the deployment is tuned for the presets. Variety comes from rate, pause, sentence length, and word choice.
+The model file says what the text carries. The skill writes to the chosen model and records any marker the text cannot carry. Variety comes from rate, pause, sentence length, and word choice.
 
-The skill stops at the request. Research, rendering, mastering, and publishing belong elsewhere.
+The skill stops at the text. It builds no payload and calls no service; research, rendering, mastering, and publishing belong elsewhere.
 
 Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
 
 ### Files
 
-- `productivity/podcast-script/SKILL.md`, the workflow and handoff.
+- `productivity/podcast-script/SKILL.md`, the workflow and compiled text.
+- `MODELS.md`, the model registry and choosing rules.
+- `MODEL-KOKORO-TONE.md`, inline tags for every marker.
+- `MODEL-KOKORO-FASTAPI.md`, plain text with punctuation for pauses.
+- `MODEL-KOKORO-RAW.md`, plain text with blank lines for pauses.
+- `MODEL-ELEVENLABS.md`, inline emotion cues with punctuation for pauses.
 - `PROFILE.md`, the typed host profile and gate.
 - `PERFORMANCE.md`, pacing, emotion, emphasis, and performance moves.
 - `TICKS.md`, the tick library, density rules, and banlist.
-- `REQUEST.md`, the kokoro-tone contract, request shapes, limits, and curl.
+- `HANDOFF.md`, the compile procedure, the text file, and the notes contract.
 - `SCRIPT-CRAFT.md`, structure, prose, punctuation, and attribution.
-- `VOICE.md`, casting, presets, rate, and pause.
+- `VOICE.md`, casting, rate, and pause.
 - `MULTIHOST.md`, two-host relationship and handoffs.
 - `PANEL.md`, three or more hosts.
 - `VERIFY.md`, the release gate.
-- `examples/`, worked examples for a host profile, a beat map, a solo script, a two-host script, and a panel script.
+- `examples/`, example snippets for a host profile, a beat map, a solo script, a two-host script, and a panel script.
 - `agents/openai.yaml`, the OpenAI and Codex interface manifest.
 
 ### Install
@@ -191,7 +196,7 @@ OpenCode:
    - Global scope: `~/.config/opencode/skills/podcast-script/`
 2. Keep the folder layout intact, so `SKILL.md` and the reference files stay together.
 3. Start a new OpenCode session so the session discovers the skill.
-4. Ask in plain language, for example: turn this report into a two-host podcast script for kokoro-tone.
+4. Ask in plain language, for example: turn this report into a two-host podcast script for ElevenLabs.
 
 Other platforms:
 
@@ -204,9 +209,13 @@ Other platforms:
 
 Send a short report or a page of raw notes and ask for a solo podcast script. Check three things:
 
-- The reply writes `<source-stem>-podcast-script.md`, `<source-stem>-request.json`, and `<source-stem>-script-notes.md` next to the source.
+- The reply writes `<source-stem>-podcast-script.md`, `<source-stem>-tts-<model>.txt`, and `<source-stem>-script-notes.md` next to the source.
 - The script starts with a cold open, not a title, and ends with a closing line, not `END`.
-- The request carries `model`, `voice`, `instructions`, `normalise`, `pronunciations`, `ambiguity`, and `response_format`.
+- The notes name the model. The compiled text carries the spoken words and resolves every marker, and holds no payload.
+
+## Evals
+
+`evals/productivity/podcast-script/` holds three end-to-end scenarios and their fixtures. It sits outside the skill folder on purpose: the skill never reads it, and only the tester does. See `evals/productivity/podcast-script/README.md`.
 
 ## Repository layout
 
@@ -221,18 +230,27 @@ productivity/
     MODEL-QWEN.md                   Qwen mechanics
     agents/openai.yaml              OpenAI and Codex interface manifest
   podcast-script/
-    SKILL.md                        workflow and handoff
+    SKILL.md                        workflow and compiled text
+    MODELS.md                       model registry and choosing rules
+    MODEL-KOKORO-TONE.md            self-hosted gateway, the default
+    MODEL-KOKORO-FASTAPI.md         OpenAI-compatible Kokoro server
+    MODEL-KOKORO-RAW.md             kokoro Python package, no server
+    MODEL-ELEVENLABS.md             ElevenLabs through OpenRouter
     PROFILE.md                      typed host profile and gate
     PERFORMANCE.md                  pacing, emotion, emphasis, moves
     TICKS.md                        tick library, density, banlist
-    REQUEST.md                      kokoro-tone contract and request shapes
+    HANDOFF.md                      compile rules, text file, notes contract
     SCRIPT-CRAFT.md                 structure, prose, punctuation, attribution
-    VOICE.md                        casting, presets, rate, pause
+    VOICE.md                        casting, rate, pause
     MULTIHOST.md                    two-host relationship and handoffs
     PANEL.md                        three or more hosts
     VERIFY.md                       release gate
     examples/                       host profile, beat map, solo, two-host, panel
     agents/openai.yaml              OpenAI and Codex interface manifest
+
+evals/
+  productivity/
+    podcast-script/                 three scenarios and their fixtures
 
 docs/
   prompt-engineer-flow.excalidraw   editable diagram source

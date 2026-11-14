@@ -4,6 +4,19 @@ Two hosts are a relationship, not two monologues cut together. Each host has a p
 
 For three or more hosts, use `PANEL.md`.
 
+## Contents
+
+- The relationship
+- Distinct writing
+- Speaker changes
+- Handoff protocol
+- Modes
+- Engagement
+- Curious follow-up
+- Backchannels
+- Section breaks
+- Two-host checklist
+
 ## The relationship
 
 The profile's `show` block defines the pairing.
@@ -87,8 +100,8 @@ Rules:
 - Interjection handoff: one to four words. Use the host's `bridge_in` phrase or a permitted interjection from `TICKS.md`.
 - Interjection rate: `[rate:1.05]` to `[rate:1.1]`. Never above 1.2 for a handoff.
 - The interjection is its own short turn. A short pause follows: 200 to 300ms.
-- The next turn resets to `[rate:1.0]` or the host's baseline. Rate is sticky across voice changes.
-- Do not stack a fast rate on a fast rate. If the interjection uses `[rate:1.1]`, keep the preset at the default.
+- The next turn resets to `[rate:1.0]`, or to the rate the host used before the interjection.
+- Do not stack a fast rate on a fast rate. If the interjection uses `[rate:1.1]`, keep the emotion at the default.
 - `takes_floor: waits`, `max_overlap_words: 0`. Overlap is not renderable.
 - No two hosts share a bridge phrase.
 
@@ -109,7 +122,7 @@ Use the bridges. Do not invent a new one each turn. The bridge out is the previo
 
 ## Modes
 
-Each host has the four required modes: cold open, intro, link, correction, outro. A mode is a deviation from baseline, held for the segment and then released.
+Each host has the five required modes: cold open, intro, link, correction, outro. A mode is a deviation from baseline, held for the segment and then released.
 
 - Cold open starts on the content, not a greeting.
 - Intro names the show and hands over inside eight seconds.
@@ -146,7 +159,7 @@ One or two per segment. The follow-up is a question, so the handoff is already n
 
 ## Backchannels
 
-Backchannels are short acknowledgements: "uh-huh", "mm-hm", "right", "exactly", "fair enough", "got it". Use them from `TICKS.md`.
+Backchannels are short acknowledgements: "uh-huh", "mm-hm", "exactly", "fair enough", "got it". Use them from `TICKS.md`.
 
 - One host per turn. Do not stack backchannels.
 - Max two per host per episode.
@@ -154,17 +167,7 @@ Backchannels are short acknowledgements: "uh-huh", "mm-hm", "right", "exactly", 
 
 ## Section breaks
 
-A two-host script with logical sections gets an additional pause at each boundary.
-
-```text
-... and the chance of rain is five per cent.
-
-[pause:1000ms]
-
-[voice:host_a] [emotion:neutral] Local news now.
-```
-
-Use 800 to 1200ms. The pause is explicit. The default gap is not enough.
+A two-host script with logical sections gets the same section-break pause as a solo script: 800 to 1200ms, explicit, after the last turn of the section and before the first turn of the next. The rule and snippet are in `PERFORMANCE.md`.
 
 ## Two-host checklist
 
