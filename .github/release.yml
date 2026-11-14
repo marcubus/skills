@@ -1,0 +1,28 @@
+changelog:
+  exclude:
+    labels:
+      - duplicate
+      - invalid
+      - question
+      - wontfix
+  categories:
+    - title: New skills
+      labels:
+        - new-skill
+    - title: Features
+      labels:
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
+    - title: Documentation
+      labels:
+        - documentation
+    - title: CI and dependencies
+      labels:
+        - ci
+        - dependencies
+        - github_actions
+    - title: Other changes
+      labels:
+        - "*"
