@@ -1,0 +1,68 @@
+# Gauntlet
+
+Phase 2. Rounds of three reviewers, each in a fresh context, until a round returns zero blockers and zero majors.
+
+## Contents
+
+- A round
+- Runs
+- Reads
+- Audit
+- Findings
+- Fixing
+- Exit
+
+## A round
+
+Run the three reviewers in parallel subagents where the harness supports it. Otherwise run them in sequence and re-read every file from disk between them.
+
+Each reviewer returns findings only. No reviewer edits a file. The main agent fixes.
+
+Cap each reviewer at 400 words. A reviewer that writes more is summarising, not finding.
+
+## Runs
+
+Brief:
+
+> You are a fresh agent using this skill for the first time. You have the skill folder and nothing else. Walk it start to finish on a concrete input. Report, by file and line: (a) any step where you do not know what to read, what to produce, or when you are done; (b) any promise in the description or the body that no rule delivers; (c) any rule that no step applies; (d) any place you would have to ask the user a question. Under 400 words.
+
+The question in (d) is the sharpest signal. A skill that needs a question is not finished.
+
+## Reads
+
+Brief:
+
+> Read `CRAFT.md`. Report, by file and line, every place the skill fails one of its checks: a pointer that will not fire, material at the wrong rung of the hierarchy, a step with a vague or weak completion criterion, a meaning in two places, a line that is stale, a no-op, or a negation. Quote the line. Under 400 words.
+
+## Audit
+
+Brief:
+
+> Run every check in `AUDIT.md`. Report each hit with its command and output. No judgement, no fixes. Under 400 words.
+
+## Findings
+
+One row per finding.
+
+| id | severity | file:line | what | why | fix |
+|---|---|---|---|---|---|
+
+- `what` quotes the text or names the missing thing.
+- `why` names the law or the check it breaks.
+- `fix` is the smallest change that removes the class of problem, not just this instance.
+
+A finding without a file and a line is not a finding. A finding without a fix is a complaint.
+
+## Fixing
+
+Fix in severity order. After a fix, re-run the check that caught it, not the whole round.
+
+When two findings share a cause, fix the cause once. Two stale counts are one missing rule about derived numbers.
+
+When a fix would add a file, first ask what the file replaces.
+
+## Exit
+
+Done when a full round returns zero blockers and zero majors. Record the round number and the counts in the report.
+
+A round that returns only minors ends the gauntlet. Batch the minors into one pass.

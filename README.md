@@ -10,7 +10,7 @@ These skills run only when you type the name.
 
 | Skill | Description |
 | --- | --- |
-| _None yet_ | |
+| [skill-improvement](productivity/skill-improvement/) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
 
 ### Model-invoked
 
@@ -213,9 +213,61 @@ Send a short report or a page of raw notes and ask for a solo podcast script. Ch
 - The script starts with a cold open, not a title, and ends with a closing line, not `END`.
 - The notes name the model. The compiled text carries the spoken words and resolves every marker, and holds no payload.
 
+## skill-improvement
+
+Reviews an existing skill and takes it to a fixed bar. Five phases: survey, gauntlet, gate, evals, prove. Three reviewers run in rounds — Runs, Reads, Audit — and the loop exits at zero blockers and zero majors.
+
+The output is a review at `reviews/<skill>.md` and, when you ask for it, a fixed skill with a numbered gate and an eval suite outside its folder.
+
+User-invoked: type `/skill-improvement` or name it. It stays out of the model's list, because a review is a deliberate, expensive act.
+
+### Files
+
+- `SKILL.md`, the five phases, the severity model, and the eight laws.
+- `SURVEY.md`, inventory, contract, and the fact table.
+- `GAUNTLET.md`, the three reviewer briefs and the round loop.
+- `CRAFT.md`, the five writing levers as checks.
+- `GATE.md`, designing numbered checks and a step map.
+- `EVALS.md`, scenarios, fixtures, runs, and regression.
+- `VARIANTS.md`, neutral core, variant files, and capability tables.
+- `AUDIT.md`, sixteen mechanical checks with commands.
+- `REPORT.md`, the review template.
+- `examples/`, a filled report, a gate, and an eval README.
+- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
+
+### Install
+
+OpenCode:
+
+1. Copy the `skill-improvement` folder into a skills directory.
+   - Project scope: `<your-project>/.opencode/skills/skill-improvement/`
+   - Global scope: `~/.config/opencode/skills/skill-improvement/`
+2. Keep the folder layout intact, so `SKILL.md` and the reference files stay together.
+3. Start a new OpenCode session, then load it by name: `@skill-improvement`.
+
+The frontmatter sets `disable-model-invocation: true`, so OpenCode keeps it out of the model's list and loads it only when you name it.
+
+Other platforms:
+
+- Microsoft 365 Copilot: paste the `SKILL.md` body into the agent instructions and add the reference files as knowledge.
+- ChatGPT: paste the `SKILL.md` body into a Custom GPT and upload the reference files.
+- Gemini: paste the `SKILL.md` body into a Gem and attach the reference files.
+- Claude: paste the `SKILL.md` body into a Project and add the reference files to project knowledge.
+
+### Verify
+
+Point it at a skill and ask for an audit. Check three things:
+
+- It writes `reviews/<skill>.md` with a verdict line and the severity counts.
+- Every finding carries a file, a line, a severity, and a fix.
+- The audited skill is unchanged.
+
 ## Evals
 
-`evals/productivity/podcast-script/` holds three end-to-end scenarios and their fixtures. It sits outside the skill folder on purpose: the skill never reads it, and only the tester does. See `evals/productivity/podcast-script/README.md`.
+Each skill's evals live beside it under `evals/`, mirroring the skill path. They sit outside the skill folder on purpose: the skill never reads them, and only the tester does.
+
+- `evals/productivity/podcast-script/`, three scenarios and their fixtures.
+- `evals/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
 
 ## Repository layout
 
@@ -228,6 +280,18 @@ productivity/
     MODEL-GEMINI.md                 Gemini mechanics
     MODEL-DEEPSEEK.md               DeepSeek mechanics
     MODEL-QWEN.md                   Qwen mechanics
+    agents/openai.yaml              OpenAI and Codex interface manifest
+  skill-improvement/
+    SKILL.md                        five phases, severity, the eight laws
+    SURVEY.md                       inventory, contract, fact table
+    GAUNTLET.md                     three reviewer briefs, rounds
+    CRAFT.md                        five writing levers as checks
+    GATE.md                         numbered checks and step map
+    EVALS.md                        scenarios, fixtures, runs
+    VARIANTS.md                     core, variant files, capability tables
+    AUDIT.md                        sixteen mechanical checks
+    REPORT.md                       review template
+    examples/                       report, gate, eval README
     agents/openai.yaml              OpenAI and Codex interface manifest
   podcast-script/
     SKILL.md                        workflow and compiled text
@@ -251,6 +315,10 @@ productivity/
 evals/
   productivity/
     podcast-script/                 three scenarios and their fixtures
+    skill-improvement/              three scenarios, two fixtures
+
+reviews/
+  skill-improvement.md              the skill's review of itself
 
 docs/
   prompt-engineer-flow.excalidraw   editable diagram source
