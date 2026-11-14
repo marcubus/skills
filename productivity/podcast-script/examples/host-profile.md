@@ -26,7 +26,7 @@ lexical_register:
   banned_words: [utilise, journey, space]
 
 exemplar_lines:
-  claim: "The bridge was signed off on a model that assumed nobody would ever walk on it."
+  claim: "The bridge was signed off on a model that assumed a crowd which never stops, and nobody checked the model."
   question: "Who signed the drawing, and did they read the second page?"
   disagreement: "I don't think that holds. The load case changes once the market moves in."
   laugh: "Heh. Right. And the staircase is still there."
@@ -35,7 +35,7 @@ exemplar_lines:
     - "Let's unpack that."
     - "Absolutely, one hundred percent."
 
-calibration_line: "Blimey, the second staircase is the one that tells you whether anybody read the drawings, and I have said so for eleven years."
+calibration_line: "Mate, the second staircase is the one that tells you whether anybody read the drawings, and I have said so for eleven years."
 
 tick_inventory: [TICK-006, TICK-020, TICK-030, TICK-060, TICK-070, TICK-090]
 signature_tick: TICK-020

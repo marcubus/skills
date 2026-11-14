@@ -11,11 +11,11 @@ Guidance only. An excerpt: two hosts, one section break, one interjection handof
 
 [pause:250ms]
 
-[voice:host_a] [rate:1.0] A light breeze.
+[voice:host_a] [rate:1.0] A light breeze. And a [sense:bass=base] bass player under the eastern arch, which the model never counted.
 
 [pause:400ms]
 
-[voice:host_b] The load model assumed nobody would ever walk on it.
+[voice:host_b] The load model assumed a crowd that keeps walking.
 
 [pause:400ms]
 
@@ -27,7 +27,7 @@ Guidance only. An excerpt: two hosts, one section break, one interjection handof
 
 [pause:400ms]
 
-[voice:host_b] Which is the path that runs under the bridge.
+[voice:host_b] [emotion:warm] Which is the path that runs under the bridge.
 
 [pause:300ms]
 
@@ -42,4 +42,6 @@ Guidance only. An excerpt: two hosts, one section break, one interjection handof
 
 Compile with the model file. Write `<source-stem>-tts-<model>.txt`.
 
-Word count: 95. Runtime: about 42 seconds including pauses. Voices: `host_a`, `host_b`. Target: `kokoro-tone`. Baseline: 145 wpm. Section break: bridge story to local news at 1000ms.
+Word count: 107. Runtime: about 48 seconds including pauses. Voices: `host_a`, `host_b`. Target: `kokoro-tone`. Baseline: 145 wpm. Section break: bridge story to local news at 1000ms.
+
+`[emotion:warm]` is dropped by this model and recorded in the notes. `[sense:bass=base]` is kept as a tag.
