@@ -1,6 +1,6 @@
 # Evals: prompt-engineer
 
-Three scenarios for `productivity/prompt-engineer`. Each run starts from the fixture, runs the skill, and records the deliverable. The skill never sees this folder.
+Three scenarios for `skills/productivity/prompt-engineer`. Each run starts from the fixture, runs the skill, and records the deliverable. The skill never sees this folder.
 
 ## Scenarios
 

@@ -10,7 +10,7 @@ These skills run only when you type the name.
 
 | Skill | Description |
 | --- | --- |
-| [skill-improvement](productivity/skill-improvement/) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
+| [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
 
 ### Model-invoked
 
@@ -18,124 +18,137 @@ These skills fire on their own when the task fits. Type the name to run one dire
 
 | Skill | Description |
 | --- | --- |
-| [prompt-engineer](productivity/prompt-engineer/) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
-| [podcast-script](productivity/podcast-script/) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
+| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
+| [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
+| [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 
 ## Install
 
-Setup runs in five places.
+### Any agent, one command
 
-1. [OpenCode](#opencode), a native skill, no setup beyond the files.
-2. [Microsoft 365 Copilot](#microsoft-365-copilot), regular Copilot, not Copilot Studio.
-3. [ChatGPT](#chatgpt).
-4. [Gemini](#gemini-gems).
-5. [Claude](#claude).
+```bash
+npx skills@latest add marcubus/skills -a opencode -a hermes-agent
+```
 
-### Files
+Omit `-a` to choose from the agents on your machine. Add `-g` for a global install. Add `--skill <name>` for one skill. To update, run `npx skills@latest update`, then re-run `add` for new skills.
 
-- `productivity/prompt-engineer/SKILL.md`, the agent instructions, frameworks, and style rules.
-- `productivity/prompt-engineer/MODEL-CLAUDE.md`, `productivity/prompt-engineer/MODEL-GPT-COPILOT.md`, `productivity/prompt-engineer/MODEL-GEMINI.md`, `productivity/prompt-engineer/MODEL-DEEPSEEK.md`, and `productivity/prompt-engineer/MODEL-QWEN.md`, the model knowledge files.
-- `productivity/prompt-engineer/agents/openai.yaml`, the OpenAI and Codex interface manifest.
-
-Install needs the `prompt-engineer` folder alone. Keep the files together inside the folder. The `docs` folder holds the flow diagram for reference and forms no part of the install.
-
-### Agent instructions
-
-The agent instructions live in `productivity/prompt-engineer/SKILL.md`. Copy the body of that file, from the `# Prompt Engineer` heading down, into the platform instructions field. The front matter at the top is for OpenCode only and is not part of the pasted text.
-
-When the platform supports knowledge files, upload the five model knowledge files from the skill folder. When the platform does not, paste the SKILL.md body and the matching model file into the knowledge or context area, or prepend both to a request.
+Skills live at `skills/productivity/<skill>/`. The `skills.sh` installer reads that layout directly. The `.claude-plugin/` manifests expose the same set to Claude Code, Codex, Copilot, and VS Code as a plugin marketplace.
 
 ### OpenCode
 
-OpenCode loads skills from disk. No account or app is needed.
+```bash
+npx skills@latest add marcubus/skills -a opencode
+```
 
-1. Copy the `prompt-engineer` folder into a skills directory.
-   - Project scope: `<your-project>/.opencode/skills/prompt-engineer/`
-   - Global scope: `~/.config/opencode/skills/prompt-engineer/`
-2. Keep the folder layout intact, so `SKILL.md` and the knowledge files stay together.
-3. Start a new OpenCode session so the session discovers the skill.
-4. Ask in plain language, for example: write me a prompt for a non-technical executive summary, targeting ChatGPT.
+For a local checkout, link the repo instead:
 
-Verify: the session lists `prompt-engineer` among available skills.
+```bash
+scripts/install.sh --target opencode
+```
 
-### Microsoft 365 Copilot
+Manual install: copy or symlink each folder in `skills/productivity/` into `~/.config/opencode/skills/`, or add the repo path to `opencode.json`:
 
-Regular Microsoft 365 Copilot Chat, not Copilot Studio.
+```jsonc
+{
+  "skills": ["/path/to/skills-repo/skills/productivity"]
+}
+```
 
-1. Sign in at <https://m365.cloud.microsoft/chat>, or open Copilot in Teams.
-2. Choose Create an agent, or open the Agents area and pick New agent.
-3. Name the agent Prompt Engineer and give the agent a short description.
-4. Paste the SKILL.md body into the Instructions box.
-5. Under Knowledge, add the five model knowledge files. Upload the files from OneDrive or SharePoint, since Copilot grounds agents on Microsoft 365 content.
-6. Save, then open the agent from Copilot Chat and describe the prompt you want.
+OpenCode combines every `skills` array, so this adds to the default directories rather than replacing them.
 
-If the tenant does not show the agent builder, use the no-setup path. Start a Copilot chat, paste the SKILL.md body, then add the request on the next line. Save the instructions for reuse.
+### OpenCode server
 
-### ChatGPT
+The server runs under its own user, so install into that user's config:
 
-Two options. Custom GPTs support knowledge files. Custom instructions apply to every chat.
+```bash
+sudo -u opencode mkdir -p /home/opencode/.config/opencode/skills
+sudo -u opencode ln -s /path/to/skills-repo/skills/productivity/prompt-engineer \
+  /home/opencode/.config/opencode/skills/prompt-engineer
+```
 
-#### Custom GPT, knowledge files supported
+Or run:
 
-1. Open ChatGPT and go to Explore GPTs, then Create.
-2. Switch to the Configure tab.
-3. Set the name to Prompt Engineer and add a short description.
-4. Paste the SKILL.md body into the Instructions box.
-5. Under Knowledge, upload the five model knowledge files.
-6. Save, then set the access level for the GPT. Open the GPT and describe the prompt you want.
+```bash
+scripts/install.sh --target server --server-home /home/opencode
+```
 
-#### Custom instructions, no files
+Restart `opencode-serve` after install. The server config may also list a `skills` path. Keep it if it points at this repo. OpenCode merges the arrays, so the default global directory still loads.
 
-1. Open Settings, then Personalization, then Custom instructions.
-2. Paste the SKILL.md body into the field about how ChatGPT should respond.
-3. Save. Start a new chat and describe the prompt you want.
+### Hermes
 
-Note: custom instructions have a length limit. If the body does not fit, paste the framework section and trim the model list.
+For a default host profile, skills.sh writes to `~/.hermes/skills/`:
 
-### Gemini (Gems)
+```bash
+npx skills@latest add marcubus/skills -a hermes-agent -g
+```
 
-Gems are the saved, reusable assistants in Gemini.
+If `HERMES_HOME` points somewhere else, use the installer, which writes to `$HERMES_HOME/skills/productivity/`:
 
-1. Open <https://gemini.google.com> and choose Gems in the sidebar.
-2. Choose New Gem.
-3. Name the Gem Prompt Engineer and add a short description.
-4. Paste the SKILL.md body into the instructions field.
-5. Attach the five model knowledge files if the plan allows uploads.
-6. Save, then open the Gem and describe the prompt you want.
+```bash
+scripts/install.sh --target hermes --hermes-host
+```
 
-Note: file attachments in Gems need a paid Google plan. Without uploads, paste the SKILL.md body into the first message of a chat and keep the Gem open.
+For a container, copy the skills into the profile directory Hermes reads:
 
-### Claude
+```bash
+scripts/install.sh --target hermes --hermes-container hermes
+```
 
-Claude Projects hold instructions plus a project knowledge base.
+This copies into `/opt/data/skills/productivity/`, the path for `HERMES_HOME=/opt/data`. Restart the container, or run `hermes skills list` inside it to verify.
 
-1. Open <https://claude.ai> and go to Projects.
-2. Choose New Project and name the project Prompt Engineer.
-3. Open the project instructions and paste the SKILL.md body.
-4. Add the five model knowledge files to the project knowledge.
-5. Start a chat inside the project and describe the prompt you want.
+### Local checkout installer
 
-Alternative without a Project: open Settings, then Profile, and paste the SKILL.md body into the custom instructions field. This applies to every chat and carries no knowledge files.
+`scripts/install.sh` links the repo into agent directories, so `git pull` keeps the skills current.
 
-### Check the setup
+```bash
+scripts/install.sh --target opencode
+scripts/install.sh --target server --server-home /home/opencode
+scripts/install.sh --target hermes --hermes-container hermes
+scripts/install.sh --target all
+```
+
+Targets: `opencode`, `agents`, `server`, `hermes`. `all` covers `opencode`, `agents`, and `hermes`, plus `server` when `/home/opencode` exists or `--server-home` is given. Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force` replaces existing folders.
+
+### Plugin marketplace
+
+Claude Code, Codex, and Copilot CLI can install the repo as a managed plugin:
+
+```bash
+claude plugin marketplace add marcubus/skills
+claude plugin install marcubus-skills@marcubus
+```
+
+```bash
+codex plugin marketplace add marcubus/skills
+codex plugin add marcubus-skills@marcubus
+```
+
+```bash
+copilot plugin marketplace add marcubus/skills
+copilot plugin install marcubus-skills@marcubus
+```
+
+Gemini CLI installs each bucket separately:
+
+```bash
+gemini skills install https://github.com/marcubus/skills.git --path skills/productivity
+```
+
+### Hosted assistants
+
+Microsoft 365 Copilot, ChatGPT, Gemini Gems, and Claude Projects need a manual paste. See [docs/install.md](docs/install.md) for the steps.
+
+### Verify
 
 Send this request on any platform:
 
 > Write me a prompt for turning a meeting transcript into five action items with owners.
 
-Check the reply against three things:
+Check three things:
 
 - The reply returns one finished prompt, with no preamble.
 - The reply follows the style rules in SKILL.md: no em dashes, no banned words.
 - The reply names the target model, or defaults to Claude when you do not name one.
-
-### Tips
-
-- Name the target model every time. Each model family has its own prompt mechanics.
-- Say what the audience cares about. Non-technical executives beats general audience.
-- Ask for a system prompt explicitly when you configure a bot.
-- For images and documents, say what is attached and what to extract.
-- Refine in place. Follow-ups adjust the same prompt rather than starting over.
 
 ## prompt-engineer
 
@@ -149,13 +162,13 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 | Target | Knowledge file |
 | --- | --- |
-| Claude, the default | `productivity/prompt-engineer/MODEL-CLAUDE.md` |
-| ChatGPT, Microsoft Copilot | `productivity/prompt-engineer/MODEL-GPT-COPILOT.md` |
-| Gemini | `productivity/prompt-engineer/MODEL-GEMINI.md` |
-| DeepSeek | `productivity/prompt-engineer/MODEL-DEEPSEEK.md` |
-| Qwen | `productivity/prompt-engineer/MODEL-QWEN.md` |
+| Claude, the default | `skills/productivity/prompt-engineer/MODEL-CLAUDE.md` |
+| ChatGPT, Microsoft Copilot | `skills/productivity/prompt-engineer/MODEL-GPT-COPILOT.md` |
+| Gemini | `skills/productivity/prompt-engineer/MODEL-GEMINI.md` |
+| DeepSeek | `skills/productivity/prompt-engineer/MODEL-DEEPSEEK.md` |
+| Qwen | `skills/productivity/prompt-engineer/MODEL-QWEN.md` |
 
-`productivity/prompt-engineer/SKILL.md` always loads. The file carries the frameworks and the style rules. The model files add the mechanics each family needs.
+`skills/productivity/prompt-engineer/SKILL.md` always loads. The file carries the frameworks and the style rules. The model files add the mechanics each family needs.
 
 ## podcast-script
 
@@ -169,7 +182,7 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 ### Files
 
-- `productivity/podcast-script/SKILL.md`, the workflow and compiled text.
+- `skills/productivity/podcast-script/SKILL.md`, the workflow and compiled text.
 - `MODELS.md`, the model registry and choosing rules.
 - `MODEL-KOKORO-TONE.md`, inline tags for every marker.
 - `MODEL-KOKORO-FASTAPI.md`, plain text with punctuation for pauses.
@@ -189,21 +202,7 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 ### Install
 
-OpenCode:
-
-1. Copy the `podcast-script` folder into a skills directory.
-   - Project scope: `<your-project>/.opencode/skills/podcast-script/`
-   - Global scope: `~/.config/opencode/skills/podcast-script/`
-2. Keep the folder layout intact, so `SKILL.md` and the reference files stay together.
-3. Start a new OpenCode session so the session discovers the skill.
-4. Ask in plain language, for example: turn this report into a two-host podcast script for ElevenLabs.
-
-Other platforms:
-
-- Microsoft 365 Copilot: paste the `SKILL.md` body into the agent instructions and add the reference files as knowledge.
-- ChatGPT: paste the `SKILL.md` body into a Custom GPT and upload the reference files.
-- Gemini: paste the `SKILL.md` body into a Gem and attach the reference files.
-- Claude: paste the `SKILL.md` body into a Project and add the reference files to project knowledge.
+Use the [install routes](#install). This skill needs the whole `podcast-script` folder, because `SKILL.md` points at the reference files.
 
 ### Verify
 
@@ -213,11 +212,43 @@ Send a short report or a page of raw notes and ask for a solo podcast script. Ch
 - The script starts with a cold open, not a title, and ends with a closing line, not `END`.
 - The notes name the model. The compiled text carries the spoken words and resolves every marker, and holds no payload.
 
+## podcast-host-personas
+
+Builds one machine-readable host persona for a podcast, then gates it against the store. Use it for a first host, a second host that must not sound like the first, or a revision that adds a strained state, a mode set, or a room.
+
+A persona is written for two consumers: a script writer who needs to know how the host talks, and a speech synthesiser that needs to know how the host sounds. The skill ends at a saved profile. A transcript skill reads it, casts a voice, and renders audio.
+
+The brief is yours. You can set the name, the traits and any field you like, and the skill records the override instead of overruling it. Two things still stop a build: impersonating a real person, and an override that makes the profile contradict itself.
+
+### Files
+
+- `skills/productivity/podcast-host-personas/SKILL.md`, the workflow and the profile in one view.
+- `GATE.md`, the twenty-nine checks, step map, failure modes, and sanity read.
+- `references/persona-schema.md`, the twenty-eight fields in fixed order.
+- `references/vocal-levers.md`, `references/voice-craft.md`, `references/describing-words.md`, and `references/phonetic-distinctness.md`, the sound and word-choice rules.
+- `references/emotion-engine.md`, `references/show-craft.md`, `references/studio-craft.md`, and `references/tick-library.md`, the delivery and show rules.
+- `references/generator-procedure.md`, `references/tts-capability-guide.md`, and the verification notes, the build and research record.
+- `examples/`, a template and three filled personas.
+- `personas/`, the local store: gitignored, ships with a README, and created on first build.
+- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
+
+### Install
+
+Use the [install routes](#install). This skill needs the whole `podcast-host-personas` folder, because `SKILL.md` points at the reference files.
+
+### Verify
+
+Ask for a first host for a new show. Check three things:
+
+- It writes one profile file and adds the host to `personas/index.jsonl`.
+- Every one of the twenty-eight fields is filled, in the fixed order.
+- The gate passes, or every failure names the field and the fix.
+
 ## skill-improvement
 
-Reviews an existing skill and takes it to a fixed bar. Five phases: survey, gauntlet, gate, evals, prove. Three reviewers run in rounds — Runs, Reads, Audit — and the loop exits at zero blockers and zero majors.
+Reviews an existing skill and takes it to a fixed bar. Five phases: survey, gauntlet, gate, evals, prove. Three reviewers run in rounds, Runs, Reads, and Audit, and the loop exits at zero blockers and zero majors.
 
-The output is a review at `reviews/<skill>.md` and, when you ask for it, a fixed skill with a numbered gate and an eval suite outside its folder.
+The output is a review at `reviews/<skill>.md`, which stays local and is gitignored, and, when you ask for it, a fixed skill with a numbered gate and an eval suite outside its folder.
 
 User-invoked: type `/skill-improvement` or name it. It stays out of the model's list, because a review is a deliberate, expensive act.
 
@@ -237,28 +268,15 @@ User-invoked: type `/skill-improvement` or name it. It stays out of the model's 
 
 ### Install
 
-OpenCode:
-
-1. Copy the `skill-improvement` folder into a skills directory.
-   - Project scope: `<your-project>/.opencode/skills/skill-improvement/`
-   - Global scope: `~/.config/opencode/skills/skill-improvement/`
-2. Keep the folder layout intact, so `SKILL.md` and the reference files stay together.
-3. Start a new OpenCode session, then load it by name: `@skill-improvement`.
+Use the [install routes](#install). This skill needs the whole `skill-improvement` folder, because `SKILL.md` points at the reference files.
 
 The frontmatter sets `disable-model-invocation: true`, so OpenCode keeps it out of the model's list and loads it only when you name it.
-
-Other platforms:
-
-- Microsoft 365 Copilot: paste the `SKILL.md` body into the agent instructions and add the reference files as knowledge.
-- ChatGPT: paste the `SKILL.md` body into a Custom GPT and upload the reference files.
-- Gemini: paste the `SKILL.md` body into a Gem and attach the reference files.
-- Claude: paste the `SKILL.md` body into a Project and add the reference files to project knowledge.
 
 ### Verify
 
 Point it at a skill and ask for an audit. Check three things:
 
-- It writes `reviews/<skill>.md` with a verdict line and the severity counts.
+- It writes `reviews/<skill>.md` with a verdict line and the severity counts. That folder is gitignored, because a review is a snapshot of one audit and goes stale as the skill moves.
 - Every finding carries a file, a line, a severity, and a fix.
 - The audited skill is unchanged.
 
@@ -266,13 +284,16 @@ Point it at a skill and ask for an audit. Check three things:
 
 Each skill's evals live beside it under `evals/`, mirroring the skill path. They sit outside the skill folder on purpose: the skill never reads them, and only the tester does.
 
-- `evals/productivity/podcast-script/`, three scenarios and their fixtures.
-- `evals/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
+- `evals/skills/productivity/prompt-engineer/`, three scenarios and their fixtures.
+- `evals/skills/productivity/podcast-script/`, three scenarios and their fixtures.
+- `evals/skills/productivity/podcast-host-personas/`, three scenarios and their fixtures.
+- `evals/skills/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
 
 ## Repository layout
 
 ```text
-productivity/
+skills/productivity/
+  README.md                         bucket index
   prompt-engineer/
     SKILL.md                        agent instructions, frameworks, style rules
     MODEL-CLAUDE.md                 Claude mechanics
@@ -311,19 +332,36 @@ productivity/
     VERIFY.md                       release gate
     examples/                       host profile, beat map, solo, two-host, panel
     agents/openai.yaml              OpenAI and Codex interface manifest
+  podcast-host-personas/
+    SKILL.md                        workflow and the profile in one view
+    references/                     schema, sound, emotion, show, gate
+    examples/                       template and three filled personas
+    personas/                       store and index
+    agents/openai.yaml              OpenAI and Codex interface manifest
 
-evals/
-  productivity/
-    podcast-script/                 three scenarios and their fixtures
-    skill-improvement/              three scenarios, two fixtures
+.claude-plugin/
+  marketplace.json                  plugin marketplace for Claude Code, Codex, Copilot
+  plugin.json                       plugin manifest and skill list
 
-reviews/
-  skill-improvement.md              the skill's review of itself
+scripts/
+  install.sh                        opencode, server, hermes, and shared agents
 
 docs/
+  install.md                        per-agent install detail
   prompt-engineer-flow.excalidraw   editable diagram source
   prompt-engineer-flow.png          rendered diagram
+
+productivity -> skills/productivity  compatibility symlink for older configs
+
+evals/
+  skills/productivity/
+    prompt-engineer/                three scenarios and their fixtures
+    podcast-script/                 three scenarios and their fixtures
+    podcast-host-personas/          three scenarios and their fixtures
+    skill-improvement/              three scenarios, two fixtures
 ```
+
+Review reports are written to `reviews/`, which is local and gitignored.
 
 ## License
 

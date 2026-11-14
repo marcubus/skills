@@ -37,7 +37,7 @@ The three profiles pass the gate in `PROFILE.md`. They are inputs to scenario 3,
 Prompt:
 
 ```text
-turn evals/productivity/podcast-script/fixtures/bridge-report.md into a solo podcast script
+turn evals/skills/productivity/podcast-script/fixtures/bridge-report.md into a solo podcast script
 ```
 
 Expect:
@@ -57,7 +57,7 @@ Expect:
 Prompt:
 
 ```text
-retarget evals/productivity/podcast-script/fixtures/bridge-report-podcast-script.md to elevenlabs
+retarget evals/skills/productivity/podcast-script/fixtures/bridge-report-podcast-script.md to elevenlabs
 ```
 
 Expect:
@@ -77,7 +77,7 @@ Expect:
 Prompt:
 
 ```text
-check evals/productivity/podcast-script/fixtures/panel-script.md before render for kokoro-fastapi
+check evals/skills/productivity/podcast-script/fixtures/panel-script.md before render for kokoro-fastapi
 ```
 
 Expect:

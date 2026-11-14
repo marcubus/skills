@@ -5,3 +5,6 @@ Thumbs.db
 .idea/
 .vscode/
 __pycache__/
+
+# Review reports stay local: they are a snapshot of one audit, not the skill.
+reviews/

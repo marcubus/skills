@@ -21,7 +21,7 @@ The only way a fixture enters a run is the prompt naming its path.
 
 ## Mirroring
 
-Mirror whatever path the skill has: `productivity/<skill>/` maps to `evals/productivity/<skill>/`. The rule is `evals/` plus the skill's own path, so a skill under any other folder keeps the same shape.
+Mirror whatever path the skill has: `skills/productivity/<skill>/` maps to `evals/skills/productivity/<skill>/`. The rule is `evals/` plus the skill's own path, so a skill under any other folder keeps the same shape.
 
 ## Three scenarios
 

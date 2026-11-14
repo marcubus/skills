@@ -4,7 +4,7 @@ Three scenarios. Each starts from a fixed skill folder, so two runs — or two v
 
 ## Why this folder is outside the skill
 
-`evals/productivity/skill-improvement/` mirrors the skill path. The skill never references this folder. A fixture enters a run only because the prompt names its path.
+`evals/skills/productivity/skill-improvement/` mirrors the skill path. The skill never references this folder. A fixture enters a run only because the prompt names its path.
 
 ## Fixtures
 
@@ -36,7 +36,7 @@ Two more defects are judgement calls, not greps: the four steps have no completi
 ## 1. Survey
 
 ```text
-audit evals/productivity/skill-improvement/fixtures/release-notes
+audit evals/skills/productivity/skill-improvement/fixtures/release-notes
 ```
 
 Expect:
@@ -50,7 +50,7 @@ Expect:
 ## 2. Gauntlet to zero
 
 ```text
-take evals/productivity/skill-improvement/fixtures/release-notes to zero
+take evals/skills/productivity/skill-improvement/fixtures/release-notes to zero
 ```
 
 Expect:
@@ -66,12 +66,12 @@ Expect:
 ## 3. Evals for a clean skill
 
 ```text
-build evals for evals/productivity/skill-improvement/fixtures/meeting-summary
+build evals for evals/skills/productivity/skill-improvement/fixtures/meeting-summary
 ```
 
 Expect:
 
-- An eval folder at `evals/productivity/meeting-summary/`, outside the skill.
+- An eval folder at `evals/skills/productivity/meeting-summary/`, outside the skill.
 - Three scenarios: main path, a variant, and the gate alone.
 - Fixtures that carry traps: a relative date, an action with no owner, a proposal nobody agreed to.
 - Expectations written as observable bullets.

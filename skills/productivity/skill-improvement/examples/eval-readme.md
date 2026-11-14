@@ -4,7 +4,7 @@ Example only. Three scenarios, two fixtures, one recorded run each.
 
 ## Why this folder is outside the skill
 
-`evals/productivity/invoice-check/` mirrors the skill path. The skill never references this folder and cannot read it, because it sits outside the skill directory.
+`evals/skills/productivity/invoice-check/` mirrors the skill path. The skill never references this folder and cannot read it, because it sits outside the skill directory.
 
 ## Fixtures
 
@@ -17,7 +17,7 @@ Example only. Three scenarios, two fixtures, one recorded run each.
 ## 1. Main path
 
 ```text
-check evals/productivity/invoice-check/fixtures/clean-invoice.md
+check evals/skills/productivity/invoice-check/fixtures/clean-invoice.md
 ```
 
 Expect:
@@ -31,7 +31,7 @@ Expect:
 ## 2. Variant
 
 ```text
-check evals/productivity/invoice-check/fixtures/missing-line.md
+check evals/skills/productivity/invoice-check/fixtures/missing-line.md
 ```
 
 Expect:
@@ -43,7 +43,7 @@ Expect:
 ## 3. Gate alone
 
 ```text
-check evals/productivity/invoice-check/runs/opencode-default/1-main/clean-invoice-report.md
+check evals/skills/productivity/invoice-check/runs/opencode-default/1-main/clean-invoice-report.md
 ```
 
 Expect:
