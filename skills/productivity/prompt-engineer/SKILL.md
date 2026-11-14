@@ -1,5 +1,5 @@
 ---
-name: prompt-engineer
+name: "prompt-engineer"
 description: "Writes, revises, or critiques a prompt for a target model, from a one-shot prompt to a system, tool, or agent prompt, or a set of variants. Use when the user asks for a one-shot prompt, a system prompt, a user turn, a tool or agent definition, or a critique, test plan, or comparison of an existing prompt."
 ---
 

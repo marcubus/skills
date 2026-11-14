@@ -1,5 +1,5 @@
 ---
-name: skill-improvement
+name: "skill-improvement"
 description: "Reviews an existing agent skill and takes it to a fixed bar: contract, executability, a numbered gate, and an eval suite. Three modes: a review, a fix to zero, and an eval suite built from scratch."
 disable-model-invocation: true
 ---

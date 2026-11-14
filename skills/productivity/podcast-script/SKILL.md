@@ -1,5 +1,5 @@
 ---
-name: podcast-script
+name: "podcast-script"
 description: "Turns a report, raw notes, or a document into a spoken podcast script and the plain text a text-to-speech model reads. Use for solo narration, a two-host episode, a panel, a pre-render check, or retargeting an existing script. Targets kokoro-tone, kokoro-fastapi, kokoro-raw, and ElevenLabs."
 ---
 
