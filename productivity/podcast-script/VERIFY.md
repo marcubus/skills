@@ -394,7 +394,8 @@ Read every spoken claim against the source. Done when:
 - Every number, name, date, and quotation appears in the source.
 - Every causal claim is one the source makes, not one the script infers.
 - An inference the script draws from the source is stated as an inference, not as a fact.
-- No figure is rounded into a different figure, and no margin, deadline, or count is invented.
+- A rounded figure is the source's figure, rounded, and is not presented as exact.
+- No margin, deadline, or count is invented.
 
 A figure the source does not carry is a failure, even when it is plausible. Cut it, or say what the source does say.
 
