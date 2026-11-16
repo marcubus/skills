@@ -9,6 +9,15 @@ it.
 
 ## [Unreleased]
 
+### Added
+
+- `policy-review`: reads a privacy policy, terms of service, EULA, or cookie
+  notice against a personal data posture. Six gates and eleven preferences,
+  a phrase catalogue mapped to posture IDs, an Australian regulatory map, and a
+  reply that names the worst flag and calls nothing a show
+  stopper. The posture lives in a gitignored `POSTURE.local.md`, so personal
+  detail never reaches the repository.
+
 ## [2026.11.0] - 2026-11-14
 
 First tagged release. The repository is now four skills with evals, a single

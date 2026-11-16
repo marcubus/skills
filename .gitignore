@@ -8,3 +8,6 @@ __pycache__/
 
 # Review reports stay local: they are a snapshot of one audit, not the skill.
 reviews/
+
+# Personal posture: the reviewer's own standard, never published.
+skills/productivity/policy-review/POSTURE.local.md

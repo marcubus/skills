@@ -1,0 +1,3 @@
+interface:
+  display_name: "Policy Review"
+  short_description: "Reviews a privacy policy, terms, or notice against a posture"
