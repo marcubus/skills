@@ -33,11 +33,11 @@ Run every audit command from inside the target folder. State the mode, the phase
 | 2 Gauntlet | Does it run, read, and audit clean? | Zero blockers, zero majors |
 | 3 Gate | Can it check itself? | Numbered checks in `GATE.md`, every step mapped |
 | 4 Evals | Does a real run pass? | Three scenarios, fixtures, recorded runs |
-| 5 Prove | Is it done? | Audit zero, a dry run that asks no question, and the report |
+| 5 Prove | Is it done? | Audit zero, a lens pass, a dry run that asks no question, and the report |
 
 Stop after any phase. The report records where you stopped, so a review is a complete deliverable.
 
-At phase 1 read `SURVEY.md`, phase 2 `GAUNTLET.md`, phase 3 `GATE.md`, phase 4 `EVALS.md` and its regression list at phase 5, phase 5 `REPORT.md`. Before the Reads review read `CRAFT.md`; before any audit read `AUDIT.md`. Read `VARIANTS.md` when the skill has more than one external target, and `examples/` when you need a shape.
+At phase 1 read `SURVEY.md`, phase 2 `GAUNTLET.md`, phase 3 `GATE.md`, phase 4 `EVALS.md` and its regression list at phase 5, phase 5 `REPORT.md`. Before the Reads and Voice reviews read `CRAFT.md`; before any audit read `AUDIT.md`. Read `VARIANTS.md` when the skill has more than one external target, and `examples/` when you need a shape.
 
 ## Severity
 
@@ -51,13 +51,14 @@ Blockers and majors reach zero before the next round. Minors batch into one pass
 
 ## The gauntlet
 
-Three reviewers per round, in parallel, each in a fresh context. Re-read from disk: the reviewer who wrote the fix is not the reviewer who checks it.
+Four reviewers per round, in parallel, each in a fresh context. Re-read from disk: the reviewer who wrote the fix is not the reviewer who checks it.
 
 - **Runs** walks the skill as a fresh agent. Every step needs an input, an action, and a completion criterion. Every promise needs a rule. Every rule needs a check.
-- **Reads** applies the five levers in `CRAFT.md`: the pointer, the two loads, the hierarchy, completion criteria, and pruning.
-- **Audit** runs `AUDIT.md`. Mechanical, except A8.
+- **Reads** applies checks R1 to R9 in `CRAFT.md`: the pointer, the two loads, the hierarchy, completion criteria, and pruning.
+- **Voice** applies checks R10 to R14 in `CRAFT.md`: stale lines, no-ops, positive phrasing, example values, and leading words.
+- **Audit** runs `AUDIT.md`. Mechanical, except A8 and A20.
 
-A round returns findings, you fix them, the next round starts clean. The loop exits when a round returns zero blockers and zero majors. A round of only minors ends it.
+A round returns findings, you fix them, the next round starts clean. The loop exits when a round returns zero blockers and zero majors. A round of only minors ends it. A cap reached without a clean round ends it too, and then one lens pass runs with a doctrine the four reviewers do not share.
 
 ## The laws
 
@@ -71,6 +72,8 @@ Each law names its check in `AUDIT.md`; some are greps, some are reads.
 6. **Delete before you add.**
 7. **Fix the file that should have prevented it.**
 8. **Say the target, not the ban.**
+9. **A claim names its proof.**
+10. **The target proves itself.**
 
 ## Done
 
@@ -86,6 +89,7 @@ The skill is done when:
 - The skill delivers text and instructions; a script, payload, endpoint, key, or response field belongs to the tool that runs it.
 - Evals live outside the skill, mirror the skill path, and hold three scenarios, their fixtures, and one recorded run each.
 - The audit returns zero.
+- A lens pass is recorded, with the lens named.
 - A dry run finishes: a fresh agent runs the skill on one input and asks no question.
 
 ## Lineage

@@ -1,6 +1,6 @@
 # Audit
 
-Checks a command can settle, plus five short reads. Run these before reading for judgement, and again after every round, from inside the target folder.
+Checks a command can settle, plus a few short reads. Run these before reading for judgement, and again after every round, from inside the target folder.
 
 A check that names a search term is a detector, not an example.
 
@@ -26,6 +26,8 @@ A check that names a search term is a detector, not an example.
 - A17 Variant capability table
 - A18 Step map
 - A19 Manifest label
+- A20 Claims prove themselves
+- A21 The target's gate runs
 
 ## Law map
 
@@ -41,6 +43,8 @@ Each law names its check. Some are greps; some are reads.
 | 6 Delete before you add | read: the file count after a fix |
 | 7 Fix the file that should have prevented it | read: the eval section of the report |
 | 8 Say the target, not the ban | A14, and R12 in `CRAFT.md` |
+| 9 A claim names its proof | A20 |
+| 10 The target proves itself | A21 |
 
 ## A1 Frontmatter
 
@@ -209,3 +213,30 @@ sed -n 's/^description: //p' SKILL.md
 ```
 
 A skill with no manifest marks this not applicable.
+
+## A20 Claims prove themselves
+
+Read the description and the opening paragraph. Every adjective that asserts a property of the output or the process names the mechanism that proves it, or is cut.
+
+```bash
+sed -n '3p' SKILL.md
+sed -n '/^# /,/^## /p' SKILL.md | head -20
+```
+
+The properties to look for: verified, complete, exhaustive, accurate, current, safe, guaranteed, reliable. "Writes one verified report" fails when the only mechanism is a hash over the quote, because the hash proves the quote matches the body and says nothing about where the body came from. "Writes one sourced report" passes, because the sources are the mechanism and the report carries them.
+
+A claim that survives names its proof in the same sentence or in the step that enforces it.
+
+## A21 The target's gate runs
+
+Read the target's `GATE.md`. Execute every command block in it, from the directory the block names, against the fixtures the block names.
+
+```bash
+awk '/^```bash/{f=1;next} /^```$/{f=0} f' GATE.md | head -80
+```
+
+Pass when the clean fixture prints no complaint, the broken fixture prints exactly the number of complaints the gate documents, and every check's evidence is produced by a command or a named read.
+
+A gate that has never been run is a promise, not a check. A block that errors on a missing file is a finding even when the rule it tests is sound.
+
+A skill with no gate marks this not applicable.

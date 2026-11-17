@@ -58,8 +58,13 @@ Check:
 - Every line still bears on what the skill does.
 - Every line changes behaviour against the model's default.
 - The skill states the target behaviour, and a prohibition appears only as a hard guardrail beside its positive form.
+- An idea repeated as a triad, a list, or a clause that gestures at one concept collapses to one defined word.
+
+A **leading word** is a compact token the model already thinks with, repeated instead of spelled out, so one word anchors a region of behaviour: `tight`, `red`, `tier`, `origin`. A six-item checklist restated at two sites is a leading word waiting to be coined. The test is whether the token is defined once and then carries the meaning on its own; a token that needs a gloss each time is a rename, not a lever.
 
 Exception: a contents list that A15 requires is not a no-op. It serves the reader who scans the folder, and the model reads the file whole.
+
+Exception: a check may restate the bound it tests. The definition stays in one place and the check names it, so the check reads on its own and the rule has one home.
 
 ## Check list
 
@@ -80,3 +85,4 @@ Run these as greps where possible; the rest are reads.
 | R11 | No no-op | A line the model already obeys, outside an A15 contents list |
 | R12 | Positive phrasing | A ban with no target behaviour |
 | R13 | Examples quote defects, never live values | An example carries a working endpoint or key |
+| R14 | An idea collapses to a token | A triad or a six-item list where one defined word would anchor it |

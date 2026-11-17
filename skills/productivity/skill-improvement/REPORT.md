@@ -6,6 +6,7 @@ Write the report where `Where things go` in `SKILL.md` says. The report is the d
 
 - Template
 - Writing a finding
+- The lens pass
 - Decisions
 - Verdict lines
 
@@ -52,6 +53,11 @@ Write the report where `Where things go` in `SKILL.md` says. The report is the d
 | Check | Command | Hits |
 |---|---|---|
 
+## Lens pass
+
+| Lens | Findings | Fixed |
+|---|---|---|
+
 ## Decisions
 
 <every transform and what it dropped>
@@ -65,6 +71,7 @@ Write the report where `Where things go` in `SKILL.md` says. The report is the d
 | Minors | |
 | Mode | |
 | Phase reached | |
+| Remaining findings | <class>, <count> |
 | Done | yes or no |
 ```
 
@@ -76,6 +83,12 @@ Write the report where `Where things go` in `SKILL.md` says. The report is the d
 - `status` is `open` or `fixed`, so the report shows what remains without re-reading the rounds.
 
 A finding without a file and a line is not a finding. A finding without a fix is a complaint.
+
+## The lens pass
+
+One pass, after the exit, with a lens the four reviewers do not share. Name the lens, the findings it returned, and how many were fixed. A pass that found nothing is recorded as clean.
+
+The lens pass exists because the four reviewers share one doctrine and therefore converge. A second doctrine, a domain expert, or an adversarial reader finds the class the first lens cannot see. The deep-research review is the case in point: ten rounds and a clean audit, then one pass with a different doctrine found twelve findings, four of them major.
 
 ## Decisions
 
