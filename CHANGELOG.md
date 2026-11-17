@@ -9,6 +9,8 @@ it.
 
 ## [Unreleased]
 
+## [2026.11.1] - 2026-11-17
+
 ### Added
 
 - `deep-research`: researches a question into one cited report that stands
@@ -22,6 +24,15 @@ it.
   reply that names the worst flag and calls nothing a show
   stopper. The posture lives in a gitignored `POSTURE.local.md`, so personal
   detail never reaches the repository.
+- `skill-improvement`: a fourth gauntlet reviewer for voice (R10 to R14), R14
+  for an idea that should collapse to one leading word, audits A20 and A21,
+  laws 9 and 10, and a lens pass after the gauntlet exits.
+
+### Changed
+
+- `podcast-script`: kokoro-tone renders a long episode in capped requests,
+  breaking at pauses then turn boundaries, repeating the sticky voice and rate
+  at every seam, and recording the split in the notes.
 
 ## [2026.11.0] - 2026-11-14
 
