@@ -1,0 +1,4 @@
+id	url	domain	title	published	fetched_at	sha1	tier	origin	body
+S1	https://aer.gov.au/bench	aer.gov.au	Benchmark	2026-03-12	2026-11-16T01:00:00Z	000000000000	1	aer-bench-2026-03	bodies/S1-body.txt
+S2	https://trade.example/story	trade.example	Story	2026-05-14	2026-11-16T01:11:00Z	6d8930d2d725	2	aer-bench-2026-03	bodies/S2-body.txt
+S3	https://vendor.example/pricing	vendor.example	Pricing	undated	2026-11-16T01:06:00Z	da3651902c57	3	vendor-pricing	bodies/S3-body.txt

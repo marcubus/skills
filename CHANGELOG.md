@@ -11,6 +11,11 @@ it.
 
 ### Added
 
+- `deep-research`: researches a question into one cited report that stands
+  alone. Seven steps, two evidence tables with a verbatim quote per claim,
+  query fan-out with intent routing, anti-SEO and primary-source rules, a
+  twelve-check gate with a shell ledger block, and an output path override
+  that stays local.
 - `policy-review`: reads a privacy policy, terms of service, EULA, or cookie
   notice against a personal data posture. Six gates and eleven preferences,
   a phrase catalogue mapped to posture IDs, an Australian regulatory map, and a

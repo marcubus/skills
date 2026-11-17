@@ -13,6 +13,7 @@ Reachable only when you type them.
 Model- or user-reachable.
 
 - **[prompt-engineer](./prompt-engineer/SKILL.md)**: Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts.
+- **[deep-research](./deep-research/SKILL.md)**: Researches a question into one cited report that stands alone, with an evidence ledger, named gaps, and named conflicts.
 - **[podcast-script](./podcast-script/SKILL.md)**: Turns a report or raw notes into a podcast script and the plain text a text-to-speech model reads.
 - **[podcast-host-personas](./podcast-host-personas/SKILL.md)**: Builds one gated, machine-readable host persona for a show.
 - **[policy-review](./policy-review/SKILL.md)**: Reads a privacy policy or terms of service against a personal posture and reports the flags in a short summary.

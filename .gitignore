@@ -11,3 +11,11 @@ reviews/
 
 # Personal posture: the reviewer's own standard, never published.
 skills/productivity/policy-review/POSTURE.local.md
+
+# Personal output path: where this reader keeps reports, never published.
+skills/productivity/deep-research/OUTPUT.local.md
+
+# Local search config: endpoints and keys for one project, never published.
+.search-override.json
+.search-override/
+.search-override.env

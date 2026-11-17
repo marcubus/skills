@@ -1,7 +1,7 @@
 {
   "name": "marcubus-skills",
   "version": "1.0.0",
-  "description": "Prompt engineering, podcast scripting, host personas, privacy policy review, and a skill-improvement gauntlet.",
+  "description": "Prompt engineering, deep research, podcast scripting, host personas, privacy policy review, and a skill-improvement gauntlet.",
   "author": {
     "name": "Marcus Ford",
     "url": "https://github.com/marcubus"
@@ -20,6 +20,7 @@
   ],
   "skills": [
     "./skills/productivity/prompt-engineer",
+    "./skills/productivity/deep-research",
     "./skills/productivity/podcast-script",
     "./skills/productivity/podcast-host-personas",
     "./skills/productivity/skill-improvement",

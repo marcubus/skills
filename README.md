@@ -19,6 +19,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 | Skill | Description |
 | --- | --- |
 | [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
+| [deep-research](skills/productivity/deep-research/SKILL.md) | Researches a question into one cited report that stands alone. Fans each axis into several queries, keeps an evidence ledger with a quote per source, and names its gaps and conflicts. |
 | [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
@@ -171,6 +172,39 @@ Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, Chat
 
 `skills/productivity/prompt-engineer/SKILL.md` always loads. The file carries the frameworks and the style rules. The model files add the mechanics each family needs.
 
+## deep-research
+
+Researches a question and writes one report that stands alone. It fans each axis into several queries, caches every page it reads, and keeps two tables: the sources fetched and the claims made. Each claim carries its sources, an origin count, a confidence label, and a verbatim quote from the cached body.
+
+The report is plain prose with a source marker on every factual sentence. It names its conflicts and its gaps instead of resolving or filling them. It never refers to the conversation, or to what will happen to the file next, so it survives being read cold or handed to another skill.
+
+The skill stops at the report. Rendering, publishing, and any spoken version belong elsewhere.
+
+Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
+
+### Files
+
+- `skills/productivity/deep-research/SKILL.md`, the contract and the seven steps.
+- `SOURCING.md`, query fan-out, query types, anti-SEO rules, primary-source escalation, citation chaining.
+- `EVIDENCE.md`, the run directory, the two tables, the quote rule, confidence, and the stop condition.
+- `REPORT.md`, the report's shape, section order, prose rules, and word bands.
+- `GATE.md`, twelve checks with a step map, the ledger block, and the report commands.
+- `OUTPUT.example.md`, the optional reports directory override.
+- `examples/report.md`, one worked report.
+- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
+
+### Install
+
+Use the [install routes](#install). This skill needs the whole `deep-research` folder, because `SKILL.md` points at the reference files.
+
+### Verify
+
+Ask for a report on a topic with a live landscape. Check three things:
+
+- It writes `reports/YYYY-MM-DD-<slug>-report.md`, or the path you named.
+- Every factual sentence carries a `[S#]` marker, and the Sources section lists each source with a tier and a date.
+- The ledger block in `GATE.md` prints nothing but the three headers and the domain counts.
+
 ## podcast-script
 
 Turns a report, document, or raw notes into a podcast script and the plain text the chosen model reads. It covers solo narration, two-host shows, and panels of three or more hosts. The script is model-neutral: it carries voice, emotion, rate, pause, and pronunciation markers, and a model file compiles them into the target's text dialect. Targets kokoro-tone, kokoro-fastapi, kokoro-raw, and ElevenLabs.
@@ -303,6 +337,15 @@ skills/productivity/
     MODEL-DEEPSEEK.md               DeepSeek mechanics
     MODEL-QWEN.md                   Qwen mechanics
     agents/openai.yaml              OpenAI and Codex interface manifest
+  deep-research/
+    SKILL.md                        contract and the seven steps
+    SOURCING.md                     fan-out, query types, anti-SEO, escalation
+    EVIDENCE.md                     run directory, two tables, confidence
+    REPORT.md                       shape, section order, prose, word bands
+    GATE.md                         twelve checks, ledger block, commands
+    OUTPUT.example.md               reports directory override
+    examples/                       one worked report
+    agents/openai.yaml              OpenAI and Codex interface manifest
   skill-improvement/
     SKILL.md                        five phases, severity, the eight laws
     SURVEY.md                       inventory, contract, fact table
@@ -355,6 +398,7 @@ docs/
 evals/
   skills/productivity/
     prompt-engineer/                three scenarios and their fixtures
+    deep-research/                  four scenarios and their fixtures
     podcast-script/                 three scenarios and their fixtures
     podcast-host-personas/          three scenarios and their fixtures
     skill-improvement/              three scenarios, two fixtures
