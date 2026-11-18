@@ -11,9 +11,7 @@ Hosted assistants without a skill loader need the manual paste steps at the end.
 | OpenCode | Global | `~/.config/opencode/skills/` |
 | OpenCode | Project | `<project>/.opencode/skills/` |
 | OpenCode | Compatibility | `~/.agents/skills/`, `.agents/skills/` |
-| OpenCode server | Global | `/home/opencode/.config/opencode/skills/` |
 | Hermes | Global | `~/.hermes/skills/<category>/` |
-| Hermes container | Global | `/opt/data/skills/<category>/` |
 | Claude Code | Global | `~/.claude/skills/` |
 | Codex, Cursor, Amp, Pi | Global | `~/.agents/skills/` |
 | Codex, Cursor, Amp, Pi | Project | `.agents/skills/` |
@@ -36,6 +34,18 @@ npx skills@latest update
 
 Then re-run `add` to pick up skills added upstream.
 
+## Local checkout, any agent
+
+`scripts/install.sh` links the repo into any directory an agent reads skills from. Pass one or more destinations:
+
+```bash
+scripts/install.sh --dest ~/.config/opencode/skills
+scripts/install.sh --dest ~/.claude/skills --dest ~/.agents/skills
+scripts/install.sh --dest ~/.agents/skills --copy
+```
+
+The installer does not assume an agent name or a global layout. Use the destination that your agent documents. `--copy` copies instead of linking, `--dry-run` prints the plan, and `--force` replaces existing folders.
+
 ## OpenCode
 
 ```bash
@@ -45,7 +55,7 @@ npx skills@latest add marcubus/skills -a opencode
 For a local checkout:
 
 ```bash
-scripts/install.sh --target opencode
+scripts/install.sh --dest ~/.config/opencode/skills
 ```
 
 Manual install:
@@ -67,34 +77,6 @@ OpenCode combines every `skills` array, so the entry adds to the default directo
 
 Verify: the session lists `prompt-engineer` among available skills.
 
-## OpenCode server
-
-The server runs as its own user, usually `opencode`, with its own `HOME`. Install into that user's config, not yours.
-
-```bash
-scripts/install.sh --target server --server-home /home/opencode
-```
-
-Manual install:
-
-```bash
-sudo -u opencode mkdir -p /home/opencode/.config/opencode/skills
-sudo -u opencode ln -s /path/to/skills-repo/skills/productivity/prompt-engineer \
-  /home/opencode/.config/opencode/skills/prompt-engineer
-```
-
-If the server user cannot read the checkout, use `--copy` instead of a symlink.
-
-The system config at `/etc/opencode/opencode.json` may also carry a `skills` entry. OpenCode merges every `skills` array, so the default global directory still loads. If that entry uses `{env:SKILLS_ROOT}/productivity`, set `SKILLS_ROOT` to the repo root, or change the entry to `{env:SKILLS_ROOT}/skills/productivity`. The repo keeps a `productivity` symlink at the root so older entries keep working.
-
-Restart the service after install:
-
-```bash
-sudo systemctl restart opencode-serve
-```
-
-Then start a session against the server and check that `prompt-engineer` appears in the skill list.
-
 ## Hermes
 
 For a normal host install with the default profile:
@@ -103,25 +85,13 @@ For a normal host install with the default profile:
 npx skills@latest add marcubus/skills -a hermes-agent -g
 ```
 
-This writes to `~/.hermes/skills/`. Hermes reads `$HERMES_HOME/skills/`, so set `HERMES_HOME` first if your profile lives elsewhere. If it does, use the installer instead:
+This writes to `~/.hermes/skills/`. Hermes reads `$HERMES_HOME/skills/`, so set `HERMES_HOME` first if your profile lives elsewhere. If it does, pass the matching destination to the local installer:
 
 ```bash
-scripts/install.sh --target hermes --hermes-host
+scripts/install.sh --dest "$HERMES_HOME/skills/productivity"
 ```
 
-For a container, copy the skills into the mounted profile:
-
-```bash
-scripts/install.sh --target hermes --hermes-container hermes
-```
-
-The default destination is `/opt/data/skills/productivity/`, which matches `HERMES_HOME=/opt/data`. Override it with `--hermes-dest`.
-
-Manual copy:
-
-```bash
-docker cp skills/productivity/prompt-engineer hermes:/opt/data/skills/productivity/
-```
+For a container, copy that same destination into the mounted profile with `docker cp`, or run the installer against the host side of the mount.
 
 Hermes also has its own registry commands:
 
@@ -130,7 +100,7 @@ hermes skills tap add marcubus/skills
 hermes skills search prompt-engineer
 ```
 
-Restart the container, or run `hermes skills list` inside it, to verify.
+Run `hermes skills list` to verify.
 
 ## Claude Code
 

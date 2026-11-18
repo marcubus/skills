@@ -29,11 +29,11 @@ Fourteen checks. Twelve test the reply, one tests the run, one tests the folder.
 | 11 | Banned words and punctuation are absent | Read the reply. No banned word appears as a whole word in any case. Write full stops and commas, and let only a quote carry an em dash or semicolon |
 | 12 | The word budget holds | Count the words against the table in `SKILL.md`, plus up to 40 per extra flag |
 | 13 | Nothing is stored | No file is written unless the user asked for one, and the source text is not saved |
-| 14 | No vendor path and no personal detail in a committed file | `grep -rniE -e 'h[e]rmes' -e '/opt/d[a]ta' -e '_scr[a]tch' -e 'household of f[o]ur' . --include='*.md' --include='*.yaml' --exclude='POSTURE.local.md'` returns nothing |
+| 14 | No personal path or detail in a committed file | No host name, home path, username, or household detail appears in a committed file. `grep -rniE -e '/home/[a-z]' -e '/Users/[a-z]' -e '/opt/[a-z]' -e '/srv/[a-z]' -e '/mnt/[a-z]' . --include='*.md' --include='*.yaml' --exclude='POSTURE.local.md'` returns nothing, and `git status --ignored` lists `POSTURE.local.md` |
 
 Checks that need judgement state their evidence in one line in the working notes. Check 3 compares the gate list against the reply. Check 11 reads the reply and confirms each punctuation hit sits inside a quote.
 
-Check 14 runs on the skill folder. The bracket in each pattern stops the command matching its own text. A hit in a committed file is a leak. Keep the content in `POSTURE.local.md` and confirm `git status` shows the file as ignored.
+Check 14 runs on the skill folder. The command catches absolute home, user, service, and mount paths. Read the committed files for a host name, a username, or a household detail the command cannot see. A hit in a committed file is a leak. Keep the content in `POSTURE.local.md` and confirm `git status` shows the file as ignored.
 
 ## Banned words
 

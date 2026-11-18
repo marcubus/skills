@@ -16,7 +16,7 @@ The run's state is two tables, `notes.md`, `run.lock`, and a folder of fetched b
 
 ## The run directory
 
-`/tmp/opencode/research-<slug>/`, or `/tmp/research-<slug>/` when `/tmp/opencode` is not writable, or `$TMPDIR/research-<slug>/` when neither is. The slug is the report's slug, so the run directory and the report share one name.
+`${TMPDIR:-/tmp}/research-<slug>/`. The slug is the report's slug, so the run directory and the report share one name.
 
 Five entries:
 
@@ -28,7 +28,7 @@ Five entries:
 | `bodies/` | One file per source, named `<id>-<slug>.txt`, where the slug is the report's slug. |
 | `notes.md` | The fields below. |
 
-The lock rule. Look for an existing run directory for this topic at all three base paths before starting. Where one exists and `notes.md` has `delivered: none` or no `delivered:` line, resume that run. Where `delivered:` carries a timestamp, the run finished: move the two tables, `notes.md`, and `bodies/` to `archive/<epoch>/`, and rewrite `run.lock` with the new start epoch. A directory holding `run.lock` and no `notes.md` is a crash before step 2 finished: archive it and start fresh. The delivered report stays where it is.
+The lock rule. Look for an existing run directory for this topic before starting. Where one exists and `notes.md` has `delivered: none` or no `delivered:` line, resume that run. Where `delivered:` carries a timestamp, the run finished: move the two tables, `notes.md`, and `bodies/` to `archive/<epoch>/`, and rewrite `run.lock` with the new start epoch. A directory holding `run.lock` and no `notes.md` is a crash before step 2 finished: archive it and start fresh. The delivered report stays where it is.
 
 `notes.md` carries these fields, in this order:
 

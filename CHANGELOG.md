@@ -22,6 +22,12 @@ it.
   implemented, and a nineteen-check gate with commands that run against a
   fixture pair. Four eval scenarios.
 
+### Changed
+
+- `scripts/install.sh` is agent agnostic: pass one or more `--dest` paths
+  instead of choosing a fixed target. The fixed targets are gone, and the
+  install docs no longer name a particular host layout.
+
 ### Fixed
 
 - `scripts/check.py` skipped eval fixtures in the link check. A fixture is a
@@ -77,8 +83,7 @@ marketplaces.
   through three reviewer rounds, a numbered gate, and an eval suite.
 - Evals for every skill under `evals/skills/productivity/`, outside the skill
   folders, with fixtures and recorded runs.
-- `scripts/install.sh`, with targets for OpenCode, the OpenCode server user,
-  Hermes, and shared agent directories.
+- `scripts/install.sh`, with targets for local agent skill directories.
 - `.claude-plugin/` manifests so the repository installs as a plugin in the
   Claude Code, Codex, and Copilot marketplaces.
 - `scripts/check.py` and `make check`: frontmatter, manifest, link, version,

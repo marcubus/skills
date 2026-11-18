@@ -46,7 +46,7 @@ npx skills@latest add marcubus/skills -a opencode
 For a local checkout, link the repo instead:
 
 ```bash
-scripts/install.sh --target opencode
+scripts/install.sh --dest ~/.config/opencode/skills
 ```
 
 Manual install: copy or symlink each folder in `skills/productivity/` into `~/.config/opencode/skills/`, or add the repo path to `opencode.json`:
@@ -59,24 +59,6 @@ Manual install: copy or symlink each folder in `skills/productivity/` into `~/.c
 
 OpenCode combines every `skills` array, so this adds to the default directories rather than replacing them.
 
-### OpenCode server
-
-The server runs under its own user, so install into that user's config:
-
-```bash
-sudo -u opencode mkdir -p /home/opencode/.config/opencode/skills
-sudo -u opencode ln -s /path/to/skills-repo/skills/productivity/prompt-engineer \
-  /home/opencode/.config/opencode/skills/prompt-engineer
-```
-
-Or run:
-
-```bash
-scripts/install.sh --target server --server-home /home/opencode
-```
-
-Restart `opencode-serve` after install. The server config may also list a `skills` path. Keep it if it points at this repo. OpenCode merges the arrays, so the default global directory still loads.
-
 ### Hermes
 
 For a default host profile, skills.sh writes to `~/.hermes/skills/`:
@@ -85,32 +67,23 @@ For a default host profile, skills.sh writes to `~/.hermes/skills/`:
 npx skills@latest add marcubus/skills -a hermes-agent -g
 ```
 
-If `HERMES_HOME` points somewhere else, use the installer, which writes to `$HERMES_HOME/skills/productivity/`:
+If `HERMES_HOME` points somewhere else, pass the matching destination to the local installer:
 
 ```bash
-scripts/install.sh --target hermes --hermes-host
+scripts/install.sh --dest "$HERMES_HOME/skills/productivity"
 ```
-
-For a container, copy the skills into the profile directory Hermes reads:
-
-```bash
-scripts/install.sh --target hermes --hermes-container hermes
-```
-
-This copies into `/opt/data/skills/productivity/`, the path for `HERMES_HOME=/opt/data`. Restart the container, or run `hermes skills list` inside it to verify.
 
 ### Local checkout installer
 
-`scripts/install.sh` links the repo into agent directories, so `git pull` keeps the skills current.
+`scripts/install.sh` links the repo into any agent skill directory, so `git pull` keeps the skills current. Pass one or more `--dest` paths.
 
 ```bash
-scripts/install.sh --target opencode
-scripts/install.sh --target server --server-home /home/opencode
-scripts/install.sh --target hermes --hermes-container hermes
-scripts/install.sh --target all
+scripts/install.sh --dest ~/.config/opencode/skills
+scripts/install.sh --dest ~/.claude/skills --dest ~/.agents/skills
+scripts/install.sh --dest ~/.agents/skills --copy
 ```
 
-Targets: `opencode`, `agents`, `server`, `hermes`. `all` covers `opencode`, `agents`, and `hermes`, plus `server` when `/home/opencode` exists or `--server-home` is given. Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force` replaces existing folders.
+Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force` replaces existing folders, and `--list` prints the skills in this repo.
 
 ### Plugin marketplace
 
@@ -363,10 +336,10 @@ skills/productivity/
   podcast-script/
     SKILL.md                        workflow and compiled text
     MODELS.md                       model registry and choosing rules
-    MODEL-KOKORO-TONE.md            self-hosted gateway, the default
+    MODEL-KOKORO-TONE.md            inline tags for every marker, the default
     MODEL-KOKORO-FASTAPI.md         OpenAI-compatible Kokoro server
     MODEL-KOKORO-RAW.md             kokoro Python package, no server
-    MODEL-ELEVENLABS.md             ElevenLabs through OpenRouter
+    MODEL-ELEVENLABS.md             ElevenLabs audio tags
     PROFILE.md                      typed host profile and gate
     PERFORMANCE.md                  pacing, emotion, emphasis, moves
     TICKS.md                        tick library, density, banlist
@@ -395,7 +368,7 @@ skills/productivity/
   plugin.json                       plugin manifest and skill list
 
 scripts/
-  install.sh                        opencode, server, hermes, and shared agents
+  install.sh                        install into any agent skill directory
 
 docs/
   install.md                        per-agent install detail

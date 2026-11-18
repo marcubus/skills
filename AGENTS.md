@@ -6,7 +6,7 @@ Install routes:
 
 - `npx skills@latest add marcubus/skills` for any supported agent.
 - `.claude-plugin/` for the Claude Code, Codex, and Copilot plugin marketplaces.
-- `scripts/install.sh` for a local checkout, with targets for OpenCode, the OpenCode server user, Hermes, and shared agent directories.
+- `scripts/install.sh` for a local checkout, into any agent skill directory via one or more `--dest` paths.
 
 ## Add or change a skill
 

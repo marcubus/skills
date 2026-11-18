@@ -4,12 +4,12 @@
     "name": "Marcus Ford",
     "url": "https://github.com/marcubus"
   },
-  "description": "Agent skills for prompting, podcast production, privacy review, and skill improvement.",
+  "description": "Agent skills for prompting, research, podcast production, privacy review, architecture decisions, and skill improvement.",
   "plugins": [
     {
       "name": "marcubus-skills",
       "source": "./",
-      "description": "Prompt engineering, deep research, podcast scripting, host personas, privacy policy review, and a skill-improvement gauntlet.",
+      "description": "Prompt engineering, deep research, podcast scripting, host personas, privacy policy review, architecture decisions, and a skill-improvement gauntlet.",
       "category": "productivity",
       "keywords": [
         "skills",
