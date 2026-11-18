@@ -77,7 +77,7 @@ After a wave that added rows, write a claim row for each new claim; filling here
 Fetch the page, not the snippet. Every fetch is cited as a tool call in the same turn, as truth discipline rule 1 in `EVIDENCE.md` requires. Save the page with `curl` to the body file whenever a shell is available; that is the default route. When no shell is available, use the harness fetch and file tools and log the route in `notes.md`; the hash then covers your transcription rather than the page, so say so. Reach for the non-web sources in `SOURCING.md` before settling for an article. Then:
 
 1. Write the body to `bodies/<id>-<slug>.txt`, but only once it passes the render-failure rule under Dead and paywalled pages in `SOURCING.md`. A failed fetch leaves no body file.
-2. Compute `sha1sum` over the file you wrote, or write `n/a` for a supplied document copied in without a fetch.
+2. Compute the SHA-1 over the file you wrote with `sha1sum`, `shasum -a 1`, or the Python fallback in `GATE.md`, or write `n/a` for a supplied document copied in without a fetch.
 3. Write the source row with all ten columns in one write.
 4. Write the claim rows the body supports, with the quote copied from the cached file.
 
@@ -130,12 +130,12 @@ Done when checks 2 and 12 pass, the reply carries every item above, any exemptio
 
 One file, at <reports-dir>/YYYY-MM-DD-<slug>-report.md. The date is the local date of the run, and every timestamp in the run files is UTC. The slug is the subject of the request in lowercase with hyphens, dropping articles, prepositions, and the verbs of the request such as `research`, `write`, and `report`, at most 60 characters: `grid-scale sodium-ion battery storage economics 2026` becomes `grid-scale-sodium-ion-battery-storage-economics-2026`, which is 52 characters. When the slug runs over 60, drop the least distinguishing word.
 
-The reports directory resolves in this order, first hit wins. A config file with no `reports_dir` line falls through to the next rule. A path beginning with `~` is expanded to `$HOME` before use. The skill creates the directory at that path when it is absent; the config file is the user's to create.
+The reports directory resolves in this order, first hit wins. A config file with no `reports_dir` line falls through to the next rule. A path beginning with `~` is expanded to the user's home directory (`$HOME`, `%USERPROFILE%`, or the host's equivalent) before use. The skill creates the directory at that path when it is absent; the config file is the user's to create.
 
 1. A path the user names in the request, unless it would put the report inside the run directory; that path is refused and rule 4 is used.
-2. The `reports_dir` line in `$XDG_CONFIG_HOME/deep-research/OUTPUT.md`, or `~/.config/deep-research/OUTPUT.md` when `XDG_CONFIG_HOME` is unset.
+2. The `reports_dir` line in `$XDG_CONFIG_HOME/deep-research/OUTPUT.md`, or `~/.config/deep-research/OUTPUT.md` when `XDG_CONFIG_HOME` is unset, or `%APPDATA%\deep-research\OUTPUT.md` on Windows.
 3. The `reports_dir` line in `OUTPUT.local.md` beside this file.
-4. `reports/` in the directory the user invoked the skill from, which is the session's working directory. When that directory is a git work tree and the user named no path, use `$XDG_DATA_HOME/deep-research/reports/` instead, or `$HOME/.local/share/deep-research/reports/` when `XDG_DATA_HOME` is unset, so a generated report lands outside the commit history. The report path recorded in `notes.md` under `report:` shows which directory that was, so a gate run from the run directory still knows where the report lives.
+4. `reports/` in the directory the user invoked the skill from, which is the session's working directory. When that directory is a git work tree and the user named no path, use `$XDG_DATA_HOME/deep-research/reports/` instead, or `$HOME/.local/share/deep-research/reports/` when `XDG_DATA_HOME` is unset, or `%LOCALAPPDATA%\deep-research\reports\` on Windows, so a generated report lands outside the commit history. The report path recorded in `notes.md` under `report:` shows which directory that was, so a gate run from the run directory still knows where the report lives.
 
 Everything else the run produces is working material, whose home is the run directory in `EVIDENCE.md`. The reports directory holds reports only. When the target path already holds a report, keep it and write beside it: add `-2` before the report extension, then `-3`, and record the new path in `report:`.
 

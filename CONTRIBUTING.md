@@ -23,7 +23,9 @@ answered.
    `README.md`.
 5. Add evals under `evals/skills/productivity/<name>/`. A scenario needs a
    brief, the expected result, and a recorded run.
-6. Run `make check` and `python3 scripts/check.py` passes.
+6. Run `make check`, or `python3 scripts/check.py` plus `bash -n
+   scripts/install.sh`, and check both pass. On Windows, use `python` or
+   `py -3` in place of `python3`.
 
 A skill folder holds only what the agent reads at run time: `SKILL.md`, its
 reference files, examples, and an `agents/openai.yaml` manifest. Evals live

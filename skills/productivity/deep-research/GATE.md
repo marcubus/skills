@@ -43,6 +43,16 @@ Twelve checks, mapped to the step that produces each one's evidence.
 The block runs with `bash`, from the run directory. Sections 4 and 5 answer checks 4 and 5, and print no complaint when they pass; the `==` banners are labels, not complaints. Section 6 prints the quote failures for check 6. Section 7 prints the origin, tier, and confidence failures for checks 7, 8, and 10; check 8's incentive, fetch-route, and freshness conditions are read by hand. Section 8 prints the domain counts you read against check 9. Section 9 prints one line per axis with no sourced claim, which check 10 reads against the report's gaps. Checks 1, 2, and 3 are read from `notes.md`, the two tables, and the report path, and checks 11 and 12 read the report and what the report commands print.
 
 ```bash
+sha1_12() {
+  if command -v sha1sum >/dev/null 2>&1; then
+    sha1sum "$1" | cut -c1-12
+  elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 1 "$1" | cut -c1-12
+  else
+    python3 -c 'import hashlib,sys; print(hashlib.sha1(open(sys.argv[1],"rb").read()).hexdigest()[:12])' "$1"
+  fi
+}
+
 echo "== 4 headers"
 [ "$(head -1 sources.tsv)" = "$(printf 'id\turl\tdomain\ttitle\tpublished\tfetched_at\tsha1\ttier\torigin\tbody')" ] || echo "sources header wrong"
 [ "$(head -1 claims.tsv)" = "$(printf 'id\tclaim\tsection\tsources\torigins\tconfidence\tquote\tquote_source\tnote')" ] || echo "claims header wrong"
@@ -56,7 +66,7 @@ echo "== 5 bodies"
 awk -F'\t' 'NR>1{print $7"\t"$10}' sources.tsv |
 while IFS=$'\t' read -r sha body; do
   [ -f "$body" ] || { echo "missing body $body"; continue; }
-  [ "$sha" = "n/a" ] || [ "$sha" = "$(sha1sum "$body" | cut -c1-12)" ] || echo "sha1 mismatch $body"
+  [ "$sha" = "n/a" ] || [ "$sha" = "$(sha1_12 "$body")" ] || echo "sha1 mismatch $body"
 done
 for f in bodies/*.txt; do
   [ -e "$f" ] || continue

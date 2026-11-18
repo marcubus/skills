@@ -70,7 +70,8 @@ Pass under 500. A file over 100 lines needs a contents list; A15 checks it.
 ## A4 References resolve
 
 ```bash
-grep -rhoE '`[A-Za-z0-9._/-]+\.(md|txt|yaml|json)`' . --exclude-dir=examples |
+find . -path './examples' -prune -o -type f \
+  -exec grep -hoE '`[A-Za-z0-9._/-]+\.(md|txt|yaml|json)`' {} + |
   tr -d '`' | sort -u |
   while read -r f; do [ -e "$f" ] || echo "missing: $f"; done
 ```
@@ -90,8 +91,8 @@ Pass with no output. A skill delivers text and instructions; a script belongs to
 Search terms, not examples:
 
 ```bash
-grep -rniE 'curl |authorization:|bearer [A-Za-z0-9$]|api[_-]?key *[:=]|content-type:|https?://' . \
-  --exclude=AUDIT.md --exclude-dir=examples
+find . -path './examples' -prune -o -type f ! -name 'AUDIT.md' \
+  -exec grep -niE 'curl |authorization:|bearer [A-Za-z0-9$]|api[_-]?key *[:=]|content-type:|https?://' {} +
 ```
 
 Pass with no output. A request body, a URL, an auth header, and a response field all belong to the tool that makes the call.
@@ -101,7 +102,7 @@ Pass with no output. A request body, a URL, an auth header, and a response field
 ## A7 No secrets
 
 ```bash
-grep -rniE '(sk-|ghp_|xox[baprs]-|-----BEGIN)' . --exclude=AUDIT.md
+find . -type f ! -name 'AUDIT.md' -exec grep -niE '(sk-|ghp_|xox[baprs]-|-----BEGIN)' {} +
 ```
 
 Pass with no output.
@@ -127,10 +128,10 @@ Pass when every stated count matches its artifact. A count with no artifact is a
 ## A10 Orphans
 
 ```bash
-comm -23 \
-  <(find . -type f | sed 's|^\./||' | sort) \
-  <(grep -rhoE '`[A-Za-z0-9._/-]+`' . | tr -d '`' | sort -u) |
-  grep -v '^examples/'
+tmp="${TMPDIR:-${TEMP:-/tmp}}"
+find . -type f | sed 's|^\./||' | sort > "$tmp/skill-files.txt"
+grep -rhoE '`[A-Za-z0-9._/-]+`' . | tr -d '`' | sort -u > "$tmp/skill-refs.txt"
+comm -23 "$tmp/skill-files.txt" "$tmp/skill-refs.txt" | grep -v '^examples/'
 ```
 
 Pass when every orphan is loaded by a harness or named in the report. The entry file is always an orphan; a harness manifest, when present, is expected too. `examples/` is excluded: the entry file points at the folder, and the files inside it are illustrative.
@@ -169,8 +170,8 @@ Pass with no output. Fenced blocks are skipped. A heading repeated across files 
 ## A14 Vague words
 
 ```bash
-grep -rniE '\b(appropriate|proper|robust|seamless|leverage|utilise|ensure|good|nice)\b' . \
-  --exclude=AUDIT.md --exclude-dir=examples
+find . -path './examples' -prune -o -type f ! -name 'AUDIT.md' \
+  -exec grep -niE '\b(appropriate|proper|robust|seamless|leverage|utilise|ensure|good|nice)\b' {} +
 ```
 
 Every hit is replaced with the specific thing. A hit kept on purpose is recorded as an accepted finding in the report.
@@ -186,7 +187,7 @@ A contents list is exempt from R11: it serves the reader, and the model reads th
 Every reference to a check number resolves.
 
 ```bash
-grep -rnoE 'check [0-9]+' . --exclude-dir=examples
+find . -path './examples' -prune -o -type f -exec grep -noE 'check [0-9]+' {} +
 ```
 
 Pass when every number exists in the gate. File names are A4; step numbers are A18. A skill with no gate marks A16 and A18 not applicable, and says so in the report.

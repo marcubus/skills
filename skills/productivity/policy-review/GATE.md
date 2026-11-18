@@ -29,7 +29,7 @@ Fourteen checks. Twelve test the reply, one tests the run, one tests the folder.
 | 11 | Banned words and punctuation are absent | Read the reply. No banned word appears as a whole word in any case. Write full stops and commas, and let only a quote carry an em dash or semicolon |
 | 12 | The word budget holds | Count the words against the table in `SKILL.md`, plus up to 40 per extra flag |
 | 13 | Nothing is stored | No file is written unless the user asked for one, and the source text is not saved |
-| 14 | No personal path or detail in a committed file | No host name, home path, username, or household detail appears in a committed file. `grep -rniE -e '/home/[a-z]' -e '/Users/[a-z]' -e '/opt/[a-z]' -e '/srv/[a-z]' -e '/mnt/[a-z]' . --include='*.md' --include='*.yaml' --exclude='POSTURE.local.md'` returns nothing, and `git status --ignored` lists `POSTURE.local.md` |
+| 14 | No personal path or detail in a committed file | No host name, home path, username, or household detail appears in a committed file. `find . -type f \( -name '*.md' -o -name '*.yaml' \) ! -name 'POSTURE.local.md' -exec grep -niE -e '/home/[a-z]' -e '/Users/[a-z]' -e '/opt/[a-z]' -e '/srv/[a-z]' -e '/mnt/[a-z]' {} +` returns nothing, and `git status --ignored` lists `POSTURE.local.md` |
 
 Checks that need judgement state their evidence in one line in the working notes. Check 3 compares the gate list against the reply. Check 11 reads the reply and confirms each punctuation hit sits inside a quote.
 

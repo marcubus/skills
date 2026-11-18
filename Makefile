@@ -1,4 +1,5 @@
 SHELL := bash
+PYTHON ?= python3
 VERSION := $(shell cat VERSION)
 TAG := v$(VERSION)
 
@@ -9,7 +10,7 @@ help: ## Show this help
 		| awk 'BEGIN {FS = ":.*?## "}; {printf "  %-10s %s\n", $$1, $$2}'
 
 check: ## Run the repository checks (frontmatter, manifests, links, version, secrets)
-	python3 scripts/check.py
+	$(PYTHON) scripts/check.py
 	bash -n scripts/install.sh
 
 version: ## Print the CalVer version

@@ -16,7 +16,7 @@ The run's state is two tables, `notes.md`, `run.lock`, and a folder of fetched b
 
 ## The run directory
 
-`${TMPDIR:-/tmp}/research-<slug>/`. The slug is the report's slug, so the run directory and the report share one name.
+`${TMPDIR:-${TEMP:-/tmp}}/research-<slug>/`. The slug is the report's slug, so the run directory and the report share one name.
 
 Five entries:
 
@@ -73,7 +73,7 @@ id	url	domain	title	published	fetched_at	sha1	tier	origin	body
 | `title` | The page title as fetched. |
 | `published` | The page's own date, `YYYY-MM-DD`, `YYYY-MM`, or `undated`. |
 | `fetched_at` | UTC, `YYYY-MM-DDTHH:MM:SSZ`, or `n/a` for a supplied document. |
-| `sha1` | First twelve hex characters of `sha1sum` over the raw body. `n/a` only for a supplied document copied in without a network fetch. |
+| `sha1` | First twelve hex characters of SHA-1 over the raw body. Use `sha1sum` on Linux, `shasum -a 1` on macOS, or the Python fallback in `GATE.md`. `n/a` only for a supplied document copied in without a network fetch. |
 | `tier` | `1`, `2`, or `3`, defined below. |
 | `origin` | A short label naming the underlying event or document. Rows sharing a label are one origin. |
 | `body` | The path including the folder, `bodies/<id>-<slug>.txt`, so a check run from the run directory can test it. |

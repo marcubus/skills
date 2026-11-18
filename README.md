@@ -37,6 +37,8 @@ Omit `-a` to choose from the agents on your machine. Add `-g` for a global insta
 
 Skills live at `skills/productivity/<skill>/`. The `skills.sh` installer reads that layout directly. The `.claude-plugin/` manifests expose the same set to Claude Code, Codex, Copilot, and VS Code as a plugin marketplace.
 
+Skills are plain folders, so they run on Linux, macOS, and Windows. The local installer is a bash script: run it from Linux, macOS, WSL, or Git Bash. On Windows, pass `--copy` when symlinks are unavailable. The shell checks in each skill assume a POSIX shell, so run them in WSL or Git Bash on native Windows, or use the agent's own file and search tools.
+
 ### OpenCode
 
 ```bash

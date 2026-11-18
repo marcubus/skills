@@ -4,6 +4,12 @@ Every route installs the same skills from `skills/productivity/`. Pick the route
 
 Hosted assistants without a skill loader need the manual paste steps at the end. The same pattern works for each skill: paste its `SKILL.md` body, then upload its reference files.
 
+## Platforms
+
+The skills are text and folders, so they work on Linux, macOS, and Windows. The local installer needs bash: use Linux, macOS, WSL, or Git Bash. On Windows, pass `--copy` when symlinks are unavailable.
+
+The gate blocks use a POSIX shell with `awk`, `grep`, and `sed`. On native Windows, run them in WSL or Git Bash, or use the agent's own file and search tools. The hashing and timestamp checks name a macOS and Python alternative where the Linux command differs.
+
 ## Paths by agent
 
 | Agent | Scope | Path |
@@ -43,7 +49,7 @@ scripts/install.sh --dest ~/.claude/skills --dest ~/.agents/skills
 scripts/install.sh --dest ~/.agents/skills --copy
 ```
 
-The installer does not assume an agent name or a global layout. Use the destination that your agent documents. `--copy` copies instead of linking, `--dry-run` prints the plan, and `--force` replaces existing folders.
+The installer does not assume an agent name or a global layout. Use the destination that your agent documents. It expands `~`, `%USERPROFILE%`, `%APPDATA%`, and `%LOCALAPPDATA%`, and normalises backslashes in a Windows path. `--copy` copies instead of linking, `--dry-run` prints the plan, and `--force` replaces existing folders.
 
 ## OpenCode
 

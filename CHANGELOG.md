@@ -18,6 +18,13 @@ it.
   eval docs no longer name a harness as the runtime.
 - Skill examples use portable paths instead of a fixed home or temporary
   directory, and an eval report no longer carries an absolute workspace path.
+- The installer discovers skills without GNU-only `find` and `sort` flags,
+  expands Windows profile variables, and falls back to copying when symlinks
+  are unavailable.
+- Skill gates use portable hash, timestamp, temporary-file, and file-search
+  commands. Config lookup adds `%APPDATA%` and `%LOCALAPPDATA%` fallbacks on
+  Windows, and the install docs state the Linux, macOS, and Windows shell
+  requirements.
 
 ## [2026.11.2] - 2026-11-18
 

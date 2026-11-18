@@ -40,7 +40,7 @@ When a paste ends mid-sentence, or a fetch returns part of a page, review what i
 The posture is the standard. Read it in this order, taking the first that exists.
 
 1. `POSTURE.local.md` beside `SKILL.md`, the reader's own posture.
-2. `$XDG_CONFIG_HOME/policy-review/POSTURE.md`, when the first is absent. When `$XDG_CONFIG_HOME` is unset, read `~/.config`.
+2. `$XDG_CONFIG_HOME/policy-review/POSTURE.md`, when the first is absent. When `$XDG_CONFIG_HOME` is unset, read `~/.config`, or `%APPDATA%\policy-review\POSTURE.md` on Windows.
 3. `POSTURE.example.md`, the generic default.
 
 Name the file used in the footer. The reader keeps a personal copy at `POSTURE.local.md`, which git ignores.
@@ -162,7 +162,7 @@ See `examples/reply.md` for a worked reply.
 
 - `POSTURE.example.md`: the generic standard, six gates and eleven preferences
 - `POSTURE.local.md`: the reader's posture, gitignored
-- `$XDG_CONFIG_HOME/policy-review/POSTURE.md`: an alternative posture location
+- `$XDG_CONFIG_HOME/policy-review/POSTURE.md`: an alternative posture location, or `%APPDATA%\policy-review\POSTURE.md` on Windows
 - `RED-FLAGS.md`: phrases to search for, mapped to posture IDs
 - `REGULATORY.md`: APP map, breach scheme, automated decisions, APRA, the 2024 Act, and the non-Australian overlay
 - `GATE.md`: the checks and the step map

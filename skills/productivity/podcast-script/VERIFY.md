@@ -59,10 +59,10 @@ Done when every file exists next to the source.
 The source must be older than the script. Skip this check for a retarget.
 
 ```bash
-stat -c '%Y %n' <source> <script>
+python3 -c 'import os,sys; [print(int(os.path.getmtime(p)), p) for p in sys.argv[1:]]' <source> <script>
 ```
 
-Done when the script's mtime is later than the source's.
+Done when the script's mtime is later than the source's. A file tool's timestamp is equivalent when the host has no `python3` command.
 
 ## 3. Profile gate
 
@@ -143,10 +143,11 @@ Heteronym check. List every word in the script that is spelt the same as another
 ## 8. Forbidden characters
 
 ```bash
-grep -nP '\(|\)|"|—|–|--|/|[\x{1F300}-\x{1FAFF}]|!!|\?\?' <script>
+grep -nE '\(|\)|"|—|–|--|/|!!|\?\?' <script>
+python3 -c 'import sys; [print(i+1, l.rstrip()) for i,l in enumerate(open(sys.argv[1], encoding="utf-8")) if any(0x1F300 <= ord(c) <= 0x1FAFF for c in l)]' <script>
 ```
 
-Expect no output. Also check for markdown:
+Expect no output from either command. The first checks the punctuation, and the second checks the emoji range without relying on a PCRE-enabled grep. Also check for markdown:
 
 ```bash
 grep -nE '^#|^\*|^- |^\|' <script>
@@ -347,9 +348,9 @@ Read the compiled text and the model file. Done when:
 Compare the text to the script body after removing every marker the model resolves:
 
 ```bash
-sed -E 's/\[[^]]*\]//g' <script-body> > "${TMPDIR:-/tmp}/script-words.txt"
-sed -E 's/\[[^]]*\]//g' <compiled-text> > "${TMPDIR:-/tmp}/text-words.txt"
-diff -u "${TMPDIR:-/tmp}/script-words.txt" "${TMPDIR:-/tmp}/text-words.txt"
+sed -E 's/\[[^]]*\]//g' <script-body> > "${TMPDIR:-${TEMP:-/tmp}}/script-words.txt"
+sed -E 's/\[[^]]*\]//g' <compiled-text> > "${TMPDIR:-${TEMP:-/tmp}}/text-words.txt"
+diff -u "${TMPDIR:-${TEMP:-/tmp}}/script-words.txt" "${TMPDIR:-${TEMP:-/tmp}}/text-words.txt"
 ```
 
 Expect differences only where a marker became punctuation or a blank line, or where a name was respelt. Every other word matches.

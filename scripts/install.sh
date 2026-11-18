@@ -25,6 +25,9 @@ Options:
   --list         List the skills in this repo
   -h, --help     Show this help
 
+On Windows, run this from WSL or Git Bash. Use --copy when symlinks
+are unavailable. Windows variables such as %USERPROFILE% are expanded.
+
 Examples:
   scripts/install.sh --dest ~/.config/opencode/skills
   scripts/install.sh --dest ~/.claude/skills --dest ~/.agents/skills
@@ -50,11 +53,16 @@ run() {
 }
 
 expand_dest() {
-  case "$1" in
-    "~") printf '%s\n' "$HOME" ;;
-    "~/"*) printf '%s/%s\n' "$HOME" "${1#\~/}" ;;
-    *) printf '%s\n' "$1" ;;
+  local path="$1"
+  case "$path" in
+    "~") path="$HOME" ;;
+    "~/"*) path="$HOME/${path#\~/}" ;;
+    "%USERPROFILE%"*) path="${USERPROFILE:-$HOME}${path#%USERPROFILE%}" ;;
+    "%APPDATA%"*) path="${APPDATA:-$HOME/AppData/Roaming}${path#%APPDATA%}" ;;
+    "%LOCALAPPDATA%"*) path="${LOCALAPPDATA:-$HOME/AppData/Local}${path#%LOCALAPPDATA%}" ;;
   esac
+  path="${path//\\//}"
+  printf '%s\n' "$path"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -97,9 +105,10 @@ done
 [[ -d "$SKILLS_DIR" ]] || die "skills directory not found: $SKILLS_DIR"
 
 SKILL_DIRS=()
-while IFS= read -r -d '' skill_dir; do
-  SKILL_DIRS+=("$skill_dir")
-done < <(find "$SKILLS_DIR" -mindepth 1 -maxdepth 1 -type d -print0 | sort -z)
+for skill_dir in "$SKILLS_DIR"/*/; do
+  [[ -d "$skill_dir" ]] || continue
+  SKILL_DIRS+=("${skill_dir%/}")
+done
 
 [[ ${#SKILL_DIRS[@]} -gt 0 ]] || die "no skills found in $SKILLS_DIR"
 
@@ -114,13 +123,14 @@ fi
 
 install_local() {
   local dest="$1" mode="$2"
-  local skill_dir name target
+  local skill_dir name target installed_mode
 
   run mkdir -p "$dest"
 
   for skill_dir in "${SKILL_DIRS[@]}"; do
     name="$(basename "$skill_dir")"
     target="$dest/$name"
+    installed_mode="$mode"
 
     if [[ -e "$target" && ! -L "$target" && "$FORCE" -ne 1 ]]; then
       note "skip $target (exists, use --force to replace)"
@@ -130,11 +140,15 @@ install_local() {
     run rm -rf "$target"
     if [[ "$mode" == "copy" ]]; then
       run cp -R "$skill_dir" "$target"
-    else
-      run ln -s "$skill_dir" "$target"
+    elif (( DRY_RUN )); then
+      printf '  ln -s %s %s\n' "$skill_dir" "$target"
+    elif ! ln -s "$skill_dir" "$target" 2>/dev/null; then
+      note "symlink unavailable; copying $name instead"
+      cp -R "$skill_dir" "$target"
+      installed_mode="copy"
     fi
 
-    note "$mode $name -> $dest"
+    note "$installed_mode $name -> $dest"
   done
 }
 
