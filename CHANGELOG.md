@@ -9,6 +9,8 @@ it.
 
 ## [Unreleased]
 
+## [2026.11.2] - 2026-11-18
+
 ### Added
 
 - `prompt-engineer`: an `INSTALL.md` for hosted assistants with no skill loader.
