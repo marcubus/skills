@@ -40,7 +40,7 @@ Twelve checks, mapped to the step that produces each one's evidence.
 
 ## The ledger block
 
-The block runs with `bash`, from the run directory. Sections 4 and 5 answer checks 4 and 5, and print no complaint when they pass; the `==` banners are labels, not complaints. Section 6 prints the quote failures for check 6. Section 7 prints the origin, tier, and confidence failures for checks 7, 8, and 10; check 8's incentive, fetch-route, and freshness conditions are read by hand. Section 8 prints the domain counts you read against check 9. Section 9 prints one line per axis with no sourced claim, which check 10 reads against the report's gaps. Checks 1, 2, and 3 are read from `notes.md`, the two tables, and the report path, and checks 11 and 12 read the report and what the report commands print.
+When the host has a POSIX shell, the block runs with `bash`, from the run directory. Otherwise, run the same checks with the agent's file and search tools. Sections 4 and 5 answer checks 4 and 5, and print no complaint when they pass; the `==` banners are labels, not complaints. Section 6 prints the quote failures for check 6. Section 7 prints the origin, tier, and confidence failures for checks 7, 8, and 10; check 8's incentive, fetch-route, and freshness conditions are read by hand. Section 8 prints the domain counts you read against check 9. Section 9 prints one line per axis with no sourced claim, which check 10 reads against the report's gaps. Checks 1, 2, and 3 are read from `notes.md`, the two tables, and the report path, and checks 11 and 12 read the report and what the report commands print.
 
 ```bash
 sha1_12() {

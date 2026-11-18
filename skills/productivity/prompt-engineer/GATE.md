@@ -1,6 +1,6 @@
 # Gate
 
-Nineteen checks a finished prompt passes before delivery. The commands read the prompt from a file named prompt.md in the folder you run them from. Put the prompt and its tool definition in that file, unfenced. Fence only source material quoted from the user. Each check names the rule it enforces.
+Nineteen checks a finished prompt passes before delivery. When the host has a POSIX shell, the commands read the prompt from a file named prompt.md in the folder you run them from; otherwise apply the same checks with the agent's file and search tools. Put the prompt and its tool definition in that file, unfenced. Fence only source material quoted from the user. Each check names the rule it enforces.
 
 Run the checks that apply to the prompt type. Checks 10 and 11 apply to multimodal and tool or agent prompts. Checks 17 and 19 apply when a multi-model or phased request is in play, and check 18 to a critique request.
 

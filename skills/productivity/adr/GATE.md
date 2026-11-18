@@ -1,6 +1,6 @@
 # Gate
 
-A check that names a command is settled by running it from the repository root, with NNNN-slug.md replaced by the record's own filename.
+A check that names a command is settled by running it from the repository root, with NNNN-slug.md replaced by the record's own filename. When the host has no POSIX shell, use the agent's file and search tools for the same check.
 
 ## Contents
 

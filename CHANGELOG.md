@@ -25,6 +25,10 @@ it.
   commands. Config lookup adds `%APPDATA%` and `%LOCALAPPDATA%` fallbacks on
   Windows, and the install docs state the Linux, macOS, and Windows shell
   requirements.
+- Skill workflows call the agent's web search, fetch, and file tools first.
+  Local commands are optional checks rather than the default route, and
+  `deep-research` no longer instructs `curl`. Every gate names the agent-tool
+  fallback for hosts without a POSIX shell.
 
 ## [2026.11.2] - 2026-11-18
 

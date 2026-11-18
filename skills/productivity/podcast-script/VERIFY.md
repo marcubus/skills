@@ -1,6 +1,6 @@
 # Verify
 
-The release gate. Run every check before handing the script back. A failed check is unfinished work.
+The release gate. Run every check before handing the script back. A failed check is unfinished work. Where a check gives a shell command, run it when the host has a POSIX shell; otherwise use the agent's file and search tools for the same check.
 
 ## Contents
 

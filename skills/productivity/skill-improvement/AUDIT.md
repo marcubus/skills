@@ -1,6 +1,6 @@
 # Audit
 
-Checks a command can settle, plus a few short reads. Run these before reading for judgement, and again after every round, from inside the target folder.
+Checks a command can settle, plus a few short reads. When the host has a POSIX shell, run these from inside the target folder; otherwise use the agent's file and search tools for the same checks. Run them before reading for judgement, and again after every round.
 
 A check that names a search term is a detector, not an example.
 

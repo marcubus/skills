@@ -17,7 +17,7 @@ Run every check before saving. Each check names the file that owns its rule, so 
 
 C1 to C24 and C26 to C28 run against the candidate profile before it is saved. C25 runs after the save and the index append, because it tests the path. C29 runs when a reference file changes, because it audits the skill rather than the profile.
 
-A check that needs judgement says so and says what to compare. A check that can be a command gives the command, run from the skill folder with the profile path substituted.
+A check that needs judgement says so and says what to compare. A check that can be a command gives the command, run from the skill folder with the profile path substituted. When the host has no POSIX shell, use the agent's file and search tools for the same check.
 
 ## Step map
 

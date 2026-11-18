@@ -137,7 +137,7 @@ Done when every slot is filled, every element you selected appears in the prompt
 
 ### Step 4: Check the prompt
 
-Run `GATE.md` on the prompt before delivery. The commands read a file named prompt.md in the folder you run them from, so write the draft there. Fix each failure in the prompt, then rerun only that check. The scan covers the prompt, the reply line, and the assumptions line, so run it on all three.
+Run `GATE.md` on the prompt before delivery. When the host has a POSIX shell, the commands read a file named prompt.md in the folder you run them from, so write the draft there; otherwise apply the same checks with the agent's file and search tools. Fix each failure in the prompt, then rerun only that check. The scan covers the prompt, the reply line, and the assumptions line, so run it on all three.
 
 Done when every applicable check passes.
 
