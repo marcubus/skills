@@ -1,6 +1,6 @@
 # Skills
 
-A collection of agent skills. Each skill turns a rough request into a finished result. Maintained by Marcus Ford.
+Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
 
 ## Skills
 
