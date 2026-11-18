@@ -86,12 +86,12 @@ Expect:
 
 ## Recorded runs
 
-Each run lives in `runs/<agent>/<scenario>/`, with the reply recorded.
+Each run lives in `runs/<run>/<scenario>/`, with the reply recorded.
 
-| Agent | Scenario | Result | Notes |
+| Run | Scenario | Result | Notes |
 |---|---|---|---|
-| opencode-default | 1 pasted policy | pass | seven flags, last one merges the five least exposed families |
-| opencode-default | 2 failed links | pass on retry | first attempt wrote the six parts; the skill now returns one paragraph |
-| opencode-default | 3 benign policy | pass | three Worth knowing flags, no High attention |
+| default | 1 pasted policy | pass | seven flags, last one merges the five least exposed families |
+| default | 2 failed links | pass on retry | first attempt wrote the six parts; the skill now returns one paragraph |
+| default | 3 benign policy | pass | three Worth knowing flags, no High attention |
 
-Scenario 2 failed its first run. The agent produced a full six-part review for two dead links, because the skill had no stop branch. Step 1 now says a failed fetch returns one paragraph under 150 words asking for a paste, and the retry is clean. The first attempt is kept at `runs/opencode-default/2-links/attempt-1-reply.md`.
+Scenario 2 failed its first run. The agent produced a full six-part review for two dead links, because the skill had no stop branch. Step 1 now says a failed fetch returns one paragraph under 150 words asking for a paste, and the retry is clean. The first attempt is kept at `runs/default/2-links/attempt-1-reply.md`.

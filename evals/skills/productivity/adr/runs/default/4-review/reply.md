@@ -1,6 +1,6 @@
 # Review — ADR-0004 Session storage
 
-Run folder: `runs/opencode-default/4-review/`
+Run folder: `runs/default/4-review/`
 Record: `docs/adr/0004-session-storage.md`
 Mode: **review** (brought-in work — this skill did not write this record, so C8 is skipped and the record keeps whatever shape the repo gave it).
 

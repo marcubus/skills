@@ -14,6 +14,10 @@ it.
 - Install docs list the common agent routes. The README covers OpenCode,
   Claude Code, Codex, Copilot, Gemini CLI, Cursor, Amp, and Pi instead of
   repeating only one or two agents.
+- Eval records use neutral `runs/default` paths and a Run column. Skill and
+  eval docs no longer name a harness as the runtime.
+- Skill examples use portable paths instead of a fixed home or temporary
+  directory, and an eval report no longer carries an absolute workspace path.
 
 ## [2026.11.2] - 2026-11-18
 

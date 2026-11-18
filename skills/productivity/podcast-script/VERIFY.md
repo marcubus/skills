@@ -347,9 +347,9 @@ Read the compiled text and the model file. Done when:
 Compare the text to the script body after removing every marker the model resolves:
 
 ```bash
-sed -E 's/\[[^]]*\]//g' <script-body> > /tmp/script-words.txt
-sed -E 's/\[[^]]*\]//g' <compiled-text> > /tmp/text-words.txt
-diff -u /tmp/script-words.txt /tmp/text-words.txt
+sed -E 's/\[[^]]*\]//g' <script-body> > "${TMPDIR:-/tmp}/script-words.txt"
+sed -E 's/\[[^]]*\]//g' <compiled-text> > "${TMPDIR:-/tmp}/text-words.txt"
+diff -u "${TMPDIR:-/tmp}/script-words.txt" "${TMPDIR:-/tmp}/text-words.txt"
 ```
 
 Expect differences only where a marker became punctuation or a blank line, or where a name was respelt. Every other word matches.

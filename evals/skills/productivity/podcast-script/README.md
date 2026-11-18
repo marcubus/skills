@@ -4,7 +4,7 @@ Three scenarios that exercise the skill end to end. Each starts from a fixed inp
 
 ## Why this folder is outside the skill
 
-This directory mirrors the skill path under `evals/`, not inside the skill folder. That is deliberate. Anything inside the skill folder is part of the skill: the agent can read it, and OpenCode samples its files. Fixtures must not be available to the skill, or the skill could learn from the test.
+This directory mirrors the skill path under `evals/`, not inside the skill folder. That is deliberate. Anything inside the skill folder is part of the skill: the agent can read it, and the harness may index its files. Fixtures must not be available to the skill, or the skill could learn from the test.
 
 The skill never references this folder. The only way a fixture enters a run is the prompt naming its path.
 
@@ -99,13 +99,13 @@ Expect:
 
 ## Recorded runs
 
-Each run lives in `runs/<agent>/<scenario>/`, with the fixture copied in so the run is self-contained.
+Each run lives in `runs/<run>/<scenario>/`, with the fixture copied in so the run is self-contained.
 
-| Agent | Scenario | Result | Notes |
+| Run | Scenario | Result | Notes |
 |---|---|---|---|
-| opencode-default | 1 solo | pass | 1,274 words, 8:37, cold open 35 words, both emotions dropped and recorded |
-| opencode-default | 2 retarget | pass | words unchanged, `[sadly]` and `[warmly]`, voice and rate dropped with a turn map |
-| opencode-default | 3 panel | pass | 3 failures reported by number, 12 checks pass, script untouched, no audio |
+| default | 1 solo | pass | 1,274 words, 8:37, cold open 35 words, both emotions dropped and recorded |
+| default | 2 retarget | pass | words unchanged, `[sadly]` and `[warmly]`, voice and rate dropped with a turn map |
+| default | 3 panel | pass | 3 failures reported by number, 12 checks pass, script untouched, no audio |
 
 What the runs changed:
 

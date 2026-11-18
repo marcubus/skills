@@ -51,7 +51,7 @@ Each bullet names the file it applies to.
 ## Runs
 
 ```text
-runs/<agent>/<scenario>/
+runs/<run>/<scenario>/
 ```
 
 One folder per agent per scenario, holding the fixture, the outputs, and any report. A second agent model gets its own folder, because the expectations describe the output, not the model.

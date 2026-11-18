@@ -165,7 +165,7 @@ Check three things:
 
 Turns a rough request into one finished, ready-to-use prompt for a chosen AI model. Ask for a prompt, and get a single usable result rather than a draft. Give an existing prompt, and the skill critiques, tests, or improves the prompt against best practice.
 
-Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
+Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
 
 ### Supported models
 
@@ -187,7 +187,7 @@ The report is plain prose with a source marker on every factual sentence. It nam
 
 The skill stops at the report. Rendering, publishing, and any spoken version belong elsewhere.
 
-Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
+Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
 
 ### Files
 
@@ -220,7 +220,7 @@ The model file says what the text carries. The skill writes to the chosen model 
 
 The skill stops at the text. It builds no payload and calls no service; research, rendering, mastering, and publishing belong elsewhere.
 
-Runs as an OpenCode skill, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
+Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
 
 ### Files
 
@@ -312,7 +312,7 @@ User-invoked: type `/skill-improvement` or name it. It stays out of the model's 
 
 Use the [install routes](#install). This skill needs the whole `skill-improvement` folder, because `SKILL.md` points at the reference files.
 
-The frontmatter sets `disable-model-invocation: true`, so OpenCode keeps it out of the model's list and loads it only when you name it.
+The frontmatter sets `disable-model-invocation: true`, so agents that honour it keep the skill out of the model's list and load it only when you name it.
 
 ### Verify
 

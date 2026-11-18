@@ -1,6 +1,6 @@
 # Prompt Engineer: hosted assistant install
 
-This skill loads itself in any agent with a skill loader. OpenCode, Claude Code, Codex, Cursor and Copilot CLI need only the routes in [`docs/install.md`](../../../docs/install.md).
+This skill loads itself in any agent with a skill loader. Such an agent needs only the routes in [`docs/install.md`](../../../docs/install.md).
 
 This page covers the other case. A hosted assistant has no skill loader, so the files go in by hand. The route mechanics live in `docs/install.md`. What follows is the part specific to this skill: which files to load, what goes in the instruction box, and how to tell it works.
 

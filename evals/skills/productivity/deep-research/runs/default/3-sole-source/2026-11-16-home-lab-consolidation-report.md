@@ -102,4 +102,4 @@ The backup finding would change if the nightly job turned out to need supervisio
 
 SOURCES
 
-Tier 1. Moving the home lab to one box, internal operator note, 9 November 2026. /optimus/workspace/skills/evals/skills/productivity/deep-research/fixtures/scenario-3-source.md
+Tier 1. Moving the home lab to one box, internal operator note, 9 November 2026. evals/skills/productivity/deep-research/fixtures/scenario-3-source.md

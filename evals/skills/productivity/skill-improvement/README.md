@@ -80,12 +80,12 @@ Expect:
 
 ## Recorded runs
 
-| Agent | Scenario | Result | Notes |
+| Run | Scenario | Result | Notes |
 |---|---|---|---|
-| opencode-default | 1 survey | pass | 11 planted defects, 2 judgement defects, fixture untouched |
-| opencode-default | 2 gauntlet | pass | 0 blockers, 0 majors after round 2 |
-| opencode-default | 3 evals | pass | three scenarios, three fixtures, skill unmodified |
-| opencode-default | dogfood | pass | 3 rounds: 2 blockers and 15 majors, then 4 majors, then 0/0/0 |
+| default | 1 survey | pass | 11 planted defects, 2 judgement defects, fixture untouched |
+| default | 2 gauntlet | pass | 0 blockers, 0 majors after round 2 |
+| default | 3 evals | pass | three scenarios, three fixtures, skill unmodified |
+| default | dogfood | pass | 3 rounds: 2 blockers and 15 majors, then 4 majors, then 0/0/0 |
 
 ## Regression notes
 

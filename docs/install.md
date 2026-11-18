@@ -145,7 +145,7 @@ Regular Microsoft 365 Copilot Chat, not Copilot Studio.
 1. Sign in at <https://m365.cloud.microsoft/chat>, or open Copilot in Teams.
 2. Choose Create an agent, or open the Agents area and pick New agent.
 3. Name the agent Prompt Engineer and give the agent a short description.
-4. Paste the body of `skills/productivity/prompt-engineer/SKILL.md` into the Instructions box. Start at the `# Prompt Engineer` heading. The front matter is for OpenCode only.
+4. Paste the body of `skills/productivity/prompt-engineer/SKILL.md` into the Instructions box. Start at the `# Prompt Engineer` heading. The front matter is for skill loaders; the body is what the hosted assistant needs.
 5. Under Knowledge, add the five model knowledge files from the same folder. Upload them from OneDrive or SharePoint, since Copilot grounds agents on Microsoft 365 content.
 6. Save, then open the agent from Copilot Chat and describe the prompt you want.
 

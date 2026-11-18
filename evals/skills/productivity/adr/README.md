@@ -15,7 +15,7 @@ Four scenarios, five fixtures, one recorded run each. The skill never references
 ## 1. Main path
 
 ```text
-Read evals/skills/productivity/adr/fixtures/scenario-1-decision-brief.md and write the record in runs/opencode-default/1-write/.
+Read evals/skills/productivity/adr/fixtures/scenario-1-decision-brief.md and write the record in runs/default/1-write/.
 ```
 
 Expect:
@@ -31,7 +31,7 @@ Expect:
 ## 2. Triage refusal
 
 ```text
-Read evals/skills/productivity/adr/fixtures/scenario-2-reversible-choice.md and act on it, in runs/opencode-default/2-refusal/.
+Read evals/skills/productivity/adr/fixtures/scenario-2-reversible-choice.md and act on it, in runs/default/2-refusal/.
 ```
 
 Expect:
@@ -44,7 +44,7 @@ Expect:
 ## 3. Supersede
 
 ```text
-Copy evals/skills/productivity/adr/fixtures/scenario-3-repo/ into runs/opencode-default/3-supersede/, read evals/skills/productivity/adr/fixtures/scenario-3-change-brief.md, and act on it.
+Copy evals/skills/productivity/adr/fixtures/scenario-3-repo/ into runs/default/3-supersede/, read evals/skills/productivity/adr/fixtures/scenario-3-change-brief.md, and act on it.
 ```
 
 Expect:
@@ -59,7 +59,7 @@ Expect:
 ## 4. Gate alone
 
 ```text
-Copy evals/skills/productivity/adr/fixtures/scenario-4-repo/ into runs/opencode-default/4-review/ and review the record there.
+Copy evals/skills/productivity/adr/fixtures/scenario-4-repo/ into runs/default/4-review/ and review the record there.
 ```
 
 Expect:

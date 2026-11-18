@@ -21,7 +21,7 @@ Three modes. **Review**: phases 1 and 5, the report is the deliverable, the targ
 | The gate | `<skill>/GATE.md`, or a section in the entry file when the skill has no reference files |
 | The report | `reviews/<skill>.md`, relative to the working root |
 | The evals | `evals/<skill path>/`, mirroring the skill's own path |
-| A run | `evals/<skill path>/runs/<agent>/<scenario>/` |
+| A run | `evals/<skill path>/runs/<run>/<scenario>/` |
 
 Run every audit command from inside the target folder. State the mode, the phase you stopped at, and the round counts in the report, or `none` in review mode. A dry run is one fresh agent running the skill on one input and producing the deliverable without asking a question; record it in the report's Evals table.
 

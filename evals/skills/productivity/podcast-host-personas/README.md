@@ -102,13 +102,13 @@ Expect:
 
 ## Recorded runs
 
-Each run lives in `runs/<agent>/<scenario>/`, with the fixture copied in so the run is self-contained.
+Each run lives in `runs/<run>/<scenario>/`, with the fixture copied in so the run is self-contained.
 
-| Agent | Scenario | Result | Notes |
+| Run | Scenario | Result | Notes |
 |---|---|---|---|
-| opencode-default | 1 first host | pass | `irish` for Northern Irish, `brisk` 159, `descending_wheeze` from the tie-break, room mapped to `treated_room` by R7 |
-| opencode-default | 2 second host | pass | collided on 5 axes with 2 core, mutated in order, stopped at 1 core match, store untouched |
-| opencode-default | 3 gate | pass | 17 checks failed by number, candidate unchanged, 7 gaps reported and closed |
+| default | 1 first host | pass | `irish` for Northern Irish, `brisk` 159, `descending_wheeze` from the tie-break, room mapped to `treated_room` by R7 |
+| default | 2 second host | pass | collided on 5 axes with 2 core, mutated in order, stopped at 1 core match, store untouched |
+| default | 3 gate | pass | 17 checks failed by number, candidate unchanged, 7 gaps reported and closed |
 
 What the runs changed:
 

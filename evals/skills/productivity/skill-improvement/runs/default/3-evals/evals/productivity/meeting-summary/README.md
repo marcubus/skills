@@ -63,9 +63,9 @@ Expect:
 
 ## Recorded run
 
-| Agent | Scenario | Result | Evidence |
+| Run | Scenario | Result | Evidence |
 |---|---|---|---|
-| opencode-default | 1 main | pass | `runs/opencode-default/1-main/transcript-summary.md` |
+| default | 1 main | pass | `runs/default/1-main/transcript-summary.md` |
 
 ## Regression notes
 

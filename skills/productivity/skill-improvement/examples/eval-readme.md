@@ -43,7 +43,7 @@ Expect:
 ## 3. Gate alone
 
 ```text
-check evals/skills/productivity/invoice-check/runs/opencode-default/1-main/clean-invoice-report.md
+check evals/skills/productivity/invoice-check/runs/default/1-main/clean-invoice-report.md
 ```
 
 Expect:

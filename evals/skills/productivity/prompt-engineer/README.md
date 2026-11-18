@@ -47,8 +47,8 @@ Three scenarios for `skills/productivity/prompt-engineer`. Each run starts from 
 
 ## Runs
 
-| Agent | Scenario | Result | Evidence |
+| Run | Scenario | Result | Evidence |
 |---|---|---|---|
-| opencode-default | 1 | pass | `runs/opencode-default/1-oneshot/` |
-| opencode-default | 2 | pass | `runs/opencode-default/2-agent/` |
-| opencode-default | 3 | pass | `runs/opencode-default/3-critique/` |
+| default | 1 | pass | `runs/default/1-oneshot/` |
+| default | 2 | pass | `runs/default/2-agent/` |
+| default | 3 | pass | `runs/default/3-critique/` |

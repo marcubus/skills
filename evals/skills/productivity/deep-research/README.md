@@ -75,7 +75,7 @@ Expect:
 - WHERE THE SOURCES DISAGREE is absent and its absence is explained in WHAT COULD NOT BE VERIFIED.
 - Ledger block sections 5, 6, and 7 print nothing.
 
-Recorded at `runs/opencode-default/3-sole-source/`. The report came in at 1,557 words. It was recorded against the 26-check version and re-checked against the 12-check gate after the simplification; its BOTTOM LINE was cut from four sentences to three at that re-check. The first draft came in at 1,431 words and failed the floor, which is the check working: the floor is what stops a report collapsing into a summary.
+Recorded at `runs/default/3-sole-source/`. The report came in at 1,557 words. It was recorded against the 26-check version and re-checked against the 12-check gate after the simplification; its BOTTOM LINE was cut from four sentences to three at that re-check. The first draft came in at 1,431 words and failed the floor, which is the check working: the floor is what stops a report collapsing into a summary.
 
 ## 4. Vendor-dominated landscape
 
@@ -125,7 +125,7 @@ Expect four hits and nothing else:
 
 ## Recorded runs
 
-| Agent | Scenario | Result | Notes |
+| Run | Scenario | Result | Notes |
 |---|---|---|---|
-| opencode-default | 3 sole source | pass | 1,557 words, 12 claims, all single-sourced, ledger block clean |
-| opencode-default | 1, 2, 4 | not yet recorded | Live-web scenarios are recorded on first real use |
+| default | 3 sole source | pass | 1,557 words, 12 claims, all single-sourced, ledger block clean |
+| default | 1, 2, 4 | not yet recorded | Live-web scenarios are recorded on first real use |
