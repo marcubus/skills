@@ -57,7 +57,7 @@ Load the model file matching the resolved target before building. Load several w
 | DeepSeek V3, V4, and R1 | `MODEL-DEEPSEEK.md` |
 | Qwen2.5 and Qwen3 | `MODEL-QWEN.md` |
 
-The branch frameworks live in `BRANCHES.md`. The gate lives in `GATE.md`.
+The branch frameworks live in `BRANCHES.md`. The gate lives in `GATE.md`. Installing this skill in a hosted assistant that has no skill loader: `INSTALL.md`.
 
 ## Model detection
 

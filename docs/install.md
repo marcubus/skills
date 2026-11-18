@@ -1,13 +1,6 @@
 # Install
 
-Every route installs the same four skills from `skills/productivity/`:
-
-- `prompt-engineer`
-- `podcast-script`
-- `podcast-host-personas`
-- `skill-improvement`
-
-Pick the route that matches your agent. Do not install the same skill twice through two routes, because the agent will list it twice.
+Every route installs the same skills from `skills/productivity/`. Pick the route that matches your agent. Do not install the same skill twice through two routes, because the agent will list it twice.
 
 Hosted assistants without a skill loader need the manual paste steps at the end. The same pattern works for each skill: paste its `SKILL.md` body, then upload its reference files.
 

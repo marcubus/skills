@@ -11,12 +11,25 @@ it.
 
 ### Added
 
+- `prompt-engineer`: an `INSTALL.md` for hosted assistants with no skill loader.
+  Names the eight files to upload, the instruction block that points at them
+  rather than restating them, the per-platform constraints, and a verification
+  request. Agent routes stay in `docs/install.md`.
 - `adr`: writes one architecture decision record, amends, supersedes or edits
   a proposed one, and reviews a record by check number. Triage on three
   conditions, an interview capped at three rounds of three questions, a house
   shape with an optional-section ladder, a lifecycle where `accepted` means
   implemented, and a nineteen-check gate with commands that run against a
   fixture pair. Four eval scenarios.
+
+### Fixed
+
+- `scripts/check.py` skipped eval fixtures in the link check. A fixture is a
+  synthetic repository, so a link it deliberately leaves unresolved is content
+  under test, not a broken document.
+- `docs/install.md` named four skills where the repository has seven. The list
+  is gone, so the page points at `skills/productivity/` instead of caching a
+  count that moves.
 
 ## [2026.11.1] - 2026-11-17
 

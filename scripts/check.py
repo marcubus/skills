@@ -103,6 +103,10 @@ LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
 def check_links() -> None:
     for path in tracked("*.md"):
         rel = path.relative_to(ROOT)
+        # Eval fixtures are synthetic repositories. Their links are content under
+        # test, and a scenario may deliberately point at a file it has not created.
+        if rel.parts[0] == "evals":
+            continue
         in_fence = False
         for lineno, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             if line.lstrip().startswith("```"):
