@@ -9,6 +9,15 @@ it.
 
 ## [Unreleased]
 
+### Added
+
+- `adr`: writes one architecture decision record, amends, supersedes or edits
+  a proposed one, and reviews a record by check number. Triage on three
+  conditions, an interview capped at three rounds of three questions, a house
+  shape with an optional-section ladder, a lifecycle where `accepted` means
+  implemented, and a nineteen-check gate with commands that run against a
+  fixture pair. Four eval scenarios.
+
 ## [2026.11.1] - 2026-11-17
 
 ### Added

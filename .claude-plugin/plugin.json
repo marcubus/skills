@@ -24,6 +24,7 @@
     "./skills/productivity/podcast-script",
     "./skills/productivity/podcast-host-personas",
     "./skills/productivity/skill-improvement",
-    "./skills/productivity/policy-review"
+    "./skills/productivity/policy-review",
+    "./skills/productivity/adr"
   ]
 }
