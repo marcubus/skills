@@ -9,6 +9,12 @@ it.
 
 ## [Unreleased]
 
+### Changed
+
+- Install docs list the common agent routes and no longer mention Hermes. The
+  README covers OpenCode, Claude Code, Codex, Copilot, Gemini CLI, Cursor, Amp,
+  and Pi instead of repeating only one or two agents.
+
 ## [2026.11.2] - 2026-11-18
 
 ### Added

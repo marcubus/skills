@@ -11,7 +11,6 @@ Hosted assistants without a skill loader need the manual paste steps at the end.
 | OpenCode | Global | `~/.config/opencode/skills/` |
 | OpenCode | Project | `<project>/.opencode/skills/` |
 | OpenCode | Compatibility | `~/.agents/skills/`, `.agents/skills/` |
-| Hermes | Global | `~/.hermes/skills/<category>/` |
 | Claude Code | Global | `~/.claude/skills/` |
 | Codex, Cursor, Amp, Pi | Global | `~/.agents/skills/` |
 | Codex, Cursor, Amp, Pi | Project | `.agents/skills/` |
@@ -22,7 +21,7 @@ Hosted assistants without a skill loader need the manual paste steps at the end.
 npx skills@latest add marcubus/skills
 ```
 
-Omit `-a` to choose from the agents detected on your machine. Add `-a opencode -a hermes-agent` to preselect. Add `-g` for a global install. Add `--skill prompt-engineer` for one skill.
+Omit `-a` to choose from the agents detected on your machine. Add `-a opencode` or `-a claude-code` to preselect. Add `-g` for a global install. Add `--skill prompt-engineer` for one skill.
 
 The installer discovers `skills/productivity/<skill>/SKILL.md`, links the folders into each agent's skill directory, and records them in `skills-lock.json`.
 
@@ -76,31 +75,6 @@ You can also point OpenCode at the repo without copying:
 OpenCode combines every `skills` array, so the entry adds to the default directories.
 
 Verify: the session lists `prompt-engineer` among available skills.
-
-## Hermes
-
-For a normal host install with the default profile:
-
-```bash
-npx skills@latest add marcubus/skills -a hermes-agent -g
-```
-
-This writes to `~/.hermes/skills/`. Hermes reads `$HERMES_HOME/skills/`, so set `HERMES_HOME` first if your profile lives elsewhere. If it does, pass the matching destination to the local installer:
-
-```bash
-scripts/install.sh --dest "$HERMES_HOME/skills/productivity"
-```
-
-For a container, copy that same destination into the mounted profile with `docker cp`, or run the installer against the host side of the mount.
-
-Hermes also has its own registry commands:
-
-```bash
-hermes skills tap add marcubus/skills
-hermes skills search prompt-engineer
-```
-
-Run `hermes skills list` to verify.
 
 ## Claude Code
 

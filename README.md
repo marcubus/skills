@@ -30,7 +30,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 ### Any agent, one command
 
 ```bash
-npx skills@latest add marcubus/skills -a opencode -a hermes-agent
+npx skills@latest add marcubus/skills
 ```
 
 Omit `-a` to choose from the agents on your machine. Add `-g` for a global install. Add `--skill <name>` for one skill. To update, run `npx skills@latest update`, then re-run `add` for new skills.
@@ -59,19 +59,77 @@ Manual install: copy or symlink each folder in `skills/productivity/` into `~/.c
 
 OpenCode combines every `skills` array, so this adds to the default directories rather than replacing them.
 
-### Hermes
-
-For a default host profile, skills.sh writes to `~/.hermes/skills/`:
+### Claude Code
 
 ```bash
-npx skills@latest add marcubus/skills -a hermes-agent -g
+claude plugin marketplace add marcubus/skills
+claude plugin install marcubus-skills@marcubus
 ```
 
-If `HERMES_HOME` points somewhere else, pass the matching destination to the local installer:
+The plugin updates when the `version` in `.claude-plugin/plugin.json` changes.
+
+Or use skills.sh:
 
 ```bash
-scripts/install.sh --dest "$HERMES_HOME/skills/productivity"
+npx skills@latest add marcubus/skills -a claude-code
 ```
+
+### Codex
+
+```bash
+codex plugin marketplace add marcubus/skills
+codex plugin add marcubus-skills@marcubus
+```
+
+Codex updates the plugin at startup.
+
+Or use skills.sh:
+
+```bash
+npx skills@latest add marcubus/skills -a codex
+```
+
+### GitHub Copilot CLI and VS Code
+
+```bash
+copilot plugin marketplace add marcubus/skills
+copilot plugin install marcubus-skills@marcubus
+```
+
+Then, once, add the marketplace to `~/.copilot/settings.json`:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "marcubus": {
+      "source": { "source": "github", "repo": "marcubus/skills" },
+      "autoUpdate": true
+    }
+  }
+}
+```
+
+In VS Code, run **Chat: Install Plugin From Source** and enter `https://github.com/marcubus/skills`.
+
+### Gemini CLI
+
+Gemini installs one bucket at a time:
+
+```bash
+gemini skills install https://github.com/marcubus/skills.git --path skills/productivity
+```
+
+Re-run the command to update.
+
+### Cursor, Amp, Pi, and other agents
+
+These agents read `~/.agents/skills/` globally or `.agents/skills/` in a project. Link the repo into either:
+
+```bash
+scripts/install.sh --dest ~/.agents/skills
+```
+
+See [docs/install.md](docs/install.md) for every agent route.
 
 ### Local checkout installer
 
@@ -84,31 +142,6 @@ scripts/install.sh --dest ~/.agents/skills --copy
 ```
 
 Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force` replaces existing folders, and `--list` prints the skills in this repo.
-
-### Plugin marketplace
-
-Claude Code, Codex, and Copilot CLI can install the repo as a managed plugin:
-
-```bash
-claude plugin marketplace add marcubus/skills
-claude plugin install marcubus-skills@marcubus
-```
-
-```bash
-codex plugin marketplace add marcubus/skills
-codex plugin add marcubus-skills@marcubus
-```
-
-```bash
-copilot plugin marketplace add marcubus/skills
-copilot plugin install marcubus-skills@marcubus
-```
-
-Gemini CLI installs each bucket separately:
-
-```bash
-gemini skills install https://github.com/marcubus/skills.git --path skills/productivity
-```
 
 ### Hosted assistants
 
