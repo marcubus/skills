@@ -1,6 +1,19 @@
 # Verify
 
-The release gate. Run every check before handing the script back. A failed check is unfinished work. Where a check gives a shell command, run it when the host has a POSIX shell; otherwise use the agent's file and search tools for the same check.
+The release gate. Run every check before handing the script back. A failed check is unfinished work.
+
+Where a check gives a shell command, run it when the host has a POSIX shell. When the host has no shell, run the same check with the agent's file and search tools:
+
+| Check | Without a shell | Pass when |
+|---|---|---|
+| 2 | Read the source and script file metadata, or open each file and compare the modified time | The script is newer |
+| 6 | Read the script, ignore every bracketed marker, and count the remaining words | The count is within 15 percent of the target, and the runtime matches the pacing sheet |
+| 7 | Find every bracketed span, group them by tag and value, and check each tag against the five allowed tags | Every tag is one of the five, no bracket lacks a colon, every emotion is one of the eight, and every rate is 0.75 to 1.3 |
+| 8 | Search the script for `(`, `)`, `"`, an em dash, an en dash, `--`, `/`, `!!`, and `??`, then for emoji, then for a line starting with `#`, `*`, `- `, or `\|` | No hit from any search |
+| 15 | Search the script for each banlist phrase, each meta-commentary phrase, and each host `never_says` phrase, ignoring case | No hit from any search |
+| 16 | Read the script and the compiled text, remove every bracketed marker from both, and compare the word sequences | Differences appear only where a marker became punctuation or a blank line, or where a name was respelt |
+
+A timestamp needs a file tool that reports modified time. When it reports none, mark check 2 unverified rather than passing it.
 
 ## Contents
 

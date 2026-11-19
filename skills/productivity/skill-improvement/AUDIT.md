@@ -1,6 +1,30 @@
 # Audit
 
-Checks a command can settle, plus a few short reads. When the host has a POSIX shell, run these from inside the target folder; otherwise use the agent's file and search tools for the same checks. Run them before reading for judgement, and again after every round.
+Checks a command can settle, plus a few short reads. Run them from inside the target folder, before reading for judgement and again after every round.
+
+When the host has no POSIX shell, run the same checks with the agent's file and search tools:
+
+| Check | Without a shell | Pass when |
+|---|---|---|
+| A1 | Read the folder name and the first six lines of `SKILL.md` | `name` matches the slug pattern and equals the folder name |
+| A3 | Count the lines in `SKILL.md` | Under 500 |
+| A4 | List every file except `examples/`, collect the backticked `.md`, `.txt`, `.yaml`, and `.json` paths in the files, and open each one | No referenced path is missing |
+| A5 | List every file and note its extension | No `.py`, `.sh`, `.js`, `.ts`, or `.rb` file |
+| A6 | List every file except `examples/` and `AUDIT.md`, and search for `curl `, `authorization:`, `bearer `, `api_key`, `content-type:`, and `http` | No hit |
+| A7 | List every file except `AUDIT.md`, and search for `sk-`, `ghp_`, `xoxb`, `xoxp`, `xoxa`, `xoxr`, `xoxs`, and `-----BEGIN` | No hit |
+| A8 | Read every heading in every file | No concept carries two names, and no two headings name one concept |
+| A9 | Recompute each stated count from the file it describes | Every count matches |
+| A10 | List every file, collect every backticked path as a reference, and compare the two sets | Every orphan is loaded by a manifest or named in the report; `examples/` is excluded |
+| A11 | List every directory | No `evals` directory inside the skill |
+| A12 | Search `SKILL.md` for each variant name | No hit |
+| A13 | Read the `## ` headings in each file | No heading repeats within one file; fenced blocks are ignored |
+| A14 | List every file except `examples/` and `AUDIT.md`, and search for the vague words in the command | Every hit is replaced or recorded as an accepted finding |
+| A16 | Find every `check N` reference and open the gate | Every number exists |
+| A19 | Read `agents/openai.yaml` and the `SKILL.md` description | `short_description` states the same outcome in fewer words and names no extra branch |
+| A20 | Read the description and the opening paragraph | Every property adjective names the mechanism that proves it, or is cut |
+| A21 | Read the target `GATE.md`, then run or hand-apply every command against the named fixtures | The clean fixture prints no complaint, the broken fixture prints the documented count, and every check has a command or a named read |
+
+A19 is not applicable when no manifest exists. A16, A18, and A21 are not applicable when the skill has no gate, and the report says so.
 
 A check that names a search term is a detector, not an example.
 

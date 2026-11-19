@@ -40,7 +40,21 @@ Twelve checks, mapped to the step that produces each one's evidence.
 
 ## The ledger block
 
-When the host has a POSIX shell, the block runs with `bash`, from the run directory. Otherwise, run the same checks with the agent's file and search tools. Sections 4 and 5 answer checks 4 and 5, and print no complaint when they pass; the `==` banners are labels, not complaints. Section 6 prints the quote failures for check 6. Section 7 prints the origin, tier, and confidence failures for checks 7, 8, and 10; check 8's incentive, fetch-route, and freshness conditions are read by hand. Section 8 prints the domain counts you read against check 9. Section 9 prints one line per axis with no sourced claim, which check 10 reads against the report's gaps. Checks 1, 2, and 3 are read from `notes.md`, the two tables, and the report path, and checks 11 and 12 read the report and what the report commands print.
+When the host has a POSIX shell, the block runs with `bash`, from the run directory. Sections 4 and 5 answer checks 4 and 5, and print no complaint when they pass; the `==` banners are labels, not complaints. Section 6 prints the quote failures for check 6. Section 7 prints the origin, tier, and confidence failures for checks 7, 8, and 10; check 8's incentive, fetch-route, and freshness conditions are read by hand. Section 8 prints the domain counts you read against check 9. Section 9 prints one line per axis with no sourced claim, which check 10 reads against the report's gaps. Checks 1, 2, and 3 are read from `notes.md`, the two tables, and the report path, and checks 11 and 12 read the report and what the report commands print.
+
+When the host has no POSIX shell, run the same checks with the agent's file and search tools:
+
+| Block | Without a shell | Pass when |
+|---|---|---|
+| 4 headers | Read line 1 of `sources.tsv` and `claims.tsv`, and split each data row on tabs | Both headers equal the documented columns, every `sources.tsv` row has 10 fields, every `claims.tsv` row has 9, `published` is a date or `undated`, and both files have at least one data row |
+| 5 bodies | For each `sources.tsv` row, open the body path and list `bodies/` | Every body exists, every `sha1` matches the body or reads `n/a`, and no body lacks a row |
+| 6 quotes | Search each cited body for the claim's quote as a literal string | Every non-inference quote appears verbatim and is 15 words or fewer |
+| 7 origins | Map each claim's source ids to their `origin` values, read the claim's confidence, and read the report's THE NUMBERS and BOTTOM LINE sections | Distinct origins equal the claims count, one-origin claims read `single-sourced` or `contested`, no tier 3 source feeds a THE NUMBERS or BOTTOM LINE figure, and confidence is one of the four values |
+| 8 domains | List the `domain` column, drop `local`, and count each value | The counts are the numbers you read against check 9 |
+| 9 axes | Read the `axes:` list in `notes.md`, then search `claims.tsv` for a sourced claim whose section equals each label | Every axis has one, or is named as a gap in the report |
+| report | Read the report and apply each command's rule by hand: word count, paragraph length, landscape count, sentence counts, markdown, dashes, ranges, banned nouns, self-reference, `you`, `TO BE WRITTEN`, labels ending in `?`, markers per sentence, markers resolving to sources, and uncited sources | Every rule the command enforces holds |
+
+A hash needs a hash tool. When the host has no shell and no hashing tool, record `sha1: unavailable` in `notes.md`, mark the body unchecked in the report's gaps, and do not claim the body was verified.
 
 ```bash
 sha1_12() {

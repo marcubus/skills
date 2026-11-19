@@ -29,6 +29,7 @@ The command sits above the condition, in its own block, so the reader can run it
 - The condition is observable in the output, not in the author's intent.
 - A check that needs judgement says so, and says what to compare.
 - A check that can be a command is a command.
+- A check with a command also names the same-result file or search operation for a host with no shell, and the result that proves it passed.
 
 ## Step map
 

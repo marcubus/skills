@@ -8,7 +8,7 @@ Hosted assistants without a skill loader need the manual paste steps at the end.
 
 The skills are text and folders, so they work on Linux, macOS, and Windows. The local installer needs bash: use Linux, macOS, WSL, or Git Bash. On Windows, pass `--copy` when symlinks are unavailable.
 
-The gate blocks use a POSIX shell with `awk`, `grep`, and `sed`. On native Windows, run them in WSL or Git Bash, or use the agent's own file and search tools. The hashing and timestamp checks name a macOS and Python alternative where the Linux command differs.
+The gate blocks use a POSIX shell with `awk`, `grep`, and `sed`. On native Windows, run them in WSL or Git Bash. Each gate also carries a table that names the file or search operation and the pass condition for every command check, so an agent with no shell can run the same gate with its own tools. The hashing and timestamp checks name a macOS and Python alternative where the Linux command differs.
 
 ## Paths by agent
 

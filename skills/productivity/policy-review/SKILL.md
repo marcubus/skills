@@ -101,7 +101,7 @@ Done when the six parts, the footer, and any What changed line are present, in o
 
 ### Step 5: Run the gate
 
-Run `GATE.md`. When the host has a POSIX shell and the skill folder is at hand, run its shell check too; otherwise use the agent's file and search tools for the same check. Fix the reply and run the gate again after any failure.
+Run `GATE.md`. When the host has a POSIX shell and the skill folder is at hand, run its shell check too; otherwise list the committed files, search them for the path prefixes, and read them for names as check 14 describes. Fix the reply and run the gate again after any failure.
 
 Done when every check in `GATE.md` passes.
 

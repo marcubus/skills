@@ -1,6 +1,20 @@
 # Gate
 
-A check that names a command is settled by running it from the repository root, with NNNN-slug.md replaced by the record's own filename. When the host has no POSIX shell, use the agent's file and search tools for the same check.
+A check that names a command is settled by running it from the repository root, with NNNN-slug.md replaced by the record's own filename.
+
+When the host has no POSIX shell, run the same check with the agent's file and search tools:
+
+| Check | Without a shell | Pass when |
+|---|---|---|
+| C1 | List `docs/adr/`, open the record path, match the basename against `^[0-9]{4}-[a-z0-9]+(-[a-z0-9]+)*\.md$` | The name matches |
+| C2 | List the `docs/adr/` filenames, read the first four characters of each, and compare them | No number repeats, and the record's number is one past the highest |
+| C3 | Read the record, find the `**Status:**` line, compare its value with the four in `FORMAT.md` | One of the four values is present |
+| C4 | Read the first 12 lines and find `**Status:**`, `**Date:**`, `**Author:**` | The three appear in that order and `Date` is `YYYY-MM-DD` |
+| C5 | Read every `## ` heading in order | `Context`, `Decision`, the options heading, and `Consequences` appear in order |
+| C6 | For every relative link target and every `ADR-NNNN`, list the target path or the matching `NNNN-*.md` file | Every target exists |
+| C7 | If `docs/adr/README.md` exists, search it for `[NNNN](` | Exactly one row, with matching title and status |
+| C8 | Read the record and count `**Implemented:** YYYY-MM-DD` and `## Implementation` | Each appears once for an accepted record, or the check is not applicable |
+| C9 | Search the record for `(password\|token\|key\|secret) *= *\S` | Every hit is a name with no value beside it |
 
 ## Contents
 

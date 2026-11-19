@@ -1,10 +1,19 @@
 # Gate
 
-Nineteen checks a finished prompt passes before delivery. When the host has a POSIX shell, the commands read the prompt from a file named prompt.md in the folder you run them from; otherwise apply the same checks with the agent's file and search tools. Put the prompt and its tool definition in that file, unfenced. Fence only source material quoted from the user. Each check names the rule it enforces.
+Nineteen checks a finished prompt passes before delivery. The commands read the prompt from a file named prompt.md in the folder you run them from. Put the prompt and its tool definition in that file, unfenced. Fence only source material quoted from the user. Each check names the rule it enforces.
 
 Run the checks that apply to the prompt type. Checks 10 and 11 apply to multimodal and tool or agent prompts. Checks 17 and 19 apply when a multi-model or phased request is in play, and check 18 to a critique request.
 
 **Brought-in path.** A prompt the user supplies for critique enters at check 18. A finding cites one of checks 1 to 17 or 19 as the rule it breaks. Those checks judge the rewrite, and run only when the user asks for one.
+
+Two checks have a command. When the host has no POSIX shell, run them with the agent's file and search tools:
+
+| Check | Without a shell | Pass when |
+|---|---|---|
+| 12 | Read the prompt, skip fenced blocks and the `Banned words:` line, and search the rest for an em dash, a semicolon, and each banned word as a whole word | None appears, and the `Style:` line matches the compact line in `SKILL.md` |
+| 15 | Read the unfenced prompt and find every bracketed span | Every span is a slot you filled, a JSON schema bracket, or `[ILLEGIBLE]` |
+
+The other checks are reads against a named rule, so they need no shell.
 
 ## Step map
 
