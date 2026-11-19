@@ -27,13 +27,14 @@ it.
   requirements.
 - Skill workflows call the agent's web search, fetch, and file tools first.
   Local commands are optional checks rather than the default route, and
-  `deep-research` no longer instructs `curl`. Every gate names the agent-tool
-  fallback for hosts without a POSIX shell.
-- Every command check now has a concrete no-shell fallback: the exact file
-  read or search operation and the result that proves the check passed. This
-  covers `adr`, `deep-research`, `podcast-host-personas`, `podcast-script`,
-  `policy-review`, `prompt-engineer`, and `skill-improvement`. New gates must
-  carry the same fallback beside every command.
+  `deep-research` no longer instructs `curl`. Every gate gives the agent-tool
+  route first and the shell command as its fallback.
+- Every gate now leads with the agent's file or search operation and the
+  result that proves the check passed, and keeps the shell command as the
+  equivalent fallback. This covers `adr`, `deep-research`,
+  `podcast-host-personas`, `podcast-script`, `policy-review`,
+  `prompt-engineer`, and `skill-improvement`. New gates must name the agent
+  operation first and the command second.
 
 ## [2026.11.2] - 2026-11-18
 

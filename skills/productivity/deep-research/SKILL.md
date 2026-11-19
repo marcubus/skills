@@ -107,7 +107,7 @@ Done when every section is filled, or omitted only when empty and named in WHAT 
 
 ### Step 6: Run the gate
 
-Run checks 1 to 12 in `GATE.md`. Fix the report and run them again after any failure. Each check names its evidence: a block section, a report command, or a read of `notes.md` and the two tables. The ledger block runs from the run directory. A failure is fixed in the report, not explained away: when a check disproves an earlier claim, retract it and cite the check and its output, as truth discipline rule 2 in `EVIDENCE.md` requires.
+Run checks 1 to 12 in `GATE.md`. Apply each check with the agent's file and search tools, then fix the report and run them again after any failure. Each check names its evidence: a file read, the two tables, or the report. When a shell is available, the ledger block and report commands are the equivalent route, run from the run directory. A failure is fixed in the report, not explained away: when a check disproves an earlier claim, retract it and cite the check and its output, as truth discipline rule 2 in `EVIDENCE.md` requires.
 
 Done when checks 1 to 12 pass.
 

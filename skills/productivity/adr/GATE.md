@@ -1,10 +1,8 @@
 # Gate
 
-A check that names a command is settled by running it from the repository root, with NNNN-slug.md replaced by the record's own filename.
+Run every check with the agent's file and search tools, using the table below. When the host has a POSIX shell, the command under each check is an equivalent mechanical route, run from the repository root with NNNN-slug.md replaced by the record's own filename. The agent route is primary; the command is the fallback. A check passes only when its result is observed, by either route.
 
-When the host has no POSIX shell, run the same check with the agent's file and search tools:
-
-| Check | Without a shell | Pass when |
+| Check | Agent route | Pass when |
 |---|---|---|
 | C1 | List `docs/adr/`, open the record path, match the basename against `^[0-9]{4}-[a-z0-9]+(-[a-z0-9]+)*\.md$` | The name matches |
 | C2 | List the `docs/adr/` filenames, read the first four characters of each, and compare them | No number repeats, and the record's number is one past the highest |
@@ -37,7 +35,7 @@ The report names every place the repo's shape differs from `FORMAT.md`, since C5
 printf '%s\n' docs/adr/NNNN-slug.md | grep -vE '/[0-9]{4}-[a-z0-9]+(-[a-z0-9]+)*\.md$'
 ```
 
-Done when the command prints nothing.
+Done when the check finds nothing.
 
 **C2 Number.** The number is unused, and it is one past the highest in the directory.
 
@@ -46,7 +44,7 @@ ls docs/adr | grep -oE '^[0-9]{4}' | sort -n | uniq -d
 ls docs/adr | grep -oE '^[0-9]{4}' | sort -n | tail -1
 ```
 
-Done when the first command prints nothing and the second prints the record's number.
+Done when the first check finds nothing and the second returns the record's number.
 
 **C3 Status.** `**Status:**` holds one of the four values in `FORMAT.md`.
 
@@ -55,7 +53,7 @@ grep -E '^\*\*Status:\*\* (proposed|accepted|superseded by ADR-[0-9]{4}|rejected
   docs/adr/NNNN-slug.md
 ```
 
-Done when the command prints one line. An `accepted` status also matches the evidence: the change is present in the repo, read from the diff or the git log.
+Done when the check returns one line. An `accepted` status also matches the evidence: the change is present in the repo, read from the diff or the git log.
 
 **C4 Status block.** `Status`, `Date` and `Author` are present, in that order, under the title, and `Date` is ISO 8601.
 
@@ -72,7 +70,7 @@ grep -oE '^## (Context|Decision|Considered options|Alternatives considered|Conse
   | sed 's/Alternatives considered/Considered options/' | tr '\n' ' '; echo
 ```
 
-Done when it prints the four in that order, under the repo's own name for the options section where that differs. A repo using a third name is judged by this line, not the command.
+Done when it returns the four in that order, under the repo's own name for the options section where that differs. A repo using a third name is judged by this line, not by the command.
 
 **C6 Links resolve.** Every relative link target exists, and every `ADR-NNNN` names a file in the directory.
 
@@ -85,7 +83,7 @@ grep -oE 'ADR-[0-9]{4}' docs/adr/NNNN-slug.md | sort -u \
   | while read -r a; do ls docs/adr/"${a#ADR-}"-*.md >/dev/null 2>&1 || echo "missing: $a"; done
 ```
 
-Done when both commands print nothing.
+Done when both checks find nothing.
 
 **C7 Index row.** When docs/adr/README.md exists, it holds exactly one row for this number, and the row's title and status cell match the record's.
 
@@ -96,7 +94,7 @@ if [ -e docs/adr/README.md ]; then
 fi
 ```
 
-Done when the command prints one such row.
+Done when the check returns one such row.
 
 **C8 Implemented shape.** A record with status `accepted` carries `**Implemented:**` after `Author` and an `## Implementation` section.
 
@@ -105,7 +103,7 @@ grep -cE '^\*\*Implemented:\*\* [0-9]{4}-[0-9]{2}-[0-9]{2}$' docs/adr/NNNN-slug.
 grep -cE '^## Implementation$' docs/adr/NNNN-slug.md
 ```
 
-Done when both print `1` for an accepted record, or the record is not accepted and the check is marked not applicable, or the repo marks implementation another way and the record carries that marker, which is the heading its accepted records share.
+Done when both return `1` for an accepted record, or the record is not accepted and the check is marked not applicable, or the repo marks implementation another way and the record carries that marker, which is the heading its accepted records share.
 
 **C9 No secret.** No line quotes a password, token or key value. The record names the variable instead.
 

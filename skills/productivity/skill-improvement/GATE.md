@@ -14,13 +14,13 @@ The gate lives at `<skill>/GATE.md`. A skill with no other reference files carri
 
 ## Shape
 
-Each check has a number, a name, a list of conditions, and a "Done when" line. Where a condition is mechanical, give the command.
+Each check has a number, a name, a list of conditions, and a "Done when" line. Where a condition is mechanical, give the agent's file or search operation first, then the equivalent command.
 
 A check reads like this:
 
-- **7. Markers.** Every tag is one of the five. No bare bracket survives. Every value is in its enum. Done when the tag list, the bare-bracket grep, and the enum read are all clean.
+- **7. Markers.** Every tag is one of the five. No bare bracket survives. Every value is in its enum. Done when the tag list, the bare-bracket search, and the enum read are all clean.
 
-The command sits above the condition, in its own block, so the reader can run it without reading the prose.
+The command sits after the agent operation, in its own block, so a reader with a shell can run it without reading the prose.
 
 ## Writing a check
 
@@ -28,8 +28,8 @@ The command sits above the condition, in its own block, so the reader can run it
 - The check names the file that owns the rule.
 - The condition is observable in the output, not in the author's intent.
 - A check that needs judgement says so, and says what to compare.
-- A check that can be a command is a command.
-- A check with a command also names the same-result file or search operation for a host with no shell, and the result that proves it passed.
+- A check that the agent's file or search tools can settle names that operation first, and the result that proves it passed.
+- A command is added beside it as an equivalent mechanical route for a host with a POSIX shell. The command is the fallback, not the primary route.
 
 ## Step map
 

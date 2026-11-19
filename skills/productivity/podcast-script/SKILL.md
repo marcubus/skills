@@ -45,7 +45,7 @@ Record the emotion the beat needs, from the eight in `PERFORMANCE.md`. The model
 9. Compile the text with `HANDOFF.md`. Done when every marker is resolved and the text matches the model's dialect.
 10. Verify against `VERIFY.md`. Done when every check passes.
 
-Run the checks for the step you just closed, using the step map in `VERIFY.md`. A failed check means the step is unfinished: fix it and run the check again before moving on. When you need the shape of a profile, a beat map, or a script, read `examples/`.
+Run the checks for the step you just closed, using the step map in `VERIFY.md`. Apply each check with the agent's file and search tools; a listed shell command is the equivalent route when one is available. A failed check means the step is unfinished: fix it and run the check again before moving on. When you need the shape of a profile, a beat map, or a script, read `examples/`.
 
 ## Hosts
 

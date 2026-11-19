@@ -1,14 +1,14 @@
 # Gate
 
-Nineteen checks a finished prompt passes before delivery. The commands read the prompt from a file named prompt.md in the folder you run them from. Put the prompt and its tool definition in that file, unfenced. Fence only source material quoted from the user. Each check names the rule it enforces.
+Nineteen checks a finished prompt passes before delivery. Put the prompt and its tool definition in a file named prompt.md in the folder you work from, unfenced, so each check can read it. Fence only source material quoted from the user. Each check names the rule it enforces.
 
 Run the checks that apply to the prompt type. Checks 10 and 11 apply to multimodal and tool or agent prompts. Checks 17 and 19 apply when a multi-model or phased request is in play, and check 18 to a critique request.
 
 **Brought-in path.** A prompt the user supplies for critique enters at check 18. A finding cites one of checks 1 to 17 or 19 as the rule it breaks. Those checks judge the rewrite, and run only when the user asks for one.
 
-Two checks have a command. When the host has no POSIX shell, run them with the agent's file and search tools:
+Run checks 12 and 15 with the agent's file and search tools, using the table below. When the host has a POSIX shell, the command under each check is an equivalent route. The agent route is primary; the command is the fallback.
 
-| Check | Without a shell | Pass when |
+| Check | Agent route | Pass when |
 |---|---|---|
 | 12 | Read the prompt, skip fenced blocks and the `Banned words:` line, and search the rest for an em dash, a semicolon, and each banned word as a whole word | None appears, and the `Style:` line matches the compact line in `SKILL.md` |
 | 15 | Read the unfenced prompt and find every bracketed span | Every span is a slot you filled, a JSON schema bracket, or `[ILLEGIBLE]` |
@@ -57,7 +57,7 @@ The banned words: delve, embark, enlightening, esteemed, shed light, craft, craf
 awk '/^```/{fence=!fence; next} /^Banned words:/{next} !fence' prompt.md | grep -niE '—|;|\b(delve|embark|enlightening|esteemed|shed light|craft|crafting|imagine|realm|game-changer|unlock|discover|skyrocket|abyss|not alone|in a world where|revolutionize|disruptive|utilize|utilizing|dive deep|tapestry|illuminate|unveil|pivotal|intricate|elucidate|hence|furthermore|however|harness|exciting|groundbreaking|cutting-edge|remarkable|glimpse into|navigating|landscape|stark|testament|in summary|in conclusion|moreover|boost|skyrocketing|opened up|powerful|inquiries|ever-evolving|just|very|really|literally|actually|certainly|probably|basically|maybe)\b'
 ```
 
-Done when the command returns nothing and the `Style:` line matches the compact line in `SKILL.md` Style.
+Done when the check returns nothing and the `Style:` line matches the compact line in `SKILL.md` Style.
 
 **13. Target.** The reply line names the model, the type, and the model file. For a system or agent prompt it also states that the task belongs in the user turn. The matching model file is named. Done when the line is present, or the portable fallback is stated for a target with no file. A setting the target needs outside the prompt sits on a line below the prompt.
 

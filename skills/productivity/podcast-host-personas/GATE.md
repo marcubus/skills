@@ -17,11 +17,9 @@ Run every check before saving. Each check names the file that owns its rule, so 
 
 C1 to C24 and C26 to C28 run against the candidate profile before it is saved. C25 runs after the save and the index append, because it tests the path. C29 runs when a reference file changes, because it audits the skill rather than the profile.
 
-A check that needs judgement says so and says what to compare. A check that can be a command gives the command, run from the skill folder with the profile path substituted.
+A check that needs judgement says so and says what to compare. Run the three mechanical checks with the agent's file and search tools, using the table below. When the host has a POSIX shell, the command in the Commands section is an equivalent route, run from the skill folder with the profile path substituted. The agent route is primary; the command is the fallback.
 
-When the host has no POSIX shell, run the three command checks with the agent's file and search tools:
-
-| Check | Without a shell | Pass when |
+| Check | Agent route | Pass when |
 |---|---|---|
 | C8 | Open `personas/<id>.md`, find each `ceiling:` line, and look for a digit, `%`, `dB`, `decibel`, or `<` | None appears |
 | C11 | Search the profile for a letter-dot-letter pattern or a letter-hyphen-letter-hyphen pattern | None appears |
@@ -84,7 +82,7 @@ C1 to C12 test structure and sound. C13 to C27 test word choice, body, show, sto
 
 ## Commands
 
-Run from the skill folder with the profile path substituted for `<id>`.
+When the host has a POSIX shell, run these from the skill folder with the profile path substituted for `<id>`. They are equivalent to the agent route in the table above.
 
 ```bash
 # C8: ceilings written in numbers or units

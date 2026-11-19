@@ -56,13 +56,13 @@ Four reviewers per round, in parallel, each in a fresh context. Re-read from dis
 - **Runs** walks the skill as a fresh agent. Every step needs an input, an action, and a completion criterion. Every promise needs a rule. Every rule needs a check.
 - **Reads** applies checks R1 to R9 in `CRAFT.md`: the pointer, the two loads, the hierarchy, completion criteria, and pruning.
 - **Voice** applies checks R10 to R14 in `CRAFT.md`: stale lines, no-ops, positive phrasing, example values, and leading words.
-- **Audit** runs `AUDIT.md`. Mechanical, except A8 and A20.
+- **Audit** runs `AUDIT.md`. Mechanical checks use the agent's file and search tools first, with a command as the fallback, except A8 and A20.
 
 A round returns findings, you fix them, the next round starts clean. The loop exits when a round returns zero blockers and zero majors. A round of only minors ends it. A cap reached without a clean round ends it too, and then one lens pass runs with a doctrine the four reviewers do not share.
 
 ## The laws
 
-Each law names its check in `AUDIT.md`; some are greps, some are reads.
+Each law names its check in `AUDIT.md`; some are file searches, some are reads.
 
 1. **Placement is the mechanism.** What the skill must not see lives outside its folder.
 2. **Every rule has a check; every check names a step.**

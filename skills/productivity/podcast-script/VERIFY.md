@@ -2,9 +2,9 @@
 
 The release gate. Run every check before handing the script back. A failed check is unfinished work.
 
-Where a check gives a shell command, run it when the host has a POSIX shell. When the host has no shell, run the same check with the agent's file and search tools:
+Run every check with the agent's file and search tools, using the table below for the checks that carry a command. When the host has a POSIX shell, each command is an equivalent mechanical route. The agent route is primary; the command is the fallback.
 
-| Check | Without a shell | Pass when |
+| Check | Agent route | Pass when |
 |---|---|---|
 | 2 | Read the source and script file metadata, or open each file and compare the modified time | The script is newer |
 | 6 | Read the script, ignore every bracketed marker, and count the remaining words | The count is within 15 percent of the target, and the runtime matches the pacing sheet |
@@ -75,7 +75,7 @@ The source must be older than the script. Skip this check for a retarget.
 python3 -c 'import os,sys; [print(int(os.path.getmtime(p)), p) for p in sys.argv[1:]]' <source> <script>
 ```
 
-Done when the script's mtime is later than the source's. A file tool's timestamp is equivalent when the host has no `python3` command.
+Done when the script's mtime is later than the source's, read from the file tool. When the host has a POSIX shell, the command returns the same value.
 
 ## 3. Profile gate
 
@@ -145,7 +145,7 @@ Check for a bracket with no colon:
 grep -oE '\[[^]]*\]' <script> | grep -v ':'
 ```
 
-Expect no output. A bare bracket such as `[wheeze]` would be spoken.
+Expect no hit. A bare bracket such as `[wheeze]` would be spoken.
 
 Check every emotion value against the eight in `PERFORMANCE.md`. Fail on any value outside the eight. A value the model does not carry is dropped and recorded.
 
@@ -160,13 +160,13 @@ grep -nE '\(|\)|"|—|–|--|/|!!|\?\?' <script>
 python3 -c 'import sys; [print(i+1, l.rstrip()) for i,l in enumerate(open(sys.argv[1], encoding="utf-8")) if any(0x1F300 <= ord(c) <= 0x1FAFF for c in l)]' <script>
 ```
 
-Expect no output from either command. The first checks the punctuation, and the second checks the emoji range without relying on a PCRE-enabled grep. Also check for markdown:
+Expect no hit from either search. The first checks the punctuation, and the second checks the emoji range without relying on a PCRE-enabled grep. Also check for markdown:
 
 ```bash
 grep -nE '^#|^\*|^- |^\|' <script>
 ```
 
-Expect no output. The script is plain spoken prose.
+Expect no hit. The script is plain spoken prose.
 
 No ALL CAPS for emphasis. Uppercase is for acronyms the model spells out. No stage directions. No parentheses. No bracketed notes.
 
@@ -302,7 +302,7 @@ grep -inF \
   <script>
 ```
 
-Expect no output. Also check the host's `never_says` list.
+Expect no hit. Also check the host's `never_says` list.
 
 Then check for meta-commentary that describes the process rather than the content:
 
@@ -347,7 +347,7 @@ grep -inE \
   <script>
 ```
 
-Expect no output. Done when the banlist, the host `never_says` list, and the meta-commentary check are all clean.
+Expect no hit. Done when the banlist, the host `never_says` list, and the meta-commentary check are all clean.
 
 ## 16. Text matches the script and the model
 

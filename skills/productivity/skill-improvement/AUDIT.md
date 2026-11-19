@@ -1,10 +1,8 @@
 # Audit
 
-Checks a command can settle, plus a few short reads. Run them from inside the target folder, before reading for judgement and again after every round.
+Checks the agent's file and search tools can settle, plus a few short reads. Run them from inside the target folder, before reading for judgement and again after every round. Each check's command is an equivalent mechanical route for a host with a POSIX shell. The agent route is primary; the command is the fallback.
 
-When the host has no POSIX shell, run the same checks with the agent's file and search tools:
-
-| Check | Without a shell | Pass when |
+| Check | Agent route | Pass when |
 |---|---|---|
 | A1 | Read the folder name and the first six lines of `SKILL.md` | `name` matches the slug pattern and equals the folder name |
 | A3 | Count the lines in `SKILL.md` | Under 500 |
@@ -100,7 +98,7 @@ find . -path './examples' -prune -o -type f \
   while read -r f; do [ -e "$f" ] || echo "missing: $f"; done
 ```
 
-Pass with no output. `examples/` is excluded because an example shows a shape, and its file names are illustrative.
+Pass with no hit. `examples/` is excluded because an example shows a shape, and its file names are illustrative.
 
 ## A5 No scripts
 
@@ -108,7 +106,7 @@ Pass with no output. `examples/` is excluded because an example shows a shape, a
 find . -type f \( -name '*.py' -o -name '*.sh' -o -name '*.js' -o -name '*.ts' -o -name '*.rb' \)
 ```
 
-Pass with no output. A skill delivers text and instructions; a script belongs to the tool that runs it.
+Pass with no hit. A skill delivers text and instructions; a script belongs to the tool that runs it.
 
 ## A6 No payload
 
@@ -119,7 +117,7 @@ find . -path './examples' -prune -o -type f ! -name 'AUDIT.md' \
   -exec grep -niE 'curl |authorization:|bearer [A-Za-z0-9$]|api[_-]?key *[:=]|content-type:|https?://' {} +
 ```
 
-Pass with no output. A request body, a URL, an auth header, and a response field all belong to the tool that makes the call.
+Pass with no hit. A request body, a URL, an auth header, and a response field all belong to the tool that makes the call.
 
 `examples/` is excluded because a report may quote the payload it found. R13 in `CRAFT.md` checks that no example quotes a live one.
 
@@ -129,7 +127,7 @@ Pass with no output. A request body, a URL, an auth header, and a response field
 find . -type f ! -name 'AUDIT.md' -exec grep -niE '(sk-|ghp_|xox[baprs]-|-----BEGIN)' {} +
 ```
 
-Pass with no output.
+Pass with no hit.
 
 ## A8 One term
 
@@ -166,7 +164,7 @@ Pass when every orphan is loaded by a harness or named in the report. The entry 
 find . -type d -name evals
 ```
 
-Pass with no output. Evals live outside the skill folder.
+Pass with no hit. Evals live outside the skill folder.
 
 ## A12 Variant leak
 
@@ -176,7 +174,7 @@ For each variant name:
 grep -ni '<target>' SKILL.md
 ```
 
-Pass with no output. The core names the variant; it does not carry the variant's mechanism.
+Pass with no hit. The core names the variant; it does not carry the variant's mechanism.
 
 ## A13 Duplicate headings
 
@@ -189,7 +187,7 @@ for f in $(find . -name '*.md'); do
 done
 ```
 
-Pass with no output. Fenced blocks are skipped. A heading repeated across files is a signal, not a failure: R8 decides whether the content is duplicated.
+Pass with no hit. Fenced blocks are skipped. A heading repeated across files is a signal, not a failure: R8 decides whether the content is duplicated.
 
 ## A14 Vague words
 
@@ -254,7 +252,7 @@ A claim that survives names its proof in the same sentence or in the step that e
 
 ## A21 The target's gate runs
 
-Read the target's `GATE.md`. Execute every command block in it, from the directory the block names, against the fixtures the block names.
+Read the target's `GATE.md`. Run every check by its agent route, from the directory the check names, against the fixtures it names. When a shell is available, also execute every command block as the equivalent route.
 
 ```bash
 awk '/^```bash/{f=1;next} /^```$/{f=0} f' GATE.md | head -80
