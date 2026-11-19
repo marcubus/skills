@@ -1,0 +1,1 @@
+I think this architecture will probably age well. Most engineers would agree that simpler systems are easier to maintain. In five years nobody will be writing new services in Java. The team that built it clearly knew what they were doing.

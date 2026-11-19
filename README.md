@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
+Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
 
 ## Skills
 
@@ -24,6 +24,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
 | [adr](skills/productivity/adr/SKILL.md) | Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor. Reviews a record against nineteen checks and fixes only the editorial defects. |
+| [bullshit](skills/productivity/bullshit/SKILL.md) | Fact-checks a response claim by claim: a verdict and its evidence for each, then an audit of its own annotations for the same failures. |
 
 ## Install
 

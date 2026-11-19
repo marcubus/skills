@@ -36,6 +36,17 @@ it.
   `prompt-engineer`, and `skill-improvement`. New gates must name the agent
   operation first and the command second.
 
+## [2026.11.3] - 2026-11-19
+
+### Added
+
+- `bullshit`: annotates a turn response claim by claim with one of five verdicts —
+  supported, contested, weak, bullshit, unverified — each resting on a verbatim
+  quote from a body fetched in the session, then audits its own annotations for
+  the same failures. Carries the tier scale, the origin test, the absence test
+  and an eighteen-check gate; a self-published vendor benchmark needs an
+  independent origin. Three eval scenarios with fixtures and recorded runs.
+
 ## [2026.11.2] - 2026-11-18
 
 ### Added
