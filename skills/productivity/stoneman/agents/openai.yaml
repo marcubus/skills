@@ -1,0 +1,5 @@
+interface:
+  display_name: "stoneman"
+  short_description: "Payload-only answers, technical facts kept"
+policy:
+  allow_implicit_invocation: false

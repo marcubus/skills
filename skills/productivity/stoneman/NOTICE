@@ -1,0 +1,37 @@
+stoneman
+
+Copyright 2026 Marcus Ford (modifications)
+
+This skill is derived from ultracave, part of Caveman:
+
+    Caveman
+    Copyright 2026 Julius Brussee
+    https://github.com/JuliusBrussee/caveman
+    source commit a192894723a8f47e7f504c7b5041967ff1f18e55
+
+The upstream work is licensed under the Apache License, Version 2.0. A copy of
+that licence sits in LICENSE, beside this file.
+
+Changes in this derivative:
+
+- renamed from ultracave to stoneman; the /ultracave and /caveman ultra
+  aliases, and the caveman hook status paragraph, are removed
+- the Thinking section added; no upstream equivalent
+- an openai.yaml manifest and an inline pre-send check, in place of the upstream
+  status paragraph
+- the description rewritten as one quoted line for this repository's checker
+
+The upstream repository's NOTICE also credits third-party software (pxpipe,
+Spleen, GNU Unifont) used by its engine and fonts. None of that code or those
+assets are present here, because this derivative is the skill text alone.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed
+under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied. See the License for the
+specific language governing permissions and limitations under the License.

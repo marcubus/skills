@@ -7,6 +7,8 @@ General workflow tools, not code-specific.
 Reachable only when you type them.
 
 - **[skill-improvement](./skill-improvement/SKILL.md)**: Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task.
+- **[create-diagram](./create-diagram/SKILL.md)**: Draws one Excalidraw diagram that argues a point, with a compiled plan, a theme-bound palette, and exact geometry checks before the render.
+- **[stoneman](./stoneman/SKILL.md)**: Compresses every reply to payload only. Code, paths, errors, numbers, and negations stay verbatim. Apache-2.0, derived from ultracave.
 
 ## Model-invoked
 

@@ -9,6 +9,27 @@ it.
 
 ## [Unreleased]
 
+### Added
+
+- `stoneman`: compresses every reply to payload only. Fragments, one word when
+  one word is enough, each fact once, while code, commands, paths, error
+  strings, numbers, and negations stay verbatim. Adds a Thinking section the
+  upstream skill does not have: one-step tasks are decided in one pass,
+  multi-step tasks are reasoned in full and only the output compressed. Plain
+  prose returns for security warnings, irreversible actions, and questions.
+  Apache-2.0, derived from ultracave, with its own LICENSE and NOTICE; the rest
+  of the repository stays MIT. Includes an inline pre-send check and four eval
+  scenarios.
+- `create-diagram`: draws one Excalidraw diagram that argues a point. The
+  agent writes a plan (shape, tiers, roles, edges), and `scripts/diagram`
+  compiles it to `.excalidraw` JSON with derived coordinates, fixed ports,
+  deterministic seeds and colours bound to one palette. A 28-check gate runs
+  before any render, including token closure, contrast floors, crossings,
+  shared runs, ports, page box and determinism. The renderer is real Excalidraw
+  in a cached headless browser, so a render is offline after one setup. Includes
+  eight reference files, a seed palette, a worked plan, tests per mechanical
+  check, and three eval scenarios with clean and broken scenes.
+
 ### Changed
 
 - Install docs list the common agent routes. The README covers OpenCode,

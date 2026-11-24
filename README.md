@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
+Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, Excalidraw diagrams, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
 
 ## Skills
 
@@ -11,6 +11,8 @@ These skills run only when you type the name.
 | Skill | Description |
 | --- | --- |
 | [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
+| [create-diagram](skills/productivity/create-diagram/SKILL.md) | Draws one Excalidraw diagram that argues a point. A plan is compiled to JSON, colour binds to your theme, and 28 checks run before the render. |
+| [stoneman](skills/productivity/stoneman/SKILL.md) | Compresses every reply to payload only. Code, paths, errors, numbers, and negations stay verbatim; security warnings and irreversible steps drop to plain prose. Apache-2.0, derived from ultracave. |
 
 ### Model-invoked
 
@@ -334,6 +336,8 @@ Each skill's evals live beside it under `evals/`, mirroring the skill path. They
 - `evals/skills/productivity/podcast-host-personas/`, three scenarios and their fixtures.
 - `evals/skills/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
 - `evals/skills/productivity/adr/`, seven scenarios and their fixtures.
+- `evals/skills/productivity/create-diagram/`, three scenarios, a clean and a broken scene, and a frozen palette pair.
+- `evals/skills/productivity/stoneman/`, four scenarios, a clean and a broken reply, and a control run for the Thinking rule.
 
 ## Repository layout
 
@@ -398,6 +402,13 @@ skills/productivity/
     FORMAT.md                       house shape, optional ladder, lifecycle
     GATE.md                         twenty-one checks, step map
     agents/openai.yaml              OpenAI and Codex interface manifest
+  create-diagram/
+    SKILL.md                        eight steps, plan first
+    GATE.md                         twenty-eight checks, step map
+    references/                     plan schema, composition, patterns, colour
+    examples/                       seed palette and worked plan
+    scripts/diagram                 palette, layout, check, render, setup
+    scripts/tests/                  one test per mechanical check
 
 .claude-plugin/
   marketplace.json                  plugin marketplace for Claude Code, Codex, Copilot
@@ -419,6 +430,8 @@ evals/
     podcast-host-personas/          three scenarios and their fixtures
     skill-improvement/              three scenarios, two fixtures
     adr/                            seven scenarios and their fixtures
+    create-diagram/             three scenarios, two scenes, palette pair
+    stoneman/                       four scenarios, clean and broken replies
 ```
 
 Review reports are written to `reviews/`, which is local and gitignored.
@@ -438,3 +451,5 @@ See [SECURITY.md](SECURITY.md). Report a secret, a destructive instruction, or i
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+One folder is the exception: `skills/productivity/stoneman/` is Apache-2.0, derived from ultracave. Its own `LICENSE` and `NOTICE` carry the terms and the attribution.
