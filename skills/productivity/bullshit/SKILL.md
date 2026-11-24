@@ -1,14 +1,14 @@
 ---
 name: "bullshit"
-description: "Bullshits an answer claim by claim — a verdict and its evidence for each — then re-audits its own annotations. Use when asked to fact-check one, or before relying on a claim-heavy reply of your own."
+description: "Bullshits an answer claim by claim — a verdict and its evidence for each, failures first, then re-audits its own annotations. Use when asked to fact-check one, or before relying on a claim-heavy reply of your own."
 ---
 
 # Bullshit
 
-Every assertion is bullshit until a quote from a fetched page says otherwise — and a quote is one you fetched this session, pasted verbatim. Memory, search snippets and inference reach `➖` at most. The work is finding which assertions fail; the failure is leaving one unexamined, or agreeing with the response because it is confidently written.
+Every assertion is bullshit until a quote from a fetched page says otherwise — and a quote is one you fetched this session, pasted verbatim. Memory, search snippets and inference reach `🤷` at most. The work is finding which assertions fail; the failure is leaving one unexamined, or agreeing with the response because it is confidently written.
 
 **Input**: one turn response — pasted, quoted, or the reply you just gave. With nothing named, take your own last turn.
-**Output**, in the reply: one annotated reproduction of that response, a tally, and an audit line. The annotation is the artifact; save it as `reply` before the audit when you want the gate's shell route.
+**Output**, in the reply: the failed claims annotated and ordered, the warnings and the supported claims summarised as counts, a tally, and an audit line. The full annotation is the artifact — save it as `reply` before the audit when you want the gate's shell route; the reply renders it.
 
 ## Contents
 
@@ -16,20 +16,20 @@ Every assertion is bullshit until a quote from a fetched page says otherwise —
 - 2. Flag
 - 3. Verify
 - 4. The bar
-- 5. Annotate
+- 5. Annotate and render
 - 6. Audit
 
 ## 1. Decompose
 
-Read the response sentence by sentence and number every claim `C1`, `C2`, … in the order written. One proposition each: split conjunctions, split a sentence that asserts a fact and a cause — both lines factual — and keep a figure with its qualifier, the base, date and method a source gives it. Until step 3 supplies a qualifier, the figure stands alone and `⚠️` catches the gap.
+Read the response sentence by sentence and number every claim `C1`, `C2`, … in the order written. One proposition each: split conjunctions, split a sentence that asserts a fact and a cause — both are claims — and keep a figure with its qualifier, the base, date and method a source gives it. A figure whose qualifier, base, date or method the response leaves out is flagged at step 2 and settled at step 4.
 
 Tag each line:
 
-- **factual** — checkable against a source.
+- **claim** — checkable against a source, and it names its author: `agent` for the response under test, `you` for the person it answers.
 - **definitional** — true by convention ("HTTP 404 means not found").
-- **opinion** — a judgment. It carries the word `opinion`, no verdict, and its factual load becomes its own numbered claim.
+- **opinion** — a judgment. It carries the word `opinion`, no verdict, and its factual load becomes its own numbered claim; a status, quality or competence judgment is itself the opinion, so it is not split again.
 
-Factual and definitional lines carry the verdicts. A claim about what people believe or do is factual; a judgment about quality is an opinion. A response that is all opinion gets one line saying so — `no checkable claim` — and that is the finding.
+Claims and definitional lines carry the verdicts. A statement about what people believe or do is a claim; a judgment about quality is an opinion, and a judgment about a person's or a team's competence is one too. A status judgment — "the industry standard", "best in class", "market leader" — is an opinion unless a named survey, registry or body declares it. A response that is all opinion still numbers its lines, all tagged `opinion`, and its reply opens with `no checkable claim` above them, which is the finding.
 
 **Done when** every sentence maps to a numbered line, with filler folded into the line it introduces, and the lines follow the response's order.
 
@@ -37,22 +37,22 @@ Factual and definitional lines carry the verdicts. A claim about what people bel
 
 Read the numbered lines once for the shapes bullshit takes. A flag sets the suspicion level and the search order; the verdict comes from evidence.
 
-- **Authority with no name**: "experts agree", "studies show", "industry standard".
-- **Unsourced precision**: exact percentages, dates, version numbers, prices, sample sizes — and the round figures, "80% of", "10x faster".
-- **Confidence doing evidence's work**: "clearly", "obviously", "definitely", "in fact".
-- **Totalisers**: "never", "always", "the only", "no one", "every".
-- **Named artifacts**: a paper, law, function, flag, API, benchmark, standard, quote.
-- **Internal conflict**: two claims that cannot both hold, or one figure stated twice with different values.
-- **Causation from correlation**: a "because" or "which is why" joining two facts that merely co-occur.
-- **Quoted text**: a quote inside the response gets its wording and its attribution checked separately.
+- **Authority with no name** (`authority`): "experts agree", "studies show", "industry standard".
+- **Unsourced precision** (`unsourced`): exact percentages, dates, version numbers, prices, sample sizes — and the round figures, "80% of", "10x faster".
+- **Confidence doing evidence's work** (`confidence`): "clearly", "obviously", "definitely", "in fact".
+- **Totalisers** (`totalisers`): "never", "always", "the only", "no one", "nobody", "none", "every", "most".
+- **Named artifacts** (`named`): a paper, law, function, flag, API, benchmark, standard, quote.
+- **Internal conflict** (`internal`): two claims that cannot both hold, or one figure stated twice with different values.
+- **Causation from correlation** (`causation`): a "because" or "which is why" joining two facts that merely co-occur.
+- **Quoted text** (`quoted`): a quote inside the response is two claims — the wording, and its attribution.
 
-**Done when** every line carries one of these names or `clean`, written beside it for step 5's `Why`.
+**Done when** every claim and definitional line carries one of these tokens or `clean`, written beside it for step 5's `Why`; an opinion line carries none.
 
 ## 3. Verify
 
 Search in **waves**: batch the lines whose searches are independent into one wave, then the next.
 
-Search through `searxng-search`, which owns the endpoint and its categories. Fetch bodies with webfetch, `crawl` for JS-heavy pages, and the primary document where the fact lives. A snippet is a lead; quote from the body.
+Search through the agent's own search tool. Fetch bodies with webfetch, `crawl` for JS-heavy pages, and the primary document where the fact lives. A snippet is a lead; quote from the body.
 
 Per claim, climb this ladder and stop at the first rung that earns a verdict:
 
@@ -63,9 +63,9 @@ Per claim, climb this ladder and stop at the first rung that earns a verdict:
 
 **Counter by rule.** A claim whose own text carries a percentage, a rate, a multiple or a totaliser runs rung 4 even when an earlier rung earned a verdict; the trigger is the claim, never the flag you chose for it.
 
-The budget is one query at rungs 1 and 2, two at rung 4, and rung 3 greps a body already fetched: four queries per claim. A specific claim whose four return nothing earns a fifth, and the `Why` says which four failed. Read results for **origins**, not results. Every `Why` that reports a search prints the query in backticks. Twenty claims is a comfortable reply; a longer one is annotated in waves, and the audit line states the count it covered.
+The budget is one query at rungs 1 and 2, two at rung 4, and rung 3 greps a body already fetched: four queries per claim. A specific claim whose four return nothing earns a fifth, and the `Why` says which four failed. Read results for **origins**, not results. Every `Why` that reports a search prints the query in backticks. A comfortable reply runs in one pass; a longer one is annotated in waves, every claim still marked.
 
-**Done when** every factual and definitional line carries a quote, or a `Why` saying what was tried — in backticks wherever a search ran.
+**Done when** every claim and definitional line carries a quote, or a `Why` saying what was tried — in backticks wherever a search ran.
 
 ## 4. The bar
 
@@ -73,11 +73,11 @@ Every verdict names what settled it. These are the only admission rules.
 
 | Verdict | Earned when |
 |---|---|
-| `✅ SUPPORTED` | A tier-1 quote establishes it outright, or two independent origins at tier ≤2 agree — and no credible source contradicts |
-| `➗ CONTESTED` | Credible sources disagree. Both sides quoted, reported as the split it is |
-| `⚠️ WEAK` | A fetched quote that falls short: one origin, tier 3, part of the claim, or the claim dropped its qualifier |
+| `✅ SUPPORTED` | A tier-1 quote establishes it outright, or two independent origins at tier ≤2 agree — and no source of equal or higher tier contradicts |
+| `❓ CONTESTED` | Credible sources disagree. Both sides quoted, reported as the split it is |
+| `⚠️ WEAK` | A fetched quote that falls short: one origin, tier 3, part of the claim, the claim dropped its qualifier, or a higher tier supports it while a lower tier contradicts |
 | `❌ BULLSHIT` | A tier ≤2 span says otherwise and no tier ≤2 source supports it; or the quote offered does not establish the claim (misquoted, out of context); or it meets the absence test below |
-| `➖ UNVERIFIED` | The body sits behind a **wall**; the claim lies over a **horizon** — the future, the unobservable; or it is a **generality** too vague for absence to mean anything |
+| `🤷 UNVERIFIED` | The body sits behind a **wall**; the claim lies over a **horizon** — the future, the unobservable; or it is a **generality** too vague for absence to mean anything |
 
 **Tiers.** 1 primary — the document itself: dataset, filing, spec, changelog, peer-reviewed paper, first-hand account. 2 reputable secondary — bylined press, disclosed-method analysis, regulator summary. 3 everything else — marketing, affiliate roundups, undated blogs, forums, summaries of unread documents. A vendor is tier 1 for what its product does, tier 2 at best for a benchmark it publishes, and tier 3 for its quality and its competitors: a self-published number needs an independent origin for `✅`.
 
@@ -85,50 +85,85 @@ Every verdict names what settled it. These are the only admission rules.
 
 **Absence test.** `❌` on absence needs all four: the claim is specific; two counter-queries ran with different intents — the negation, and the registry or vendor that would own the fact; nothing turned up at any tier; and the `Why` prints both in backticks. A single fetched tier-3 page makes it `⚠️`.
 
-**Definitions** earn `✅` from the one tier-1 document that states the convention; the origin count binds factual claims.
+**Definitions** earn `✅` from the one tier-1 document that states the convention; the origin count binds claims.
 
-**Precedence.** Where two rows could apply, the verdict further from `✅` wins. Tier breaks the tie before the verdict does: a tier-1 document against a tier-2 summary is a settled `❌` or `✅`, and `➗` needs credible sources of comparable tier on both sides.
+**Precedence.** The rows are exclusive: `❌` needs a contradicting span at tier ≤2 and no support at tier ≤2; `✅` needs support and no contradiction at equal or higher tier; `❓` needs comparable-tier sources on both sides; `⚠️` takes a claim a fetched quote supports only in part; `🤷` takes a claim no readable body can settle. Where two rows still fit, the one further from `✅` wins, and the distance runs `✅`, `⚠️`, `❓`, `❌`; `🤷` sits outside that scale and is never reached while a usable body exists. Tier settles before distance does: a tier-1 document against a tier-2 summary takes the tier-1 row, and `❓` needs comparable tiers.
 
 **Done when** every line carries the verdict its strongest applicable row admits.
 
-## 5. Annotate
+## 5. Annotate and render
 
-Write one line per numbered claim, then its quote and its reason. A real reply annotates every claim; the `…` below marks lines cut from this example:
+### Artifact
+
+Write one annotation per numbered claim, in the response's order. This is the artifact: every claim carries a verdict, its evidence and its `Why`. Save it as `reply` before step 6. The reply renders it — the order changes, the verdicts do not.
+
+### Render
+
+The reply leads with what failed:
+
+1. `❌ BULLSHIT`, most consequential first — the one a reader would act on before the others. Ties break to the lower `C` number.
+2. `❓ CONTESTED`, same ranking.
+3. `🤷 UNVERIFIED`, in claim order.
+4. opinions, in claim order.
+5. `⚠️` and then `✅`, in claim order, only when the request asks for them.
+6. the tally, the audit line, then the counts line for the passes — in that order, ending the reply.
+
+`C` numbers stay as step 1 assigned them, so the reply's order is not its numbering; `C7` above `C3` is the ranking, not a mistake.
+
+### An entry
+
+Context comes first: the response's own sentences that make the claim judgeable, `…` between non-adjacent fragments, each fragment prefixed by its speaker — `agent:` for the response under test, `you:` for the person. The offending sentence is among them, and the antecedent of a bare "it" or "this" is quoted, never paraphrased. A context fragment is quoted whole, however long the sentence; the 15-word cap binds evidence spans only. An opinion entry may carry the context block too.
+
+Then the evidence, for every marked verdict with a quotable source: a blockquote carrying the citation, ending `tier <n>`. `🤷` carries none, and a `❌` earned by the absence test prints its queries in the `Why` instead.
+
+Then the claim, on one line: `C<n> <marker> **<VERDICT>** · claim — agent:|you: <plain statement>`. The statement is prose, not a quotation, and it names its subject — the path, version or artifact the claim is about.
+
+Then `Why: <flag>; <what the evidence shows>.`
+
+A blank line goes before and after every blockquote, or the renderer swallows the claim line.
 
 ```
-C1 ✅ **SUPPORTED** · definitional — "HTTP 404 means Not Found"
-> "origin server did not find a current representation for the target resource" — [RFC 9110](…), tier 1
-Why: clean.
+> agent: "The library handles 40k requests per second on a 16-core box." … agent: "That makes it the fastest option in its class."
 
-C4 ❌ **BULLSHIT** · factual — "the library handles 40k requests per second"
 > "peak throughput on our benchmark hardware was 4,100 rps" — [Benchmarks](…), tier 1
-Why: unsourced precision; off by an order of magnitude, and the 16-core qualifier the source carries is gone.
 
-C5 ➖ **UNVERIFIED** · factual — "this is the approach most teams settle on"
-Why: authority with no name; a generality, so absence carries nothing, and `searxng` finds no source stating it.
+C4 ❌ **BULLSHIT** · claim — agent: the library sustains 40k requests per second and is the fastest in its class
+Why: unsourced precision; the evidence is an order of magnitude short and the 16-core qualifier is the source's, not the claim's — `library 40k rps benchmark` and `library 4100 rps` find no independent figure.
 
-C6 · opinion — "the design will age well"
+> agent: "Most teams settle on this approach."
 
-…
-✅ 6 · ➗ 1 · ⚠️ 3 · ❌ 2 · ➖ 1 — 13 marked, 12 quoted · 2 opinions
+C5 🤷 **UNVERIFIED** · claim — agent: most teams settle on this approach
+Why: authority with no name; generality — absence carries nothing, and `most teams settle` and `teams settle approach survey` find no source stating it.
+
+C6 · opinion — agent: the design will age well
+
+✅ 2 · ❓ 0 · ⚠️ 1 · ❌ 1 · 🤷 1 — 5 marked · 1 opinion
+
+Self-audit: 5 lines checked, 0 changed
+
+✅ 2 SUPPORTED · ⚠️ 1 WEAK — full annotations on request
 ```
 
-A quote line appears under every `✅`, `➗` and `⚠️`, and under an `❌` whenever a source contradicts it. An absence `❌` carries its queries instead, in backticks. A `➖` carries only its `Why`, which names what was tried.
+### Withhold
 
-Follow the annotations with the tally: the five markers count marked lines, the quoted count counts quote lines, and opinions are counted apart, so marked plus opinions is the line count.
+`⚠️` and `✅` appear only in the closing counts line. Their claims, quotes, tiers and `Why` lines are shared when the request asks for them — "share the warnings", "full annotation", "everything", "show the workings", "don't summarise". Then every claim renders at full shape, in the same order, and the counts line still ends the reply. The counts line always appears, zeroes included: `✅ 0 SUPPORTED · ⚠️ 0 WEAK — nothing withheld`.
 
-**Done when** every line follows the shape above and the tally follows the last claim.
+The tally counts the five markers, counts opinions apart, and adds to the line count; the counts line carries no `C` numbers.
+
+**Done when** the artifact annotates every line in response order, the reply renders in the order above, and the withheld lines are summaries rather than omissions.
 
 ## 6. Audit
 
-Run every check in `GATE.md` against the reply, fix what fails, and rerun those checks. Read your annotations as someone else's: this is where a generous verdict gets caught.
+Run every check in `GATE.md` against the artifact, fix what fails, and rerun those checks. Read your annotations as someone else's: this is where a generous verdict gets caught. Save the rendered reply as `render` for checks 19–22.
 
-Close the reply with the audit line — `<old>` is the verdict before this pass, and the annotation above shows `<new>`:
+The audit line names the verdict that changed and the check that caught it — `<old>` is the verdict before this pass, and the render shows `<new>`. `<marked lines>` counts the numbered lines that carry a marker, so an opinion is not counted:
 
 ```
 Self-audit: <marked lines> lines checked, <changed> changed — <id> <old>→<new> (check <n>, <reason>), …
 ```
 
-**Done when** every check passes and that line ends the reply.
+It sits second to last: the counts line for the passes ends the reply.
+
+**Done when** every check passes, the audit line is second to last, and the counts line is the last line.
 
 The machinery is `deep-research`'s evidence model cut down to one reply. When the job needs a report rather than an annotation, that skill carries the full version: cached bodies, hashes, and a coverage bar per section.

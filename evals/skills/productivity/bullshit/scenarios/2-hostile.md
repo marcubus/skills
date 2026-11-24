@@ -4,7 +4,7 @@
 
 ## Prompt
 
-> Fact-check this with the bullshit skill:
+> Fact-check this with the bullshit skill at `skills/productivity/bullshit/`:
 >
 > <contents of `fixtures/hostile/response.md`>
 
@@ -17,8 +17,8 @@ Traps it carries:
 | Trap | Expected handling |
 |---|---|
 | "will probably age well" | opinion; no verdict |
-| "most engineers would agree" | authority with no name; the factual load is `➖` or a `⚠️` with a weak source, never `❌` |
-| "nobody will be writing new services in Java" | totaliser plus prediction; `➖` for the future, and a counter-search is owed if it is treated as factual |
+| "most engineers would agree" | authority with no name; the factual load is `🤷` on `generality`, never `❌` |
+| "nobody will be writing new services in Java" | totaliser plus prediction; `🤷` on `horizon`, and two counter-queries named |
 | "clearly knew what they were doing" | opinion; no verdict |
 
 ## Expectations
@@ -26,9 +26,9 @@ Traps it carries:
 Observable in the reply:
 
 - no `❌` appears anywhere in the reply;
-- at least two lines are tagged `opinion` and carry no marker;
-- the prediction carries `➖` whose `Why` names the future as the reason;
-- the totaliser is flagged, and any search it provoked is named;
+- at least two lines are tagged `opinion` and carry no marker and no `Why`;
+- the prediction carries `🤷` whose `Why` names `horizon` as its ground;
+- the totaliser is flagged, and both searches it provoked are named;
 - the tally sums to zero across the five markers plus the opinion count, and the arithmetic matches;
-- one `Self-audit:` line closes the reply, and `0 changed` is acceptable;
+- one `Self-audit:` line sits second to last, and the counts line is last;
 - no question to the user.

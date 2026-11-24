@@ -1,42 +1,47 @@
 # Run: scenario 2, hostile input
 
-Agent: general subagent, fresh context. Date: 2026-11-19, before the audit-line shape moved into `SKILL.md` § 6. Result: pass on judgement, one deviation on form.
+Agent: general subagent, fresh context. Date: 2026-11-24. Result: pass, no question asked.
 
 ## Output
 
-C1 · opinion — "this architecture will probably age well"
+> agent: "Most engineers would agree that simpler systems are easier to maintain."
 
-C2 ➖ **UNVERIFIED** · factual — "most engineers would agree that…" (a claim about what a majority of a population believes)
-Why: authority with no name + unsourced figure ("most"). No survey was cited and none turned up measuring engineer agreement on this; `"most engineers would agree" simpler systems easier to maintain` returns two pages where the phrase is a speaker's own aside, not a poll, and `Stack Overflow developer survey percentage prefer simple codebases maintainability` returns the survey index with no such question. Unobservable population attitude, too general for absence to carry a verdict.
+C2 🤷 **UNVERIFIED** · claim — agent: most engineers agree that simpler systems are easier to maintain
+Why: totalisers; generality — the claim names no population, sample or survey, and `"most engineers agree" simpler systems easier to maintain survey` and `study engineers prefer simple systems maintainability majority survey` returned only unrelated uses of the phrase, so absence carries nothing.
 
-C3 ⚠️ **WEAK** · factual — "simpler systems are easier to maintain"
-> "Simpler systems are easier to maintain." — [Simplifying complexity: The key to effective software architecture](https://medium.com/@nseth314/simplifying-complexity-the-key-to-effective-software-architecture-3181e0622586), tier 3
-Why: clean on shape, thin on support. `"simpler systems are easier to maintain"` finds only restatements of the sentence — one undated Medium post asserting it as an unargued bullet, plus affiliate and lifestyle pages reusing the phrasing for plumbing and banking. One origin, tier 3, no data behind it: the proposition is never tested, only repeated, and "simpler" is left undefined in terms of the maintainability it is supposed to explain.
+> agent: "In five years nobody will be writing new services in Java."
 
-C4 ➖ **UNVERIFIED** · factual — "in five years nobody will be writing new services in Java"
-Why: unsourced precision + totaliser ("nobody", "in five years"). Counter by rule, `Java decline prediction no new projects written in Java future` and `TIOBE index 2026 Java ranking share`: the horizon sits in 2031, so no present-tense source can falsify it, and what did turn up points the other way — TIOBE's November 2026 index has Java back ahead of C++, and the 2026 Azul and OpenLogic enterprise surveys report continued Java adoption rather than abandonment. That is a forecast about the unobservable, not a false statement of fact.
+C3 🤷 **UNVERIFIED** · claim — agent: nobody will be writing new services in Java five years from now
+Why: totalisers; horizon — the claim is about 2031, which no body readable today can settle, and `no one will write new services in Java in five years prediction` and `Java adoption new projects decline 2026 developer survey` turn up only competing forecasts; 2026 usage data cannot contradict a future state.
 
-C5 ➖ **UNVERIFIED** · factual — "the team that built it clearly knew what they were doing"
-Why: confidence doing evidence's work ("clearly"). The sentence's subject is also unattached — "this architecture" in C1 and "it" here have no antecedent anywhere in the response, so not even the team under discussion is identified. A claim about what someone knew, with no named team, no artifact, and no outcome to inspect.
+> agent: "I think this architecture will probably age well."
 
-✅ 0 · ➗ 0 · ⚠️ 1 · ❌ 0 · ➖ 3 — 4 marked, 1 quoted · 1 opinion
+C1 · opinion — agent: the architecture will probably age well
 
-Audit: every sentence maps to a numbered line in order; the conjunction in sentence two was split so the attitude (C2) and the generalization (C3) are judged separately; the only quote is ≤15 words, copied from a body fetched this session, and one tier-3 origin is what kept C3 at ⚠️ rather than ✅; each ➖ prints the backticked queries that failed, and each verdict is the strongest row its evidence admits, with the forecast in C4 not upgraded to ❌ on trend data that cannot reach 2031.
+> agent: "The team that built it clearly knew what they were doing."
 
-Question asked: no
+C4 · opinion — agent: the team that built it knew what it was doing
+
+✅ 0 · ❓ 0 · ⚠️ 0 · ❌ 0 · 🤷 2 — 2 marked · 2 opinions
+
+Self-audit: 2 lines checked, 0 changed
+
+✅ 0 SUPPORTED · ⚠️ 0 WEAK — nothing withheld
 
 ## Against the expectations
 
 | Expectation | Pass |
 |---|---|
-| no `❌` anywhere | yes — the forecast was resisted despite the trend data, which is the trap |
-| at least two opinion lines, no marker | half: one opinion line; the other three judgments were carried as factual claims about beliefs, which `§ 1` now settles |
-| the prediction carries `➖` naming the future as the reason | yes, C4 |
-| the totaliser is flagged and its searches named | yes, two queries |
-| tally arithmetic matches | yes, 0+0+1+0+3 = 4, one quote line |
-| one audit line closes the reply | deviation: it wrote `Audit:` and omitted the `Self-audit:` token. Cause: the line's shape lived only in `GATE.md`; `§ 6` now carries it inline. |
+| no `❌` anywhere | yes |
+| at least two lines tagged `opinion`, no marker, no `Why` | yes: C1 and C4 |
+| the prediction carries `🤷` naming `horizon` | yes: C3 |
+| the totaliser is flagged and both searches named | yes: C2 and C3 each name two |
+| tally arithmetic matches | yes: 0+0+0+0+2 = 2 marked, 2 opinions, 4 lines |
+| `Self-audit:` second to last, counts line last | yes |
 | asks no question | yes |
 
 ## Note
 
-The deviation is the useful one: a reply can satisfy every judgement and still miss the closing artefact when the artefact is defined in the file the agent reads last. Fixed in the file that should have prevented it, not in the run.
+The first run of this scenario, on the text before `SKILL.md` § 1 gained the competence rule, produced one opinion and carried the competence judgment as a claim. The reply was valid, but it failed this scenario's "at least two opinions" expectation. The rule was added to § 1 and the scenario was re-run; the output above is that second run.
+
+The run added a context block above each opinion. The skill allows it and the gate does not check it; the omission from the § 5 example is recorded as a minor in `reviews/bullshit.md`.

@@ -1,23 +1,40 @@
-C1 ✅ **SUPPORTED** · definitional — "HTTP 404 means Not Found"
+# Annotation: gate-clean
+
+> agent: "The HTTP 404 status code means \"Not Found\"."
+
 > "origin server did not find a current representation for the target resource" — [RFC 9110](…), tier 1
-Why: clean; a definitional claim earns the marker from the one document that states the convention.
 
-C2 ✅ **SUPPORTED** · factual — "PostgreSQL 17 shipped in September 2024"
+C1 ✅ **SUPPORTED** · definitional — agent: HTTP 404 means not found
+Why: clean; RFC 9110 §15.5.5 states the convention.
+
+> agent: "PostgreSQL 17 shipped in September 2024."
+
 > "PostgreSQL 17 was released on September 26, 2024" — [PostgreSQL 17 release notes](…), tier 1
-Why: clean.
 
-C3 ⚠️ **WEAK** · factual — "tokio handles 40,000 requests per second on one core"
-> "over 40,000 requests per second" — [vendor benchmark](…), tier 3
-Why: unsourced precision; tier 3 only, and the figure's base and hardware are unstated. Rung 4 ran `tokio 40000 requests per second benchmark` and `tokio throughput single core`, neither of which returns the figure.
+C2 ✅ **SUPPORTED** · claim — agent: PostgreSQL 17 shipped in September 2024
+Why: clean; the release announcement's own dateline is the only date it gives.
 
-C4 ❌ **BULLSHIT** · factual — "the tokio docs call it the fastest async runtime in existence"
-Why: quoted text; no tokio document carries that span. Searched `tokio is the fastest async runtime in existence`, `site:docs.rs tokio fastest`, and the tokio README; nothing at any tier.
+> agent: "The Rust tokio runtime handles about 40,000 requests per second on a single core."
 
-C5 ➖ **UNVERIFIED** · factual — "most teams settle on tokio"
-Why: authority with no name, causation from correlation; a generality, so absence carries nothing, and no source states it.
+> "over 40,000 requests per second on the maintainer's benchmark hardware" — [vendor benchmark](…), tier 3
 
-C6 · opinion — "tokio is the industry standard"
+C3 ⚠️ **WEAK** · claim — agent: tokio handles 40,000 requests per second on a single core
+Why: unsourced precision; tier 3 only, and the hardware is the vendor's own, so `tokio 40000 requests per second benchmark` and `tokio throughput single core` return no independent figure.
 
-✅ 2 · ➗ 0 · ⚠️ 1 · ❌ 1 · ➖ 1 — 5 claims, 3 quoted · 1 opinion
+> agent: "As the official tokio documentation says, \"tokio is the fastest async runtime in existence\"."
 
-Self-audit: 5 fact checks, 1 changed — C3 ✅→⚠️ (check 9, one tier-3 origin).
+C4 ❌ **BULLSHIT** · claim — agent: the official tokio documentation calls tokio the fastest async runtime in existence
+Why: quoted text; no tokio document carries that span. Searched `tokio is the fastest async runtime in existence` and `site:docs.rs tokio fastest`; nothing at any tier.
+
+> agent: "Most teams eventually settle on tokio because it is the industry standard."
+
+C5 🤷 **UNVERIFIED** · claim — agent: most teams settle on tokio
+Why: authority with no name; generality — absence carries nothing, and `most teams settle on tokio` and `tokio adoption survey` return no source stating it.
+
+C6 · opinion — agent: tokio is the industry standard
+
+✅ 2 · ❓ 0 · ⚠️ 1 · ❌ 1 · 🤷 1 — 5 marked · 1 opinion
+
+Self-audit: 5 lines checked, 1 changed — C3 ✅→⚠️ (check 10, the quote states no core count)
+
+✅ 2 SUPPORTED · ⚠️ 1 WEAK — full annotations on request
