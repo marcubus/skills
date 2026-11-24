@@ -1,5 +1,5 @@
 interface:
   display_name: "Architecture Decision Records"
-  short_description: "Writes and reviews architecture decision records"
+  short_description: "Writes, edits, supersedes and reviews architecture decision records"
 policy:
   allow_implicit_invocation: true

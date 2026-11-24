@@ -11,7 +11,7 @@
 
 ## Context
 
-The web front end has a login page and a settings page. Sessions were previously kept in a module-level dictionary. Cookies are a familiar mechanism and the framework already has a signing helper. The relevant background is in [ADR-0012](0012-cookie-signing.md).
+The web front end has a login page and a settings page. Sessions were previously kept in a module-level dictionary. Cookies are a familiar mechanism and the framework already has a signing helper. The relevant background is in [ADR-0012](ADR-0012-cookie-signing.md).
 
 ## Considered options
 

@@ -1,16 +1,20 @@
 # Evals: adr
 
-Four scenarios, five fixtures, one recorded run each. The skill never references this folder and cannot read it, because it sits outside the skill directory.
+Seven scenarios, nine fixtures, one recorded run each. The skill never references this folder and cannot read it, because it sits outside the skill directory.
 
 ## Fixtures
 
 | File | Used by | What it carries |
 |---|---|---|
-| `fixtures/scenario-1-decision-brief.md` | 1 | A decision that passes triage, with every fact supplied and no `docs/adr` yet |
+| `fixtures/scenario-1-decision-brief.md` | 1 | A decision that passes triage, with every fact supplied and no `docs/adrs` yet |
 | `fixtures/scenario-2-reversible-choice.md` | 2 | A decision that fails all three triage conditions |
 | `fixtures/scenario-3-change-brief.md` | 3 | A decision an accepted record already holds, with the decision itself changed |
-| `fixtures/scenario-3-repo/` | 3 | `docs/adr/0007-cache-in-postgres.md` (accepted, implemented) and an index with one row |
-| `fixtures/scenario-4-repo/` | 4 | `docs/adr/0004-session-storage.md` with eight planted defects |
+| `fixtures/scenario-3-repo/` | 3 | `docs/adrs/ADR-0007-cache-in-postgres.md` (accepted, implemented) and an index with one row |
+| `fixtures/scenario-4-repo/` | 4 | `docs/adrs/ADR-0004-session-storage.md` with planted defects that trip C3, C5, C6, C8 to C13 and C17 |
+| `fixtures/scenario-5-suite-brief.md` | 5 | A decision delivered by three tickets in an external tracker |
+| `fixtures/scenario-6-notracker-brief.md` | 6 | A decision with no tracker and no ticket, so delivery is unscheduled |
+| `fixtures/scenario-7-file-tickets-brief.md` | 7 | A decision delivered by two tickets in a repo that keeps tickets as files |
+| `fixtures/scenario-7-repo/` | 7 | `docs/tickets/TASK-0001-add-retry-budget.md`, so the next ticket number is known |
 
 ## 1. Main path
 
@@ -20,13 +24,13 @@ Read evals/skills/productivity/adr/fixtures/scenario-1-decision-brief.md and wri
 
 Expect:
 
-- One file at `docs/adr/0001-<slug>.md` under the run folder, slug three to five hyphenated words.
+- One file at `docs/adrs/ADR-0001-<slug>.md` under the run folder, the slug hyphenated and lowercase.
 - `**Status:** proposed`, and `Date`, `Author` present.
 - `Context`, `Decision`, `Considered options`, `Consequences` as `## ` headings, in that order.
 - The JSON-files alternative is named, with the reason it lost.
 - At least one cost is named: the hand-editable cache file, or the version column and rebuild path.
 - The 40-second rebuild and Python 3.12 appear as given, and no figure appears that the brief does not contain.
-- No `docs/adr/README.md` is created.
+- No `docs/adrs/README.md` is created.
 
 ## 2. Triage refusal
 
@@ -38,7 +42,7 @@ Expect:
 
 - No file is written anywhere.
 - The reply names the three conditions and says which ones fail.
-- A lighter home is named, such as the commit message or `MEMORY.md`.
+- A lighter home is named, a ticket first, then the commit message or a README line.
 - At most three questions are asked, and none of them asks for a fact the brief already supplies.
 
 ## 3. Supersede
@@ -49,8 +53,8 @@ Copy evals/skills/productivity/adr/fixtures/scenario-3-repo/ into runs/default/3
 
 Expect:
 
-- A new record at `docs/adr/0008-<slug>.md`, status `proposed`.
-- `0007-cache-in-postgres.md` carries `**Status:** superseded by ADR-0008`.
+- A new record at `docs/adrs/ADR-0008-<slug>.md`, status `proposed`.
+- `ADR-0007-cache-in-postgres.md` carries `**Status:** superseded by ADR-0008`.
 - Every line of 0007 above the status line is unchanged, compared against the fixture.
 - The new record names Redis, the contention trigger, the Postgres option with its rejection reason, and the cost of the move.
 - The index holds two rows, the new one appended second, and the 0007 row's status cell matches its new status.
@@ -71,8 +75,54 @@ Expect:
 - The quoted value under `## Configuration` is removed or replaced by the variable name, and C9 is reported.
 - No decision text is rewritten.
 
+## 5. Suite in a tracker
+
+```text
+Read evals/skills/productivity/adr/fixtures/scenario-5-suite-brief.md and write the record in runs/default/5-suite/.
+```
+
+Expect:
+
+- One record at `docs/adrs/ADR-0001-<slug>.md`, status `proposed`.
+- `Refs:` carries CAT-812, CAT-813 and CAT-814 by ID.
+- ADR-0006 is absent from this repository, so `Refs:` does not cite it, C6 stays clean, and the reply names the missing dependency as a gap.
+- The record carries no checklist, no `## Progress` section, and no phase status.
+- The three ticket IDs appear in `Refs:`. A Decision rule may cite a ticket ID to constrain sequencing; no work plan, checklist or status appears.
+- No ticket file is created anywhere in the run folder.
+- The reply says delivery is tracked and names the suite.
+
+## 6. No tracker
+
+```text
+Read evals/skills/productivity/adr/fixtures/scenario-6-notracker-brief.md and write the record in runs/default/6-notracker/.
+```
+
+Expect:
+
+- One record at `docs/adrs/ADR-0001-<slug>.md`, status `proposed`.
+- No `Refs:` line, because the record has nothing to list and the repository keeps no tracker.
+- No `docs/tickets/` directory and no ticket file is created.
+- The record carries no checklist and no phase status; the backfill cost stays in `Consequences`.
+- The reply says the delivery is unscheduled and names where the repo would track it, rather than inventing an ID.
+- C20 passes on the empty suite with the reply's statement.
+
+## 7. File tickets
+
+```text
+Copy evals/skills/productivity/adr/fixtures/scenario-7-repo/ into runs/default/7-file-tickets/, read evals/skills/productivity/adr/fixtures/scenario-7-file-tickets-brief.md, and act on it.
+```
+
+Expect:
+
+- One record at `docs/adrs/ADR-0001-<slug>.md`, status `proposed`.
+- `Refs:` names TASK-0002 and TASK-0003 by ID.
+- Two stubs at `docs/tickets/TASK-0002-<slug>.md` and `TASK-0003-<slug>.md`, each carrying `**Type:** TASK`, `**Status:** open`, `**Record:** ADR-0001`, and a one-sentence `## Scope`.
+- `TASK-0001-add-retry-budget.md` is unchanged, byte for byte.
+- No BUG or FEAT stub is created.
+- C21 passes; the record carries no checklist and no phase status.
+
 ## Regression notes
 
-- A change to `FORMAT.md` keeps scenario 1 passing.
+- A change to `FORMAT.md` keeps scenarios 1, 5 and 7 passing.
 - A change to `GATE.md` keeps scenario 4 passing.
-- A change to the entry file keeps the four deliverables stable.
+- A change to the entry file keeps the seven deliverables stable.

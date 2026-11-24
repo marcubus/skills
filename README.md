@@ -23,7 +23,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 | [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
-| [adr](skills/productivity/adr/SKILL.md) | Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor. Reviews a record against nineteen checks and fixes only the editorial defects. |
+| [adr](skills/productivity/adr/SKILL.md) | Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor. Reviews a record against twenty-one checks and fixes only the editorial defects. |
 | [bullshit](skills/productivity/bullshit/SKILL.md) | Fact-checks a response claim by claim: a verdict and its evidence for each, then an audit of its own annotations for the same failures. |
 
 ## Install
@@ -333,7 +333,7 @@ Each skill's evals live beside it under `evals/`, mirroring the skill path. They
 - `evals/skills/productivity/podcast-script/`, three scenarios and their fixtures.
 - `evals/skills/productivity/podcast-host-personas/`, three scenarios and their fixtures.
 - `evals/skills/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
-- `evals/skills/productivity/adr/`, four scenarios and their fixtures.
+- `evals/skills/productivity/adr/`, seven scenarios and their fixtures.
 
 ## Repository layout
 
@@ -396,7 +396,7 @@ skills/productivity/
   adr/
     SKILL.md                        triage, the interview, write and review
     FORMAT.md                       house shape, optional ladder, lifecycle
-    GATE.md                         nineteen checks, step map
+    GATE.md                         twenty-one checks, step map
     agents/openai.yaml              OpenAI and Codex interface manifest
 
 .claude-plugin/
@@ -418,7 +418,7 @@ evals/
     podcast-script/                 three scenarios and their fixtures
     podcast-host-personas/          three scenarios and their fixtures
     skill-improvement/              three scenarios, two fixtures
-    adr/                            four scenarios and their fixtures
+    adr/                            seven scenarios and their fixtures
 ```
 
 Review reports are written to `reviews/`, which is local and gitignored.

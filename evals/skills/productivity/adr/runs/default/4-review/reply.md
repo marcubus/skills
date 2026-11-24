@@ -1,26 +1,26 @@
 # Review — ADR-0004 Session storage
 
 Run folder: `runs/default/4-review/`
-Record: `docs/adr/0004-session-storage.md`
+Record: `docs/adrs/ADR-0004-session-storage.md`
 Mode: **review** (brought-in work — this skill did not write this record, so C8 is skipped and the record keeps whatever shape the repo gave it).
 
 ## What I read
 
-- `docs/adr/0004-session-storage.md` — the record.
-- `docs/adr/` — one file only. No `README.md` index, no `0001`–`0003`, no `0012-cookie-signing.md`.
-- `0012-cookie-signing.md` — **does not exist**, so the record's only outbound reference could not be opened (see C6).
+- `docs/adrs/ADR-0004-session-storage.md` — the record.
+- `docs/adrs/` — one file only. No `README.md` index, no `0001`–`0003`, no `ADR-0012-cookie-signing.md`.
+- `ADR-0012-cookie-signing.md` — **does not exist**, so the record's only outbound reference could not be opened (see C6).
 
 ## Gate result
 
 | Check | Result | Evidence |
 |---|---|---|
-| C1 Filename | **pass** | `docs/adr/0004-session-storage.md` — four digits, hyphenated lowercase slug; the grep prints nothing. |
+| C1 Filename | **pass** | `docs/adrs/ADR-0004-session-storage.md` — four digits, hyphenated lowercase slug; the grep prints nothing. |
 | C2 Number | **pass** | Directory holds only `0004`; no duplicate numbers, highest is `0004`. |
 | C3 Status | **pass (mechanical) / FAIL (substantive)** | `**Status:** accepted` matches the allowed set. But `accepted` means "implemented", and the repo holds no implementation. See routing below. |
 | C4 Status block | **pass** | `Status`, `Date`, `Author` in that order at lines 3–5; `Date` is `2026-08-14`. |
 | C5 Core sections | **pass after fix** | Was `Decision → Context → Considered options → Consequences`. Now `Context → Decision → Considered options → Consequences`. |
-| C6 Links resolve | **pass after fix** | Was `broken: 0012-cookie-signing.md` and `missing: ADR-0012`. Both commands now print nothing. |
-| C7 Index row | **not applicable** | `docs/adr/README.md` does not exist; the repo keeps no index. |
+| C6 Links resolve | **pass after fix** | Was `broken: ADR-0012-cookie-signing.md` and `missing: ADR-0012`. Both commands now print nothing. |
+| C7 Index row | **not applicable** | `docs/adrs/README.md` does not exist; the repo keeps no index. |
 | C8 Implemented shape | **skipped** | Brought-in work (GATE.md, "Brought-in work"). Reported anyway under routing: the record is `accepted` but carries neither `**Implemented:**` nor `## Implementation`. |
 | C9 No secret | **pass after fix** | Line 29 was `SESSION_KEY=hunter2-not-real` — a key assignment with a value. Removed. |
 | C10 Title states the decision | **FAIL** | `# Session storage` is a topic noun with no verb. |
@@ -61,14 +61,14 @@ No wording changed, only the order of the two sections.
 
 ### 2. C6 — dangling reference to ADR-0012
 
-Old line 14 pointed at `0012-cookie-signing.md`, which is not in `docs/adr/`. The `ADR-0012` mention also failed the number check. Removed the sentence:
+Old line 14 pointed at `ADR-0012-cookie-signing.md`, which is not in `docs/adrs/`. The `ADR-0012` mention also failed the number check. Removed the sentence:
 
 ```diff
--The web front end has a login page and a settings page. Sessions were previously kept in a module-level dictionary. Cookies are a familiar mechanism and the framework already has a signing helper. The relevant background is in [ADR-0012](0012-cookie-signing.md).
+-The web front end has a login page and a settings page. Sessions were previously kept in a module-level dictionary. Cookies are a familiar mechanism and the framework already has a signing helper. The relevant background is in [ADR-0012](ADR-0012-cookie-signing.md).
 +The web front end has a login page and a settings page. Sessions were previously kept in a module-level dictionary. Cookies are a familiar mechanism and the framework already has a signing helper.
 ```
 
-If `0012-cookie-signing.md` exists in a wider corpus and was meant to be copied in beside this record, restore the link rather than the sentence — the reference is the only proof the record had (C14).
+If `ADR-0012-cookie-signing.md` exists in a wider corpus and was meant to be copied in beside this record, restore the link rather than the sentence — the reference is the only proof the record had (C14).
 
 ### 3. C9 (and C17) — secret value in the record
 
@@ -90,7 +90,7 @@ Per SKILL.md review step 4, these are not edited here. Each takes the amendment-
 
 | Check | File:line | Smallest fix | Vehicle |
 |---|---|---|---|
-| C3 | `docs/adr/0004-session-storage.md:3` | `accepted` claims implementation, but the repo contains no code, no diff and no `## Implementation`. Either flip to `proposed` until the change lands, or name the files and commands that carried it out. **Left for the implementer.** | implementer defect |
+| C3 | `docs/adrs/ADR-0004-session-storage.md:3` | `accepted` claims implementation, but the repo contains no code, no diff and no `## Implementation`. Either flip to `proposed` until the change lands, or name the files and commands that carried it out. **Left for the implementer.** | implementer defect |
 | C8 | same file, after line 5 | If `accepted` stands, add `**Implemented:** YYYY-MM-DD` after `Author` and a `## Implementation` section naming the session module and the settings file. Skipped as a check because this record is brought-in work; reported because the status depends on it. | implementer defect |
 | C10 | line 1 | Retitle to a phrase with a verb: `# Store session state in a signed cookie`. | amendment |
 | C11 | line 9 | Name the trigger: the deployment moved to more than one worker, so the module-level dictionary stopped being shared. State it as the reason the decision came due. | amendment |

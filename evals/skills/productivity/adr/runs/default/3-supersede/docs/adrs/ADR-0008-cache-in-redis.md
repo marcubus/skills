@@ -5,11 +5,11 @@
 **Author:** sys-admin
 **Refs:** ADR-0007
 
-This record replaces [ADR-0007](0007-cache-in-postgres.md). It decides where the `ledger` CLI caches parsed transactions, and nothing about how the cache is populated.
+This record replaces [ADR-0007](ADR-0007-cache-in-postgres.md). It decides where the `ledger` CLI caches parsed transactions, and nothing about how the cache is populated.
 
 ## Context
 
-ADR-0007 put the parsed-transaction cache in a `ledger_cache` table in the Postgres instance the reporting notebook already uses, and its Consequences named the cost it was accepting: the cache is shared state, so two CLI runs at once contend on the same table and writes take a row lock ([ADR-0007](0007-cache-in-postgres.md), Consequences).
+ADR-0007 put the parsed-transaction cache in a `ledger_cache` table in the Postgres instance the reporting notebook already uses, and its Consequences named the cost it was accepting: the cache is shared state, so two CLI runs at once contend on the same table and writes take a row lock ([ADR-0007](ADR-0007-cache-in-postgres.md), Consequences).
 
 That predicted cost has landed. Two CLI runs at once now contend on the `ledger_cache` table, and the row lock serialises a 3-second rebuild behind a 40-second one. The reporting notebook reads the same table, so a rebuild blocks a report until the rebuild's transaction commits (change brief, 2026-11-18).
 

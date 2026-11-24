@@ -2,16 +2,16 @@
 
 ## Deliverable
 
-`docs/adr/0008-cache-in-redis.md` — **status: `proposed`**
+`docs/adrs/ADR-0008-cache-in-redis.md` — **status: `proposed`**
 
 ## Changes to existing files
 
-1. `docs/adr/0007-cache-in-postgres.md` — one line changed: `**Status:** accepted` → `**Status:** superseded by ADR-0008`. Nothing else in the record was touched (FORMAT.md, "Amending and superseding": the status line is the only edit a superseded record takes).
-2. `docs/adr/README.md` — appended the row `| [0008](0008-cache-in-redis.md) | Move the parsed-transaction cache to Redis | proposed |`, and changed the existing 0007 row's status cell from `accepted` to `superseded by ADR-0008` so the index does not contradict the record. No row was reordered or removed.
+1. `docs/adrs/ADR-0007-cache-in-postgres.md` — one line changed: `**Status:** accepted` → `**Status:** superseded by ADR-0008`. Nothing else in the record was touched (FORMAT.md, "Amending and superseding": the status line is the only edit a superseded record takes).
+2. `docs/adrs/README.md` — appended the row `| [ADR-0008](ADR-0008-cache-in-redis.md) | Move the parsed-transaction cache to Redis | proposed |`, and changed the existing 0007 row's status cell from `accepted` to `superseded by ADR-0008` so the index does not contradict the record. No row was reordered or removed.
 
 ## Shape and corpus
 
-- `docs/adr/` held one record, `0007-cache-in-postgres.md`, plus an index. There was no pair of highest-numbered records to compare, so the shape followed that record: status block, `Context`, `Decision`, `Considered options`, `Consequences`, and `Implementation` where the record is accepted. The new record keeps the same headings, adds `Open questions`, and omits `Implementation` because it is not accepted (C8).
+- `docs/adrs/` held one record, `ADR-0007-cache-in-postgres.md`, plus an index. There was no pair of highest-numbered records to compare, so the shape followed that record: status block, `Context`, `Decision`, `Considered options`, `Consequences`, and `Implementation` where the record is accepted. The new record keeps the same headings, adds `Open questions`, and omits `Implementation` because it is not accepted (C8).
 - Record that already covers the decision: ADR-0007, "Keep the parsed-transaction cache in Postgres". Its Decision section decides the same question — where parsed transactions are cached — so this run is a successor, not a new decision and not an amendment.
 
 ## Triage
@@ -26,18 +26,18 @@ Settled from the brief: title, three alternatives with reasons, the costs, and t
 
 ## Status evidence
 
-`proposed`. The brief says the table is dropped "in the same change", but this repository contains no `ledger` code — `docs/adr/` is the only content — so there is no diff or git log entry to show the change landed. Per FORMAT.md the evidence decides, not the tense of the request, so the record is `proposed` and the gap is the first line under `## Open questions`. `Implemented:` and `## Implementation` are therefore absent.
+`proposed`. The brief says the table is dropped "in the same change", but this repository contains no `ledger` code — `docs/adrs/` is the only content — so there is no diff or git log entry to show the change landed. Per FORMAT.md the evidence decides, not the tense of the request, so the record is `proposed` and the gap is the first line under `## Open questions`. `Implemented:` and `## Implementation` are therefore absent.
 
 ## Gate
 
 | Check | Result | Evidence |
 |---|---|---|
-| C1 Filename | pass | `docs/adr/0008-cache-in-redis.md`; the grep printed nothing |
+| C1 Filename | pass | `docs/adrs/ADR-0008-cache-in-redis.md`; the grep printed nothing |
 | C2 Number | pass | no duplicate numbers; highest is `0008`, the record's number |
 | C3 Status | pass | `**Status:** proposed` is one of the four values |
 | C4 Status block | pass | `Status`, `Date` (2026-11-18), `Author` in that order under the title |
 | C5 Core sections | pass | `Context Decision Considered options Consequences`, in order, under the repo's own name for the options section |
-| C6 Links resolve | pass | both commands printed nothing; the only targets are `0007-cache-in-postgres.md` and `ADR-0007` |
+| C6 Links resolve | pass | both commands printed nothing; the only targets are `ADR-0007-cache-in-postgres.md` and `ADR-0007` |
 | C7 Index row | pass | one row for 0008, title matches the record's `# ` title |
 | C8 Implemented shape | not applicable | record is `proposed`; `Implemented:` and `## Implementation` counts are 0, as expected |
 | C9 No secret | pass | no hit; the record names no credential at all |

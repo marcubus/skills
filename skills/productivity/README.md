@@ -17,4 +17,4 @@ Model- or user-reachable.
 - **[podcast-script](./podcast-script/SKILL.md)**: Turns a report or raw notes into a podcast script and the plain text a text-to-speech model reads.
 - **[podcast-host-personas](./podcast-host-personas/SKILL.md)**: Builds one gated, machine-readable host persona for a show.
 - **[policy-review](./policy-review/SKILL.md)**: Reads a privacy policy or terms of service against a personal posture and reports the flags in a short summary.
-- **[adr](./adr/SKILL.md)**: Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor, and reviews a record against nineteen checks.
+- **[adr](./adr/SKILL.md)**: Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor, and reviews a record against twenty-one checks.
