@@ -19,3 +19,4 @@ skills/productivity/deep-research/OUTPUT.local.md
 .search-override.json
 .search-override/
 .search-override.env
+.git/hooks/pre-push
