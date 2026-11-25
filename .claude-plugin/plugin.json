@@ -12,7 +12,6 @@
   "keywords": [
     "skills",
     "prompting",
-    "diagrams",
     "podcast",
     "text-to-speech",
     "evals",
@@ -29,7 +28,6 @@
     "./skills/productivity/policy-review",
     "./skills/productivity/adr",
     "./skills/productivity/bullshit",
-    "./skills/productivity/create-diagram",
     "./skills/productivity/stoneman"
   ]
 }
