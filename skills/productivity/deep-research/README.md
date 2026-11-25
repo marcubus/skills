@@ -14,6 +14,20 @@ Invoke as a skill: `/deep-research`. Tell it your topic or question. Example:
 /deep-research grid-scale sodium-ion battery economics
 ```
 
+## Install
+
+### GitHub Copilot Chat, Claude Code/Chat, Gemini CLI
+
+Download `deep-research.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately.
+
+### Any Agent with Skill Loader
+
+```bash
+npx skills@latest add marcubus/skills --skill deep-research
+```
+
+Or install the full set: `npx skills@latest add marcubus/skills`
+
 ## Workflow Summary
 
 1. **Frame the question** — pick 3 to 6 axes from the axis list in `SKILL.md`.

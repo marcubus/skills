@@ -14,6 +14,20 @@ Invoke as a skill: `/podcast-host-personas`. Tell it the host you need. Example:
 /podcast-host-personas mid-range EIQ female host with British accent for tech podcast
 ```
 
+## Install
+
+### GitHub Copilot Chat, Claude Code/Chat, Gemini CLI
+
+Download `podcast-host-personas.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately.
+
+### Any Agent with Skill Loader
+
+```bash
+npx skills@latest add marcubus/skills --skill podcast-host-personas
+```
+
+Or install the full set: `npx skills@latest add marcubus/skills`
+
 The generated persona can be used by `podcast-script` to cast voices and generate scripts.
 
 ## Profile Structure

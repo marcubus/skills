@@ -16,6 +16,20 @@ Invoke as a skill: `/podcast-script`. Tell it the report or notes you want turne
 
 You can optionally reference an existing persona from `podcast-host-personas` for consistent voice casting across episodes.
 
+## Install
+
+### GitHub Copilot Chat, Claude Code/Chat, Gemini CLI
+
+Download `podcast-script.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately.
+
+### Any Agent with Skill Loader
+
+```bash
+npx skills@latest add marcubus/skills --skill podcast-script
+```
+
+Or install the full set: `npx skills@latest add marcubus/skills`
+
 ## Output Files
 
 | File | Purpose |

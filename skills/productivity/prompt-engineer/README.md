@@ -14,6 +14,20 @@ Invoke as a skill: `/prompt-engineer`. Tell it what you want the prompt to do. E
 /prompt-engineer write a system prompt for an agent that searches internal docs and calls create_ticket when issues are found
 ```
 
+## Install
+
+### GitHub Copilot Chat, Claude Code/Chat, Gemini CLI
+
+Download `prompt-engineer.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately.
+
+### Any Agent with Skill Loader
+
+```bash
+npx skills@latest add marcubus/skills --skill prompt-engineer
+```
+
+Or install the full set: `npx skills@latest add marcubus/skills`
+
 ## Prompt Types
 
 | Type | When | Deliverable |

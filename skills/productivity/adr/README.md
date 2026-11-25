@@ -15,6 +15,20 @@ Invoke as a skill: `/adr`. Tell it your action and decision. Example:
 # or /adr review ADR-001 to check it against the gate
 ```
 
+## Install
+
+### GitHub Copilot Chat, Claude Code/Chat, Gemini CLI
+
+Download `adr.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately.
+
+### Any Agent with Skill Loader
+
+```bash
+npx skills@latest add marcubus/skills --skill adr
+```
+
+Or install the full set: `npx skills@latest add marcubus/skills`
+
 ## Actions
 
 | Action | When | Output |
