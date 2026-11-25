@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, Excalidraw diagrams, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
+Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
 
 ## Skills
 
@@ -12,7 +12,6 @@ These skills run only when you type the name.
 | --- | --- |
 | [adr](skills/productivity/adr/SKILL.md) | Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor. Reviews a record against twenty-one checks and fixes only the editorial defects. |
 | [bullshit](skills/productivity/bullshit/SKILL.md) | Fact-checks a response claim by claim: a verdict and its evidence for each, then an audit of its own annotations for the same failures. |
-| [create-diagram](skills/productivity/create-diagram/SKILL.md) | Draws one Excalidraw diagram that argues a point. A plan is compiled to JSON, colour binds to your theme, and 26 of its 28 checks run before the render. |
 | [deep-research](skills/productivity/deep-research/SKILL.md) | Researches a question into one cited report that stands alone. Fans each axis into several queries, keeps an evidence ledger with a quote per source, and names its gaps and conflicts. |
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
