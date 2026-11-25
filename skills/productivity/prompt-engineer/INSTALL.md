@@ -1,8 +1,12 @@
 # Prompt Engineer: hosted assistant install
 
-This skill loads itself in any agent with a skill loader. Such an agent needs only the routes in [`docs/install.md`](../../../docs/install.md).
+## Quick Install (Copilot Chat, Claude Code/Chat, Gemini CLI)
 
-This page covers the other case. A hosted assistant has no skill loader, so the files go in by hand. The route mechanics live in `docs/install.md`. What follows is the part specific to this skill: which files to load, what goes in the instruction box, and how to tell it works.
+Download `prompt-engineer.zip` from [GitHub releases](https://github.com/marcubus/skills/releases) and drag it into your chat interface's **Skill Create** front end. The skill installs immediately with all 8 files loaded automatically.
+
+## Manual Install (Hosted Assistants Without Skill Loader)
+
+This page covers the other case. A hosted assistant has no skill loader, so the files go in by hand. The route mechanics live in [`docs/install.md`](../../../docs/install.md). What follows is the part specific to this skill: which files to load, what goes in the instruction box, and how to tell it works.
 
 ## What to load
 
