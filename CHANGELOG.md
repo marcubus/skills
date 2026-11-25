@@ -7,6 +7,18 @@ month and increments per release; tags are prefixed with `v`. `VERSION` holds
 the current release, and the release workflow refuses a tag that disagrees with
 it.
 
+## [2026.11.4]
+
+### Added
+
+- `prompt-engineer`, `deep-research`, `podcast-host-personas`, `podcast-script`, `policy-review`, `adr`: added Install sections with ZIP drag-and-drop instructions for Copilot Chat, Claude Code/Chat, and Gemini CLI
+- Release workflow creates distribution package with individual skill ZIPs in flat structure
+
+### Changed
+
+- Removed redundant `docs/install.md`; install instructions now live in each skill's README
+- Updated hosted assistants documentation to mention ZIP drag-and-drop as primary install method
+
 ## [Unreleased]
 
 ### Added
