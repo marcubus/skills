@@ -17,12 +17,15 @@ These skills run only when you type the name.
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
 | [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
-| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
 | [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
 
 ### Model-invoked
 
 These skills fire on their own when the task fits. Type the name to run one directly.
+
+| Skill | Description |
+| --- | --- |
+| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
 
 ## Install
 
