@@ -34,9 +34,40 @@ jobs:
             exit 1
           fi
 
+      # Create distribution package with individual skill zips (flat structure)
+      - name: Create skill distribution package
+        run: |
+          mkdir -p dist
+          
+          # Create individual zip files for each skill folder
+          for skill_dir in skills/productivity/*/; do
+            skill_name=$(basename "$skill_dir")
+            zip -r "dist/${skill_name}.zip" "${skill_dir}" \
+              --exclude="*.git*" \
+              --exclude=".runs/*" \
+              --exclude="evals/*" \
+              --exclude="reports/*" \
+              --exclude=".github/*" \
+              --exclude=".claude-plugin/*" \
+              --exclude="scripts/check.py" \
+              --exclude="Makefile" \
+              --exclude="VERSION" \
+              --exclude="CHANGELOG.md" \
+              --exclude="README.md" \
+              --exclude="LICENSE" \
+              --exclude="CONTRIBUTING.md" \
+              --exclude="SECURITY.md" \
+              -q
+          done
+          
+          # Create flat parent zip containing all skill zips
+          cd dist
+          zip -r "skills-${{ github.ref_name }}.zip" *.zip -q
+          cd ..
+
       # A tag can be pushed more than once by a retry or a force update.
       # Create the release once; later runs leave the existing one in place.
-      - name: Create GitHub release
+      - name: Upload release assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -44,4 +75,23 @@ jobs:
             echo "release $GITHUB_REF_NAME already exists; nothing to do"
             exit 0
           fi
-          gh release create "$GITHUB_REF_NAME" --generate-notes --title "$GITHUB_REF_NAME"
+
+      - name: Create GitHub release with assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --title "$GITHUB_REF_NAME" \
+            "dist/skills-${{ github.ref_name }}.zip"
+
+      - name: Upload individual skill zips as assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for skill_zip in dist/*-skills.zip; do
+            if [[ "$skill_zip" == *"skills-"* ]]; then
+              asset_name=$(basename "$skill_zip")
+              gh release upload "$GITHUB_REF_NAME" "$skill_zip" --name "$asset_name"
+            fi
+          done

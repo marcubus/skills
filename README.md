@@ -30,6 +30,32 @@ These skills fire on their own when the task fits. Type the name to run one dire
 
 ## Install
 
+### Release ZIP (Copilot, Claude Chat, Gemini Chat)
+
+Download the latest release from [GitHub releases](https://github.com/marcubus/skills/releases). The parent ZIP contains individual skill ZIPs in a flat structure:
+
+```
+skills-v2026.11.4.zip/
+├── adr.zip
+├── bullshit.zip
+├── deep-research.zip
+├── podcast-host-personas.zip
+├── podcast-script.zip
+├── policy-review.zip
+├── prompt-engineer.zip
+└── skill-improvement.zip
+```
+
+**Install a single skill:**
+1. Download the parent ZIP and extract it
+2. Drag the relevant skill ZIP (e.g., `prompt-engineer.zip`) into your chat interface's **Skill Create** front end
+3. The skill installs immediately
+
+This works in:
+- GitHub Copilot Chat
+- Claude Code / Claude Chat
+- Gemini CLI / Chat Interface
+
 ### Any agent, one command
 
 ```bash
@@ -150,7 +176,9 @@ Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force
 
 ### Hosted assistants
 
-Microsoft 365 Copilot, ChatGPT, Gemini Gems, and Claude Projects need a manual paste. See [docs/install.md](docs/install.md) for the steps.
+Microsoft 365 Copilot, ChatGPT, Gemini Gems, and Claude Projects need a manual paste or ZIP install. See [docs/install.md](docs/install.md) for the steps.
+
+**Quick method:** Download the relevant skill ZIP from GitHub releases and drag it into your chat interface's **Skill Create** front end.
 
 ### Verify
 
