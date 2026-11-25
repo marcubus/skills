@@ -17,6 +17,7 @@ These skills run only when you type the name.
 | [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
 | [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
 | [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
+| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
 | [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
 
 ### Model-invoked
@@ -29,7 +30,7 @@ These skills fire on their own when the task fits. Type the name to run one dire
 
 ## Install
 
-### Release ZIP (Copilot, Claude Chat, Gemini Chat)
+### Release ZIP (Copilot Chat, Claude Code/Chat, Gemini CLI)
 
 Download the latest release from [GitHub releases](https://github.com/marcubus/skills/releases). The parent ZIP contains individual skill ZIPs in a flat structure:
 
@@ -65,418 +66,30 @@ Omit `-a` to choose from the agents on your machine. Add `-g` for a global insta
 
 Skills live at `skills/productivity/<skill>/`. The `skills.sh` installer reads that layout directly. The `.claude-plugin/` manifests expose the same set to Claude Code, Codex, Copilot, and VS Code as a plugin marketplace.
 
-Skills are plain folders, so they run on Linux, macOS, and Windows. The local installer is a bash script: run it from Linux, macOS, WSL, or Git Bash. On Windows, pass `--copy` when symlinks are unavailable. Each skill's checks name the agent's file or search operation first. The equivalent shell command assumes a POSIX shell, so run it in WSL or Git Bash on native Windows; skip it when those are unavailable.
-
-### OpenCode
-
-```bash
-npx skills@latest add marcubus/skills -a opencode
-```
-
-For a local checkout, link the repo instead:
-
-```bash
-scripts/install.sh --dest ~/.config/opencode/skills
-```
-
-Manual install: copy or symlink each folder in `skills/productivity/` into `~/.config/opencode/skills/`, or add the repo path to `opencode.json`:
-
-```jsonc
-{
-  "skills": ["/path/to/skills-repo/skills/productivity"]
-}
-```
-
-OpenCode combines every `skills` array, so this adds to the default directories rather than replacing them.
-
-### Claude Code
-
-```bash
-claude plugin marketplace add marcubus/skills
-claude plugin install marcubus-skills@marcubus
-```
-
-The plugin updates when the `version` in `.claude-plugin/plugin.json` changes.
-
-Or use skills.sh:
-
-```bash
-npx skills@latest add marcubus/skills -a claude-code
-```
-
-### Codex
-
-```bash
-codex plugin marketplace add marcubus/skills
-codex plugin add marcubus-skills@marcubus
-```
-
-Codex updates the plugin at startup.
-
-Or use skills.sh:
-
-```bash
-npx skills@latest add marcubus/skills -a codex
-```
-
-### GitHub Copilot CLI and VS Code
-
-```bash
-copilot plugin marketplace add marcubus/skills
-copilot plugin install marcubus-skills@marcubus
-```
-
-Then, once, add the marketplace to `~/.copilot/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "marcubus": {
-      "source": { "source": "github", "repo": "marcubus/skills" },
-      "autoUpdate": true
-    }
-  }
-}
-```
-
-In VS Code, run **Chat: Install Plugin From Source** and enter `https://github.com/marcubus/skills`.
-
-### Gemini CLI
-
-Gemini installs one bucket at a time:
-
-```bash
-gemini skills install https://github.com/marcubus/skills.git --path skills/productivity
-```
-
-Re-run the command to update.
-
-### Cursor, Amp, Pi, and other agents
-
-These agents read `~/.agents/skills/` globally or `.agents/skills/` in a project. Link the repo into either:
-
-```bash
-scripts/install.sh --dest ~/.agents/skills
-```
-
-See [docs/install.md](docs/install.md) for every agent route.
-
-### Local checkout installer
-
-`scripts/install.sh` links the repo into any agent skill directory, so `git pull` keeps the skills current. Pass one or more `--dest` paths.
-
-```bash
-scripts/install.sh --dest ~/.config/opencode/skills
-scripts/install.sh --dest ~/.claude/skills --dest ~/.agents/skills
-scripts/install.sh --dest ~/.agents/skills --copy
-```
-
-Flags: `--copy` copies instead of linking, `--dry-run` prints the plan, `--force` replaces existing folders, and `--list` prints the skills in this repo.
-
-### Hosted assistants
-
-Microsoft 365 Copilot, ChatGPT, Gemini Gems, and Claude Projects need a manual paste or ZIP install. See [docs/install.md](docs/install.md) for the steps.
-
-**Quick method:** Download the relevant skill ZIP from GitHub releases and drag it into your chat interface's **Skill Create** front end.
-
-### Verify
-
-Send this request on any platform:
-
-> Write me a prompt for turning a meeting transcript into five action items with owners.
-
-Check three things:
-
-- The reply returns one finished prompt, with no preamble.
-- The reply follows the style rules in SKILL.md: no em dashes, no banned words.
-- The reply names the target model, or defaults to Claude when you do not name one.
-
-## prompt-engineer
-
-![Prompt Engineer flow: a rough request is analysed, checked for ambiguity, then generated into one finished prompt](docs/prompt-engineer-flow.png)
-
-Turns a rough request into one finished, ready-to-use prompt for a chosen AI model. Ask for a prompt, and get a single usable result rather than a draft. Give an existing prompt, and the skill critiques, tests, or improves the prompt against best practice.
-
-Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
-
-### Supported models
-
-| Target | Knowledge file |
-| --- | --- |
-| Claude, the default | `skills/productivity/prompt-engineer/MODEL-CLAUDE.md` |
-| ChatGPT, Microsoft Copilot | `skills/productivity/prompt-engineer/MODEL-GPT-COPILOT.md` |
-| Gemini | `skills/productivity/prompt-engineer/MODEL-GEMINI.md` |
-| DeepSeek | `skills/productivity/prompt-engineer/MODEL-DEEPSEEK.md` |
-| Qwen | `skills/productivity/prompt-engineer/MODEL-QWEN.md` |
-
-`skills/productivity/prompt-engineer/SKILL.md` always loads. The file carries the frameworks and the style rules. The model files add the mechanics each family needs.
-
-## deep-research
-
-Researches a question and writes one report that stands alone. It fans each axis into several queries, caches every page it reads, and keeps two tables: the sources fetched and the claims made. Each claim carries its sources, an origin count, a confidence label, and a verbatim quote from the cached body.
-
-The report is plain prose with a source marker on every factual sentence. It names its conflicts and its gaps instead of resolving or filling them. It never refers to the conversation, or to what will happen to the file next, so it survives being read cold or handed to another skill.
-
-The skill stops at the report. Rendering, publishing, and any spoken version belong elsewhere.
-
-Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
-
-### Files
-
-- `skills/productivity/deep-research/SKILL.md`, the contract and the seven steps.
-- `SOURCING.md`, query fan-out, query types, anti-SEO rules, primary-source escalation, citation chaining.
-- `EVIDENCE.md`, the run directory, the two tables, the quote rule, confidence, and the stop condition.
-- `REPORT.md`, the report's shape, section order, prose rules, and word bands.
-- `GATE.md`, twelve checks with a step map, the ledger block, and the report commands.
-- `OUTPUT.example.md`, the optional reports directory override.
-- `examples/report.md`, one worked report.
-- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
-
-### Install
-
-Use the [install routes](#install). This skill needs the whole `deep-research` folder, because `SKILL.md` points at the reference files.
-
-### Verify
-
-Ask for a report on a topic with a live landscape. Check three things:
-
-- It writes `reports/YYYY-MM-DD-<slug>-report.md`, or the path you named.
-- Every factual sentence carries a `[S#]` marker, and the Sources section lists each source with a tier and a date.
-- The ledger block in `GATE.md` prints nothing but the three headers and the domain counts.
-
-## podcast-script
-
-Turns a report, document, or raw notes into a podcast script and the plain text the chosen model reads. It covers solo narration, two-host shows, and panels of three or more hosts. The script is model-neutral: it carries voice, emotion, rate, pause, and pronunciation markers, and a model file compiles them into the target's text dialect. Targets kokoro-tone, kokoro-fastapi, kokoro-raw, and ElevenLabs.
-
-The model file says what the text carries. The skill writes to the chosen model and records any marker the text cannot carry. Variety comes from rate, pause, sentence length, and word choice.
-
-The skill stops at the text. It builds no payload and calls no service; research, rendering, mastering, and publishing belong elsewhere.
-
-Runs in any agent with a skill loader, and as an agent or Gem on Microsoft 365 Copilot, ChatGPT, Gemini, and Claude.
-
-### Files
-
-- `skills/productivity/podcast-script/SKILL.md`, the workflow and compiled text.
-- `MODELS.md`, the model registry and choosing rules.
-- `MODEL-KOKORO-TONE.md`, inline tags for every marker.
-- `MODEL-KOKORO-FASTAPI.md`, plain text with punctuation for pauses.
-- `MODEL-KOKORO-RAW.md`, plain text with blank lines for pauses.
-- `MODEL-ELEVENLABS.md`, inline emotion cues with punctuation for pauses.
-- `PROFILE.md`, the typed host profile and gate.
-- `PERFORMANCE.md`, pacing, emotion, emphasis, and performance moves.
-- `TICKS.md`, the tick library, density rules, and banlist.
-- `HANDOFF.md`, the compile procedure, the text file, and the notes contract.
-- `SCRIPT-CRAFT.md`, structure, prose, punctuation, and attribution.
-- `VOICE.md`, casting, rate, and pause.
-- `MULTIHOST.md`, two-host relationship and handoffs.
-- `PANEL.md`, three or more hosts.
-- `VERIFY.md`, the release gate.
-- `examples/`, example snippets for a host profile, a beat map, a solo script, a two-host script, and a panel script.
-- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
-
-### Install
-
-Use the [install routes](#install). This skill needs the whole `podcast-script` folder, because `SKILL.md` points at the reference files.
-
-### Verify
-
-Send a short report or a page of raw notes and ask for a solo podcast script. Check three things:
-
-- The reply writes `<source-stem>-podcast-script.md`, `<source-stem>-tts-<model>.txt`, and `<source-stem>-script-notes.md` next to the source.
-- The script starts with a cold open, not a title, and ends with a closing line, not `END`.
-- The notes name the model. The compiled text carries the spoken words and resolves every marker, and holds no payload.
-
-## podcast-host-personas
-
-Builds one machine-readable host persona for a podcast, then gates it against the store. Use it for a first host, a second host that must not sound like the first, or a revision that adds a strained state, a mode set, or a room.
-
-A persona is written for two consumers: a script writer who needs to know how the host talks, and a speech synthesiser that needs to know how the host sounds. The skill ends at a saved profile. A transcript skill reads it, casts a voice, and renders audio.
-
-The brief is yours. You can set the name, the traits and any field you like, and the skill records the override instead of overruling it. Two things still stop a build: impersonating a real person, and an override that makes the profile contradict itself.
-
-### Files
-
-- `skills/productivity/podcast-host-personas/SKILL.md`, the workflow and the profile in one view.
-- `GATE.md`, the twenty-nine checks, step map, failure modes, and sanity read.
-- `references/persona-schema.md`, the twenty-eight fields in fixed order.
-- `references/vocal-levers.md`, `references/voice-craft.md`, `references/describing-words.md`, and `references/phonetic-distinctness.md`, the sound and word-choice rules.
-- `references/emotion-engine.md`, `references/show-craft.md`, `references/studio-craft.md`, and `references/tick-library.md`, the delivery and show rules.
-- `references/generator-procedure.md`, `references/tts-capability-guide.md`, and the verification notes, the build and research record.
-- `examples/`, a template and three filled personas.
-- `personas/`, the local store: gitignored, ships with a README, and created on first build.
-- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
-
-### Install
-
-Use the [install routes](#install). This skill needs the whole `podcast-host-personas` folder, because `SKILL.md` points at the reference files.
-
-### Verify
-
-Ask for a first host for a new show. Check three things:
-
-- It writes one profile file and adds the host to `personas/index.jsonl`.
-- Every one of the twenty-eight fields is filled, in the fixed order.
-- The gate passes, or every failure names the field and the fix.
-
-## skill-improvement
-
-Reviews an existing skill and takes it to a fixed bar. Five phases: survey, gauntlet, gate, evals, prove. Three reviewers run in rounds, Runs, Reads, and Audit, and the loop exits at zero blockers and zero majors.
-
-The output is a review at `reviews/<skill>.md`, which stays local and is gitignored, and, when you ask for it, a fixed skill with a numbered gate and an eval suite outside its folder.
-
-User-invoked: type `/skill-improvement` or name it. It stays out of the model's list, because a review is a deliberate, expensive act.
-
-### Files
-
-- `SKILL.md`, the five phases, the severity model, and the eight laws.
-- `SURVEY.md`, inventory, contract, and the fact table.
-- `GAUNTLET.md`, the three reviewer briefs and the round loop.
-- `CRAFT.md`, the five writing levers as checks.
-- `GATE.md`, designing numbered checks and a step map.
-- `EVALS.md`, scenarios, fixtures, runs, and regression.
-- `VARIANTS.md`, neutral core, variant files, and capability tables.
-- `AUDIT.md`, eighteen checks, five of them reads.
-- `REPORT.md`, the review template.
-- `examples/`, a filled report, a gate, and an eval README.
-- `agents/openai.yaml`, the OpenAI and Codex interface manifest.
-
-### Install
-
-Use the [install routes](#install). This skill needs the whole `skill-improvement` folder, because `SKILL.md` points at the reference files.
-
-The frontmatter sets `disable-model-invocation: true`, so agents that honour it keep the skill out of the model's list and load it only when you name it.
-
-### Verify
-
-Point it at a skill and ask for an audit. Check three things:
-
-- It writes `reviews/<skill>.md` with a verdict line and the severity counts. That folder is gitignored, because a review is a snapshot of one audit and goes stale as the skill moves.
-- Every finding carries a file, a line, a severity, and a fix.
-- The audited skill is unchanged.
-
 ## Evals
 
-Each skill's evals live beside it under `evals/`, mirroring the skill path. They sit outside the skill folder on purpose: the skill never reads them, and only the tester does.
+Evals are test scenarios that verify each skill works correctly in real use cases. Each eval includes:
+- A scenario description with input data
+- Expected output or success criteria  
+- Recorded run results showing the skill's actual behavior
 
-- `evals/skills/productivity/prompt-engineer/`, three scenarios and their fixtures.
-- `evals/skills/productivity/podcast-script/`, three scenarios and their fixtures.
-- `evals/skills/productivity/podcast-host-personas/`, three scenarios and their fixtures.
-- `evals/skills/productivity/skill-improvement/`, three scenarios, a broken fixture with eleven planted defects, and a clean fixture.
-- `evals/skills/productivity/adr/`, seven scenarios and their fixtures.
-- `evals/skills/productivity/create-diagram/`, three scenarios, a clean and a broken scene, and a frozen palette pair.
-- `evals/skills/productivity/stoneman/`, four scenarios, a clean and a broken reply, and a control run for the Thinking rule.
+Evals live outside the skill folders to keep them versioned separately from the skill code itself. This allows continuous testing without modifying the skills being tested.
 
-## Repository layout
+See [evals/README.md](evals/README.md) for details on how evals are structured and how to add new ones.
 
-```text
-skills/productivity/
-  README.md                         bucket index
-  prompt-engineer/
-    SKILL.md                        agent instructions, frameworks, style rules
-    MODEL-CLAUDE.md                 Claude mechanics
-    MODEL-GPT-COPILOT.md            ChatGPT and Copilot mechanics
-    MODEL-GEMINI.md                 Gemini mechanics
-    MODEL-DEEPSEEK.md               DeepSeek mechanics
-    MODEL-QWEN.md                   Qwen mechanics
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  deep-research/
-    SKILL.md                        contract and the seven steps
-    SOURCING.md                     fan-out, query types, anti-SEO, escalation
-    EVIDENCE.md                     run directory, two tables, confidence
-    REPORT.md                       shape, section order, prose, word bands
-    GATE.md                         twelve checks, ledger block, commands
-    OUTPUT.example.md               reports directory override
-    examples/                       one worked report
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  skill-improvement/
-    SKILL.md                        five phases, severity, the eight laws
-    SURVEY.md                       inventory, contract, fact table
-    GAUNTLET.md                     three reviewer briefs, rounds
-    CRAFT.md                        five writing levers as checks
-    GATE.md                         numbered checks and step map
-    EVALS.md                        scenarios, fixtures, runs
-    VARIANTS.md                     core, variant files, capability tables
-    AUDIT.md                        eighteen checks, five of them reads
-    REPORT.md                       review template
-    examples/                       report, gate, eval README
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  podcast-script/
-    SKILL.md                        workflow and compiled text
-    MODELS.md                       model registry and choosing rules
-    MODEL-KOKORO-TONE.md            inline tags for every marker, the default
-    MODEL-KOKORO-FASTAPI.md         OpenAI-compatible Kokoro server
-    MODEL-KOKORO-RAW.md             kokoro Python package, no server
-    MODEL-ELEVENLABS.md             ElevenLabs audio tags
-    PROFILE.md                      typed host profile and gate
-    PERFORMANCE.md                  pacing, emotion, emphasis, moves
-    TICKS.md                        tick library, density, banlist
-    HANDOFF.md                      compile rules, text file, notes contract
-    SCRIPT-CRAFT.md                 structure, prose, punctuation, attribution
-    VOICE.md                        casting, rate, pause
-    MULTIHOST.md                    two-host relationship and handoffs
-    PANEL.md                        three or more hosts
-    VERIFY.md                       release gate
-    examples/                       host profile, beat map, solo, two-host, panel
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  podcast-host-personas/
-    SKILL.md                        workflow and the profile in one view
-    references/                     schema, sound, emotion, show, gate
-    examples/                       template and three filled personas
-    personas/                       store and index
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  adr/
-    SKILL.md                        triage, the interview, write and review
-    FORMAT.md                       house shape, optional ladder, lifecycle
-    GATE.md                         twenty-one checks, step map
-    agents/openai.yaml              OpenAI and Codex interface manifest
-  create-diagram/
-    SKILL.md                        eight steps, plan first
-    GATE.md                         twenty-eight checks, step map
-    references/                     plan schema, composition, patterns, colour
-    examples/                       seed palette and worked plan
-    scripts/diagram                 palette, layout, check, render, setup
-    scripts/tests/                  one test per mechanical check
+## Rules
 
-.claude-plugin/
-  marketplace.json                  plugin marketplace for Claude Code, Codex, Copilot
-  plugin.json                       plugin manifest and skill list
+Rules are automated checks that ensure each skill meets quality standards before release. Each rule verifies:
+- The skill can be executed without errors
+- Documentation is complete and consistent
+- Style guidelines are followed (no em dashes, semicolons, rhetorical negation)
+- All referenced files exist and links work
+- No secrets or sensitive data are exposed
 
-scripts/
-  install.sh                        install into any agent skill directory
+Rules run automatically in CI on every commit. They catch issues early so problems don't reach users.
 
-docs/
-  install.md                        per-agent install detail
-  prompt-engineer-flow.excalidraw   editable diagram source
-  prompt-engineer-flow.png          rendered diagram
+See [scripts/check.py](scripts/check.py) for the full rule set and how to add new ones.
 
-evals/
-  skills/productivity/
-    prompt-engineer/                three scenarios and their fixtures
-    deep-research/                  four scenarios and their fixtures
-    podcast-script/                 three scenarios and their fixtures
-    podcast-host-personas/          three scenarios and their fixtures
-    skill-improvement/              three scenarios, two fixtures
-    adr/                            seven scenarios and their fixtures
-    create-diagram/             three scenarios, two scenes, palette pair
-    stoneman/                       four scenarios, clean and broken replies
-```
+## Attribution
 
-Review reports are written to `reviews/`, which is local and gitignored.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Run `make check` before opening a pull request. It checks frontmatter, the plugin manifests, relative links, the version, and that no persona, review report, or secret is tracked.
-
-## Versioning
-
-Releases use CalVer, `YYYY.MM.MICRO`, tagged `vYYYY.MM.MICRO`. `VERSION` holds the current release and [CHANGELOG.md](CHANGELOG.md) records every one. To cut a release, move the unreleased entries into a dated section, update `VERSION`, then run `make tag`.
-
-## Security
-
-See [SECURITY.md](SECURITY.md). Report a secret, a destructive instruction, or impersonation privately through a GitHub security advisory.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
-
-One folder is the exception: `skills/productivity/stoneman/` is Apache-2.0, derived from ultracave. Its own `LICENSE` and `NOTICE` carry the terms and the attribution.
+Original concept by Marcubus. This implementation provides a structured skill system with intent-based technique selection, model-specific adaptations, automated validation gates, and eval-driven quality assurance.
