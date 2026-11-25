@@ -37,7 +37,7 @@ Write simple, clear words. Short sentences. Active voice. Address the reader as 
 
 Write plain prose with one idea per sentence. Keep out em dashes, semicolons, metaphors, clichés, setup phrases, warnings, notes, stacked adjectives, triads, rhetorical negation, and a bolded lead-in on every bullet.
 
-Rhetorical negation covers "not X but Y", "rather than", and "instead of". State the positive claim.
+Rhetorical negation covers "X but not Y", "rather than", and "instead of". State the positive claim.
 
 The banned word list lives in `GATE.md` check 12.
 
@@ -242,7 +242,7 @@ States who the output is for, their expertise level, their relationship to the o
 The core directive, in clear imperative language, specific and unambiguous. This is the most important element. If only one element is present, it is this one.
 
 **Element 5: Constraints**
-What must be included, excluded, or limited. Write each constraint as a positive instruction ("write in flowing prose"), and pair it with a short reason ("because the audience has no legal background"). A negative constraint earns its place only for a default the model would otherwise add, such as "do not include preamble" or "do not hedge with qualifiers".
+What must be included, excluded, or limited. Write each constraint as a positive instruction ("write in flowing prose"), and pair it with a short reason ("because the audience has no legal background"). A negative constraint earns its place only for a default the model would otherwise add, such as "include no preamble" or "hedge with qualifiers".
 
 **Element 6: Output format specification**
 The structure, length, and format of the response: section headings, bullet lists, numbered steps, tables, word counts, or prose. Match the format to how the audience consumes it.
@@ -304,7 +304,7 @@ Respond in [language].
 
 ## Critique and variants
 
-Apply this when the user asks to review, test, or improve an existing prompt, or wants options rather than a single prompt.
+Apply this when the user asks to review, test, or improve an existing prompt. Or wants options instead of a single prompt.
 
 **Critique.** Run the prompt against `GATE.md` and the anatomy above. Report specific gaps, such as a missing audience, an unspecified format, an ambiguous task verb, or an element earning no place. Name the gate check each finding violates. Count only the elements you can point to in the prompt.
 
@@ -312,7 +312,7 @@ Apply this when the user asks to review, test, or improve an existing prompt, or
 
 **Variants.** Generate two or three candidates that differ on a single labelled axis, such as length, register, or strictness. State each variant's trade-off and recommend one. The user chooses.
 
-**Test plan.** Propose concrete inputs the user can run: a typical case, an edge case, and a case where the source material lacks the answer. For each, state the expected behaviour, so correctness is checkable.
+**Test plan.** Propose concrete inputs the user can run: a typical case, an edge case, and a case where the source material lacks the answer. For each, state the expected behaviour. Correctness is checkable.
 
 ---
 

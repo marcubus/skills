@@ -5,9 +5,9 @@ description: "Turns a report, raw notes, or a document into a spoken podcast scr
 
 # Podcast Script
 
-A script is a performance, not a document. Turn a source into spoken prose and the plain text that renders it on the chosen model. The skill stops at the text: research, rendering, mastering, and publishing belong elsewhere. Script generation only; voice cloning and real-person impersonation belong to other skills.
+A script is a performance, not a document. Turn a source into spoken prose and the plain text that renders it on the chosen model. The skill stops at the text: research, rendering, mastering, and publishing belong elsewhere. Script generation only. Voice cloning and real-person impersonation belong to other skills.
 
-The script is model-neutral. It marks intent with five markers, and a model file compiles them into one target's text dialect. The words retarget; the performance compiles to what the text can carry.
+The script is model-neutral. It marks intent with five markers, and a model file compiles them into one target's text dialect. The words retarget. The performance compiles to what the text can carry.
 
 ## Models
 
@@ -24,7 +24,7 @@ Read `MODELS.md` for the registry and the choosing rules. Pick one model per epi
 
 Read the source from disk. Accept a report, raw notes, or a document. If the user pastes text, save it next to the deliverables as `<topic>-source.md` and read it back.
 
-Use the format, audience, and runtime the user gives. Default to solo. Choose the target model with `MODELS.md`. Ask for host profiles when the user has them; otherwise build one in `PROFILE.md`.
+Use the format, audience, and runtime the user gives. Default to solo. Choose the target model with `MODELS.md`. Ask for host profiles when the user has them. Otherwise build one in `PROFILE.md`.
 
 If the user brings a finished script, skip to step 8. Do not rewrite it. For a brought-in script, run checks 7 to 21, skip checks 1 to 4, report failures by check number, and change only the compiled text. A retarget keeps the original source stem.
 
@@ -32,7 +32,7 @@ Declare the target before writing. `SCRIPT-CRAFT.md` sets the runtime bands. Cou
 
 ## Write the script
 
-Record the emotion the beat needs, from the eight in `PERFORMANCE.md`. The model file says what its text carries; the compiler drops the rest and records them. Where the text carries none, build variety from sentence length and word choice, plus rate and pause where the text carries them.
+Record the emotion the beat needs, from the eight in `PERFORMANCE.md`. The model file says what its text carries. The compiler drops the rest and records them. Where the text carries none, build variety from sentence length and word choice, plus rate and pause where the text carries them.
 
 1. Read the source. Done when the source is on disk, its path is recorded, and every claim you will speak traces to a line in it.
 2. Load or build one profile per host in `PROFILE.md`. Done when every profile passes the gate.
@@ -45,7 +45,7 @@ Record the emotion the beat needs, from the eight in `PERFORMANCE.md`. The model
 9. Compile the text with `HANDOFF.md`. Done when every marker is resolved and the text matches the model's dialect.
 10. Verify against `VERIFY.md`. Done when every check passes.
 
-Run the checks for the step you just closed, using the step map in `VERIFY.md`. Apply each check with the agent's file and search tools; a listed shell command is the equivalent route when one is available. A failed check means the step is unfinished: fix it and run the check again before moving on. When you need the shape of a profile, a beat map, or a script, read `examples/`.
+Run the checks for the step you just closed, using the step map in `VERIFY.md`. Apply each check with the agent's file and search tools. A listed shell command is the equivalent route when one is available. A failed check means the step is unfinished: fix it and run the check again before moving on. When you need the shape of a profile, a beat map, or a script, read `examples/`.
 
 ## Hosts
 

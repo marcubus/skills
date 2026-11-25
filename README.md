@@ -11,7 +11,7 @@ These skills run only when you type the name.
 | Skill | Description |
 | --- | --- |
 | [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
-| [create-diagram](skills/productivity/create-diagram/SKILL.md) | Draws one Excalidraw diagram that argues a point. A plan is compiled to JSON, colour binds to your theme, and 28 checks run before the render. |
+| [create-diagram](skills/productivity/create-diagram/SKILL.md) | Draws one Excalidraw diagram that argues a point. A plan is compiled to JSON, colour binds to your theme, and 26 of its 28 checks run before the render. |
 | [stoneman](skills/productivity/stoneman/SKILL.md) | Compresses every reply to payload only. Code, paths, errors, numbers, and negations stay verbatim; security warnings and irreversible steps drop to plain prose. Apache-2.0, derived from ultracave. |
 
 ### Model-invoked

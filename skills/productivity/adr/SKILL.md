@@ -5,7 +5,7 @@ description: "Writes one architecture decision record (ADR), edits or supersedes
 
 # Architecture decision records
 
-The skill records a decision; it does not make it and does not implement it. A request to choose goes back as a frontier question, and the user's answer is what gets recorded. The triage conditions in `FORMAT.md` decide whether a choice earns a record, and execution-shaped work belongs on a ticket.
+The skill records a decision. It does not make it and does not implement it. A request to choose goes back as a frontier question, and the user's answer is what gets recorded. The triage conditions in `FORMAT.md` decide whether a choice earns a record, and execution-shaped work belongs on a ticket.
 
 ## Contents
 
@@ -22,7 +22,7 @@ The skill records a decision; it does not make it and does not implement it. A r
 | write | "record this decision" | a record, in the shape and lifecycle `FORMAT.md` gives |
 | review | "review ADR-NNNN" | an editorial review by check number, fixing only the editorial defects |
 
-Every write and review ends with a reply. A written record gives the path and the gate result per check. A refusal gives the failing triage conditions and the lighter home. The reply is the assistant's message; the record and its ticket stubs are the files the skill writes.
+Every write and review ends with a reply. A written record gives the path and the gate result per check. A refusal gives the failing triage conditions and the lighter home. The reply is the assistant's message. The record and its ticket stubs are the files the skill writes.
 
 ## The decision interview
 
@@ -35,7 +35,7 @@ The frontier is the set of questions whose prerequisites are already settled. As
 
 ## Writing a record
 
-1. **Read the house shape and the corpus.** List docs/adrs/, read its index if one exists, and read the two highest-numbered records. Follow the shape of the highest-numbered one, with `FORMAT.md` settling anything it does not show. When the directory is empty, use `FORMAT.md`'s shape and say so. Search the records for one that covers this decision: a record covers it when its Decision section decides the same question. Done when the reply names the highest-numbered record it followed or says the directory is empty, and, for C18, the covering record or says none does.
+1. **Read the house shape and the corpus.** List docs/adrs/, read its index if one exists, and read the two highest-numbered records. Follow the shape of the highest-numbered one. `FORMAT.md` settles anything it does not show. When the directory is empty, use `FORMAT.md`'s shape and say so. Search the records for one that covers this decision. A record covers it when its Decision section decides the same question. Done when the reply names the highest-numbered record it followed or says the directory is empty. For C18, name the covering record or say none does.
 2. **Triage.** Apply the three triage conditions in `FORMAT.md`. Done when all three hold, or you have stopped and named the lighter home, even when the request was explicit.
 3. **Interview.** Run the rounds above, including the evidence for the status: the diff or the git log. Done when the interview has settled the title, at least two alternatives with reasons, one cost, the status evidence, the deciders when more than the author, and a revisit date or the reason none applies.
 4. **Resolve the decision and name the suite.** Choose the outcome by `FORMAT.md`'s lifecycle and amending rules, fill the four core sections, and list the tickets that deliver it by ID or URL in `Refs:`, or omit the line when there is nothing to list. Done when the filled sections answer C10, C12, C13, C14, C15 and C20, and the record names its suite or names none.
@@ -56,5 +56,5 @@ The frontier is the set of questions whose prerequisites are already settled. As
 
 | Path | Contents | Read when |
 |---|---|---|
-| `FORMAT.md` | the house shape, triage, records and tickets, the ticket stub, the status block, the lifecycle, amending and superseding, the index row | every write; review steps 2, 4 and 5 |
-| `GATE.md` | twenty-one checks, the step map | write step 8; review steps 2 to 5 |
+| `FORMAT.md` | the house shape, triage, records and tickets, the ticket stub, the status block, the lifecycle, amending and superseding, the index row | every write. Review steps 2, 4, and 5 |
+| `GATE.md` | twenty-one checks, the step map | write step 8. Review steps 2 to 5 |

@@ -63,7 +63,7 @@ Types, enumerations and rules V1 to V33: `references/persona-schema.md`.
 
 Two directories, never mixed. `examples/` holds guidance: the blank template and three worked examples, each with a banner saying so. `personas/` is the store: only profiles the operator generated, each with one line in `personas/index.jsonl`.
 
-The store is local and gitignored. `personas/` ships with a README and nothing else, so a generated profile never enters the repository and never blocks an update to the skill. The folder and its index are created on the first build.
+The store is local and gitignored. `personas/` ships with a README and nothing else. A generated profile never enters the repository and never blocks an update to the skill. The folder and its index are created on the first build.
 
 Examples carry no index line and the distinctness gate never reads them. A persona built from an example takes a new id, is saved to `personas/`, and is compared against its source example at gate step 1, because a copy of a shipped example with a new name is a duplicate the index cannot see.
 
@@ -71,13 +71,13 @@ A brief that names another store replaces `personas/` for that build: the profil
 
 ## Overrides
 
-The brief is the operator's. Anything it states wins over a table, a default or a derived value: the name, the field, the describing words, the room, the EIQ, a fingerprint value, a mode. The skill's job is to make the result consistent and to record what it changed, not to overrule the person who asked.
+The brief is the operator's. Anything it states wins over a table, a default, or a derived value: the name, the field, the describing words, the room, the EIQ, a fingerprint value, a mode. The skill's job is to make the result consistent and to record what it changed. It does not overrule the person who asked.
 
 - A field the brief states is used as stated. A field it leaves silent takes the default.
 - A value that departs from a generator table is recorded in `provenance.assumptions_applied` in the `override:` shape from V35, which names the value, the table value it replaced and the reason. A default applied and a value the brief states have their own shapes there too.
 - A trait outside the closed vocabulary is kept in `provenance.brief` as the operator wrote it, and mapped to the nearest vocabulary word for `describing_words`. Both are recorded. The vocabulary stays closed for the field, because that is what makes the contradiction and cluster checks possible.
 - A name the operator chose is kept, including a name that coincides with a public or fictional figure, provided the field, the traits and the voice are invented and `provenance` records the choice.
-- Two things still stop the build: a brief that asks for a real living person's identity, voice or words, and an override that makes the profile contradict itself, such as a contradiction pair, a banned tick, or a ceiling in decibels. Report the conflict and the two ways out; do not silently pick one.
+- Two things still stop the build: a brief that asks for a real living person's identity, voice or words. And an override that makes the profile contradict itself, such as a contradiction pair, a banned tick, or a ceiling in decibels. Report the conflict and the two ways out. Do not silently pick one.
 
 ## Workflow
 
@@ -91,7 +91,7 @@ The brief is the operator's. Anything it states wins over a table, a default or 
 8. **Run the distinctness gate** in `references/phonetic-distinctness.md` against every line in `personas/index.jsonl` whose status is not `retired`, and against the example the brief derives from if there is one. Done when every match is inside the limits or is written into `accepted_matches` with a reason, and the side-by-side reading test is recorded.
 9. **Run the gate** in `GATE.md`, write the voice note, save to `personas/<id>.md`, append one index line. Done when C1 to C28 pass, the file exists, the index holds exactly one line for that id, and nothing was written to `examples/`.
 
-Numbered generator steps with two worked examples: `references/generator-procedure.md`. Those twenty-four steps expand the nine above in order; the step map in `GATE.md` gives the correspondence.
+Numbered generator steps with two worked examples: `references/generator-procedure.md`. Those twenty-four steps expand the nine above in order. The step map in `GATE.md` gives the correspondence.
 
 ## Hard rules
 
@@ -149,6 +149,6 @@ The seven-axis comparison in `references/phonetic-distinctness.md`, which owns i
 
 ## Handoff contract
 
-A transcript skill reading a persona can rely on: stable field names; tick ids mapping to literal strings in `references/tick-library.md`, which shares its id namespace with the transcript skill's tick table; six states present; `recovery_behaviour` giving the way out of each one; `cue_scopes` giving precedence line over segment over episode; `mode_behaviour` giving the deviation for each segment type; `exemplar_lines` and `calibration_line` giving the rhythm to write against; `recording_context`, `breath_profile` and `non_speech_sound` giving the body; and `standing_dynamic` giving what the two hosts owe each other.
+A transcript skill reading a persona can rely on stable field names. Tick ids map to literal strings in `references/tick-library.md`. This shares its id namespace with the transcript skill's tick table. Six states are present. `recovery_behaviour` gives the way out of each one. `cue_scopes` gives precedence line over segment over episode. `mode_behaviour` gives the deviation for each segment type. `exemplar_lines` and `calibration_line` give the rhythm to write against. `recording_context`, `breath_profile`, and `non_speech_sound` give the body. `standing_dynamic` gives what the two hosts owe each other.
 
-It supplies everything about sound in a specific engine: voice choice, prosody tags, pauses, non-verbal rendering. Those decisions are made against the capability classes, not stored in the persona.
+It supplies everything about sound in a specific engine: voice choice, prosody tags, pauses, non-verbal rendering. Those decisions are made against the capability classes. They are stored outside the persona.
