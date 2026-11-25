@@ -1,0 +1,8 @@
+Depth: simple. No owning document, so no evidence artifact; the claim is mine.
+Palette: paper, light, shipped:examples/palette.json
+Claim (mine): a document is released only after the scan passes; when the scan fails or errors it is quarantined, never released.
+Shape: stack
+Tiers: upload, intake, scan, disposition
+Boundary: the file enters at the uploader; the document leaves at the document store, and a failed scan leaves at quarantine.
+Elements: Uploader external upload (person or client); Upload endpoint start intake (accepts the file); Scan verdict decision scan (virus scan: pass or fail); Quarantine exception disposition (held, never served); Document store outcome disposition (released to readers)
+Edges: uploader->endpoint file primary, endpoint->verdict primary, verdict->quarantine scan failed exception, verdict->store clean primary. Annotation: "a failed scan withholds the document; it is never released"

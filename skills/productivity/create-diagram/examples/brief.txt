@@ -1,0 +1,8 @@
+Depth: technical. Source: the orders schema. Evidence: the insert the commit runs, as an annotation.
+Palette: paper, light, shipped:examples/palette.json
+Claim (mine): every order is committed once, and a failed request is retried from a queue.
+Shape: stack
+Tiers: edge, public, private, data
+Boundary: HTTPS enters at the client; the commit leaves at Postgres.
+Elements: client external edge (browser); API gateway process public (auth + rate limit); Orders process private (writes state); Retry queue neutral private (async); Postgres outcome data (one row per order)
+Edges: client->gateway HTTPS primary, gateway->orders primary, gateway->queue on failure secondary, orders->db commit primary. Annotation: INSERT INTO orders (id, total) VALUES ($1, $2);

@@ -1,0 +1,31 @@
+{
+  "title": "Events are patches, not polls",
+  "shape": "conveyor",
+  "page": "a4-landscape",
+  "tiers": [
+    {"id": "agent", "label": "Agent run"},
+    {"id": "stream", "label": "SSE stream"},
+    {"id": "patch", "label": "State patch"},
+    {"id": "frontend", "label": "React frontend"},
+    {"id": "surface", "label": "Rendered UI"}
+  ],
+  "elements": [
+    {"id": "run", "role": "start", "tier": "agent", "order": 0, "text": "Agent run", "note": "RUN_STARTED"},
+    {"id": "sse", "role": "process", "tier": "stream", "order": 0, "text": "SSE", "note": "data:"},
+    {"id": "delta", "role": "process", "tier": "patch", "order": 0, "text": "STATE_DELTA", "note": "RFC 6902"},
+    {"id": "renderer", "role": "agent", "tier": "frontend", "order": 0, "text": "A2UI", "note": "applies"},
+    {"id": "ui", "role": "outcome", "tier": "surface", "order": 0, "text": "Surface", "note": "state"}
+  ],
+  "edges": [
+    {"id": "e_run", "from": "run", "to": "sse", "kind": "primary"},
+    {"id": "e_frame", "from": "sse", "to": "delta", "kind": "primary"},
+    {"id": "e_apply", "from": "delta", "to": "renderer", "kind": "primary"},
+    {"id": "e_commit", "from": "renderer", "to": "ui", "kind": "primary"}
+  ],
+  "legend": true,
+  "annotations": [
+    {"id": "evidence", "text": "SSE data: frames, in order\n\ndata: {\"type\":\"RUN_STARTED\",\"threadId\":\"thr-1\",\"runId\":\"run-1\"}\ndata: {\"type\":\"TEXT_MESSAGE_CONTENT\",\"messageId\":\"msg-1\",\"delta\":\"Hello.\"}\ndata: {\"type\":\"STATE_DELTA\",\"delta\":[{\"op\":\"replace\",\"path\":\"/conversation_state\",\"value\":\"paused\"}]}\ndata: {\"type\":\"RUN_FINISHED\",\"threadId\":\"thr-1\",\"runId\":\"run-1\"}", "x": 60, "y": 300, "fontSize": 13, "tone": "ink"},
+    {"id": "renderer_src", "text": "createA2UIMessageRenderer({ theme })\nrenderActivityMessages={[A2UIMessageRenderer]}", "x": 60, "y": 440, "fontSize": 13, "tone": "ink"},
+    {"id": "claim", "text": "one POST per run; the response closes after RUN_FINISHED", "x": 60, "y": 600, "fontSize": 14, "tone": "muted"}
+  ]
+}

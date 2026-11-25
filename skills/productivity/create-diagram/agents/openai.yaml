@@ -1,0 +1,5 @@
+interface:
+  display_name: "Create Diagram"
+  short_description: "Draws one Excalidraw diagram that argues a point"
+policy:
+  allow_implicit_invocation: false

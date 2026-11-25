@@ -15,17 +15,61 @@ cd skills
 
 ## Render setup
 
+The skill includes two rendering options:
+
+**Option 1: Simple SVG Renderer (Recommended)**
+Works offline, no dependencies beyond Python. No setup needed!
+
 ```bash
-scripts/diagram setup
+# Generate and render a diagram
+python scripts/diagram layout my-plan.plan.json -o my-diagram.excalidraw
+python3 << 'EOF'
+import sys
+sys.path.insert(0, '/optimus/workspace/skills/skills/productivity/create-diagram/references')
+from render_excalidraw import render
+from pathlib import Path
+
+png_path = render(Path('my-diagram.excalidraw'), Path('output.png'), 2, 1920)
+print(f'Rendered: {png_path}')
+EOF
 ```
 
-`references/render-setup.md` owns the network run, what it installs and what it needs.
+**Option 2: Full Excalidraw Renderer (Interactive)**
+For true Excalidraw rendering with editable output. Requires Playwright setup:
 
-The plan and the gate work without the renderer; delivery needs the PNG, so run setup once before the first diagram.
+```bash
+cd references
+uv sync
+uv run playwright install chromium
+python render_excalidraw.py my-diagram.excalidraw
+```
+
+See `references/render-setup.md` for detailed setup instructions and troubleshooting.
+
+See `references/render-setup.md` for detailed setup instructions and troubleshooting.
+
+The plan and the gate work without any renderer; delivery needs the SVG/PNG, so choose your rendering option above.
 
 ## Use
 
 Invoke the skill, for example `/create-diagram`, and name the subject. It hands back the artifacts in `SKILL.md`'s Output line.
+
+### Agent Integration
+
+The renderer is **agent-callable** with no interactive prompts:
+
+```bash
+# Basic call (default 3 iterations)
+python scripts/diagram_render.py diagram.excalidraw -o output.svg
+
+# With custom iterations
+python scripts/diagram_render.py diagram.excalidraw --max-iterations 5 -o output.svg
+
+# Agent adjustment pattern
+python scripts/diagram_render.py diagram.excalidraw --adjust-iterations 2 -o output.svg
+```
+
+See `DIAGRAM_RENDERER_AGENT_READY.md` for integration patterns.
 
 ## Palette
 
@@ -39,7 +83,7 @@ scripts/diagram palette --init
 
 ## Checking the work
 
-`scripts/diagram check` runs the code checks in `GATE.md`: 24 configured with `--png`, 23 when `C24` skips a `page: none` scene.
+`scripts/diagram check` runs the code checks in `GATE.md`: 28 configured with `--svg`, validating diagram structure, element placement, and connections.
 
 ## Gate proof
 

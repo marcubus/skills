@@ -1,0 +1,17 @@
+F1  the default transport is HTTP + Server-Sent Events: the client POSTs the run input to the agent endpoint   docs.ag-ui.com/spec/1.0/basic/transports/http-sse
+F2  the response is 200 with Content-Type: text/event-stream   docs.ag-ui.com/spec/1.0/basic/transports/http-sse
+F3  each SSE event's data payload is exactly one protocol event as a JSON object   docs.ag-ui.com/spec/1.0/basic/transports/http-sse
+F4  RUN_STARTED carries threadId thr-1 and runId run-1   docs.ag-ui.com/spec/1.0/basic/transports/http-sse (Example)
+F5  TEXT_MESSAGE_CONTENT carries messageId msg-1 and delta "Hello."   docs.ag-ui.com/spec/1.0/basic/transports/http-sse (Example)
+F6  STATE_DELTA carries delta, an array of JSON Patch operations (RFC 6902)   docs.ag-ui.com/spec/1.0/events/state and docs.ag-ui.com/concepts/state
+F7  a JSON Patch operation is op + path + value, e.g. replace /conversation_state with "paused"   docs.ag-ui.com/concepts/state
+F8  RUN_FINISHED carries threadId thr-1 and runId run-1   docs.ag-ui.com/spec/1.0/basic/transports/http-sse (Example)
+F9  the producer closes the response body after the last run's terminal event   docs.ag-ui.com/spec/1.0/basic/transports/http-sse
+F10 a run begins with RUN_STARTED and concludes with RUN_FINISHED   docs.ag-ui.com/concepts/events
+F11 frontends apply the patches in sequence to maintain state   docs.ag-ui.com/concepts/state
+F12 createA2UIMessageRenderer is exported from @copilotkit/react-core/v2 and accepts theme   docs.copilotkit.ai/ms-agent-harness-dotnet/generative-ui/a2ui/advanced
+F13 the renderer is passed to the provider as renderActivityMessages   docs.copilotkit.ai/ms-agent-harness-dotnet/generative-ui/a2ui/advanced and copilotkit.ai/blog/build-with-googles-new-a2ui-spec-agent-user-interfaces-with-a2ui-ag-ui
+F14 A2UI is the Agent-to-UI protocol whose messages the renderer displays as React components; a surfaceId names the UI surface to render   copilotkit.ai/blog/build-with-googles-new-a2ui-spec-agent-user-interfaces-with-a2ui-ag-ui
+F15 SSE is a one-way server-to-client connection driven by one POST per run, not a client poll   developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events and docs.ag-ui.com/spec/1.0/basic/transports/http-sse
+F16 the SSE stream's data field is one of event:, data:, id:, retry:   developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+F17 a state update is what a React frontend renders from after applying the patch   docs.ag-ui.com/concepts/state (State Processing: emitUpdate({ state }))

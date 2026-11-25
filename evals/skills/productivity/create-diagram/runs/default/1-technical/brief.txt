@@ -1,0 +1,8 @@
+Depth: technical. Evidence: the four SSE data: frames in order (RUN_STARTED, TEXT_MESSAGE_CONTENT, STATE_DELTA, RUN_FINISHED) and the STATE_DELTA JSON Patch payload.
+Palette: paper, light, shipped (examples/palette.json; no canonical palette file on this machine)
+Claim: the frontend does not poll; each streamed event is a state patch, and the renderer applies the patch.
+Shape: conveyor. Page: a4-landscape.
+Tiers: agent, stream, patch, frontend, surface.
+Inbound: the POST /agent run input. Outbound: the committed React surface.
+Roles: run agent/start, sse stream/process, delta patch/process, renderer frontend/agent, ui surface/outcome.
+Edges: e_run run->sse primary; e_frame sse->delta primary; e_apply delta->renderer primary; e_commit renderer->ui primary.

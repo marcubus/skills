@@ -1,0 +1,21 @@
+# Python / uv virtual environments
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Build artifacts
+*.excalidraw.png
+*.png
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

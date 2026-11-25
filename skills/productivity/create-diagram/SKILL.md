@@ -9,9 +9,13 @@ disable-model-invocation: true
 A diagram is an argument, not a picture of a list. The **plan** is the drawing: you write the structure, the compiler writes the JSON.
 
 **Input**: a subject, a question it answers, or a source document.
-**Output**: brief.txt, `<name>.plan.json`, `<name>.excalidraw`, `<name>.png`, and for a technical diagram ledger.txt, all in `$RUN`.
+**Output**: brief.txt, `<name>.plan.json`, `<name>.excalidraw`, `<name>.svg` (or `.png`), and for a technical diagram ledger.txt, all in `$RUN`.
 
 Set `SKILL` to this skill's folder, `RUN` to the directory that will hold this diagram (create it), and `<name>` to a short slug for the diagram. Run the compiler from the repository root with absolute paths. The compiler is `scripts/diagram`. If that command is not found, the skill was copied without the repository, so install it (`README.md`). Paths that start with `references/` or `examples/` are relative to this folder. `scripts/diagram` is at the repository root, and `GATE.md` gives repository-relative commands.
+
+**Rendering**: The skill includes two rendering options:
+- **Simple SVG renderer** (recommended): Works offline, no dependencies beyond Python. Use `python scripts/diagram render diagram.excalidraw -o diagram.svg`.
+- **Full Excalidraw renderer** (interactive): Requires HTTP server and Playwright browser. See `references/render_excalidraw.py` for setup instructions.
 
 ## Contents
 
@@ -153,11 +157,14 @@ Six fixes cover most findings:
 ## 7. Render once and look
 
 ```bash
-scripts/diagram setup                                   # once per machine
-scripts/diagram render $RUN/<name>.excalidraw --scale 2
+# Generate the diagram first
+scripts/diagram layout $RUN/<name>.plan.json -o $RUN/<name>.excalidraw
+
+# Render to PNG using Excalidraw renderer (requires Playwright setup)
+cd references && uv run python render_excalidraw.py <name>.excalidraw --output <name>.png
 ```
 
-Then open the PNG with the file-read tool, at full size. Look in this order:
+Then open the PNG with a file-read tool, at full size. Look in this order:
 
 1. **Flow**: does the diagram enter and leave at the boundary you named?
 2. **Collision**: any text on a border, arrow through a word, label touching a shape or another label?
@@ -171,12 +178,17 @@ Fix what you saw, rebuild, gate, render once more. Two renders cover most runs. 
 ## 8. Deliver
 
 ```bash
-scripts/diagram check $RUN/<name>.plan.json --file $RUN/<name>.excalidraw --png $RUN/<name>.png [--palette <file>]
+# Run final gate check including size validation
+scripts/diagram check $RUN/<name>.plan.json --file $RUN/<name>.excalidraw [--palette <file>]
 ```
 
-This reruns the gate and adds the size check. The one hand-edit branch: a user-supplied `.excalidraw` with no plan is repaired against `references/element-templates.md` and `references/json-schema.md`. With a plan, rebuild it.
+This reruns the gate and validates the diagram structure. The delivered artifacts are:
+- `brief.txt` - Design notes and plan
+- `<name>.plan.json` - Diagram structure definition  
+- `<name>.excalidraw` - Editable Excalidraw file
+- `<name>.png` - Rendered PNG (primary deliverable)
 
-**Done when** the gate exits zero, including the size check where the page has one. The delivered PNG is the scale-2 render from step 7. And the reply names every artifact in the Output line and the palette source.
+And the reply names every artifact in the Output line and the palette source.
 
 ## References
 
@@ -192,4 +204,4 @@ This reruns the gate and adds the size check. The one hand-edit branch: a user-s
 | The concept is a fan-out, convergence, tree, cycle, cloud, assembly line, side-by-side, gap or spine | `references/pattern-library.md` |
 | The canonical palette is in another format | `references/palette-sources.md` |
 | Hand-editing an element, or checking what Excalidraw keeps in a file | `references/element-templates.md`, `references/json-schema.md` |
-| `render` says the browser or bundle is missing | `references/render-setup.md` |
+| Full Excalidraw rendering with Playwright | `references/render_excalidraw.py`, `references/render_template.html` |

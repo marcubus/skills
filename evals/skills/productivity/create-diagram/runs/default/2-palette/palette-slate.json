@@ -1,0 +1,22 @@
+{
+  "name": "slate",
+  "variant": "light",
+  "slots": {
+    "base00": "#f7f8fa",
+    "base01": "#eef0f4",
+    "base02": "#e1e5eb",
+    "base03": "#9aa3af",
+    "base04": "#5f6875",
+    "base05": "#333a44",
+    "base06": "#222831",
+    "base07": "#12161c",
+    "base08": "#a63d4e",
+    "base09": "#a8681f",
+    "base0A": "#7d6a10",
+    "base0B": "#3a6f57",
+    "base0C": "#2b7379",
+    "base0D": "#335f96",
+    "base0E": "#6b4a86",
+    "base0F": "#6f5236"
+  }
+}

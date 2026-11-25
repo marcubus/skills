@@ -1,0 +1,8 @@
+Depth: simple. No owning document names the support flow, so the labels stay generic and the evidence set is empty.
+Palette: paper, light, shipped:examples/palette.json
+Claim (mine): every ticket leaves triage either as a fix an engineer confirms or as a known-issue close, and none waits unattended.
+Shape: stack
+Tiers: intake, triage, engineer, resolution
+Boundary: the customer report enters at Intake; the resolution leaves at Resolution.
+Elements: ticket start intake (customer report); Triage queue process triage (priority + owner); Engineer process engineer (diagnose + fix); Known issue? decision engineer (article matches); Resolved outcome resolution (fix confirmed); Closed outcome resolution (closed with article)
+Edges: ticket->queue received primary; queue->eng "assigned to an engineer" primary; queue->known "matches a known issue" secondary; known->closed "closed with article" secondary; eng->resolved "fix confirmed" primary

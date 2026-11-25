@@ -1,0 +1,22 @@
+{
+  "name": "paper",
+  "variant": "light",
+  "slots": {
+    "base00": "#fbfaf7",
+    "base01": "#f3f1ea",
+    "base02": "#e6e2d7",
+    "base03": "#a89f8e",
+    "base04": "#6c6456",
+    "base05": "#3a352d",
+    "base06": "#26221c",
+    "base07": "#15130f",
+    "base08": "#b3402f",
+    "base09": "#b8651f",
+    "base0A": "#8d6f0d",
+    "base0B": "#3d7448",
+    "base0C": "#2a7b83",
+    "base0D": "#2f5f9e",
+    "base0E": "#754a8c",
+    "base0F": "#7a4b33"
+  }
+}

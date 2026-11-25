@@ -1,0 +1,26 @@
+{
+  "title": "One support ticket, triage to resolution",
+  "shape": "stack",
+  "page": "a4",
+  "tiers": [
+    {"id": "intake", "label": "Intake"},
+    {"id": "triage", "label": "Triage"},
+    {"id": "engineer", "label": "Engineer"},
+    {"id": "resolution", "label": "Resolution"}
+  ],
+  "elements": [
+    {"id": "ticket", "role": "start", "tier": "intake", "order": 0, "text": "Support ticket", "note": "customer report", "size": "small"},
+    {"id": "queue", "role": "process", "tier": "triage", "order": 0, "text": "Triage queue", "note": "priority + owner"},
+    {"id": "eng", "role": "process", "tier": "engineer", "order": 0, "text": "Engineer", "note": "diagnose + fix"},
+    {"id": "known", "role": "decision", "tier": "engineer", "order": 1, "text": "Known issue?", "note": "article matches"},
+    {"id": "resolved", "role": "outcome", "tier": "resolution", "order": 0, "text": "Resolved", "note": "fix confirmed"},
+    {"id": "closed", "role": "outcome", "tier": "resolution", "order": 1, "text": "Closed", "note": "closed with article"}
+  ],
+  "edges": [
+    {"id": "e_received", "from": "ticket", "to": "queue", "kind": "primary", "label": "received"},
+    {"id": "e_assign", "from": "queue", "to": "eng", "kind": "primary", "label": "assigned to an engineer"},
+    {"id": "e_known", "from": "queue", "to": "known", "kind": "secondary", "label": "matches a known issue"},
+    {"id": "e_closed", "from": "known", "to": "closed", "kind": "secondary", "label": "closed with article"},
+    {"id": "e_fix", "from": "eng", "to": "resolved", "kind": "primary", "label": "fix confirmed"}
+  ]
+}

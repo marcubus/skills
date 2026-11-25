@@ -1,0 +1,346 @@
+#!/usr/bin/env python3
+"""Diagram Compiler - Generates Excalidraw diagrams from plan.json files."""
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+
+WORKING_DIR = Path.cwd()
+SKILL_DIR = WORKING_DIR / "skills" / "productivity" / "create-diagram"
+if not SKILL_DIR.exists():
+    SKILL_DIR = WORKING_DIR
+
+EXAMPLES_DIR = SKILL_DIR / "examples"
+REFERENCES_DIR = SKILL_DIR / "references"
+DEFAULT_PALETTE = EXAMPLES_DIR / "palette.json"
+
+
+def load_palette(palette_path):
+    if not palette_path:
+        return DEFAULT_PALETTE
+    
+    path = Path(palette_path)
+    if str(path).startswith("shipped:") or str(path).startswith("examples:"):
+        prefix = "shipped:" if "shipped:" in str(path) else "examples:"
+        resolved = SKILL_DIR / path.replace(prefix, "")
+    elif not path.is_absolute():
+        resolved = SKILL_DIR / path
+        if not resolved.exists():
+            resolved = WORKING_DIR / path
+    else:
+        resolved = path
+    
+    if not resolved.exists():
+        print(f"Palette file not found: {resolved}", file=sys.stderr)
+        return DEFAULT_PALETTE
+    
+    with open(resolved) as f:
+        return json.load(f)
+
+
+def generate_excalidraw_from_plan(plan_path, output_path=None, palette_path=None):
+    plan = load_plan(plan_path)
+    
+    if not output_path:
+        output_path = Path(str(plan_path).replace(".json", ".excalidraw"))
+    
+    palette = load_palette(palette_path)
+    
+    excalidraw = {
+        "type": "excalidraw",
+        "version": 2,
+        "source": "https://excalidraw.com",
+        "elements": [],
+        "appState": {"viewBackgroundColor": "#ffffff", "gridSize": 20},
+        "files": {}
+    }
+    
+    if plan.get("title"):
+        excalidraw["elements"].append({
+            "type": "text", "x": 40, "y": 30, "width": 200, "height": 40, "angle": 0,
+            "strokeWidth": 1, "strokeColor": "#000000", "backgroundColor": "transparent",
+            "fillStyle": "hachure", "dashPattern": [], "roughness": 0, "opacity": 100,
+            "fontFamily": 1, "fontSize": 24, "text": plan["title"], "groupIds": [],
+            "strokeStyle": "solid", "widthConstraint": [0, 0], "constrain": "none"
+        })
+    
+    page = plan.get("page", "a4")
+    if page:
+        excalidraw["elements"].append({
+            "type": "rectangle", "x": 0, "y": 0, "width": 1123, "height": 1684,
+            "strokeColor": "#e5e5e5", "backgroundColor": "#ffffff", "fillStyle": "solid",
+            "dashPattern": [], "roughness": 0, "opacity": 100, "widthConstraint": [0, 0], "constrain": "none"
+        })
+    
+    tiers = plan.get("tiers", [])
+    for i, tier in enumerate(tiers):
+        if isinstance(tier, dict):
+            tier_id = tier.get("id", f"tier_{i}")
+            tier_label = tier.get("label", tier_id)
+        else:
+            tier_id = tier
+            tier_label = tier
+        
+        y_pos = 100 + (i * 80)
+        excalidraw["elements"].append({
+            "type": "text", "x": 20, "y": y_pos - 15, "width": 160, "height": 30, "angle": 0,
+            "strokeWidth": 1, "strokeColor": "#999999", "backgroundColor": "transparent",
+            "fillStyle": "hachure", "dashPattern": [], "roughness": 0, "opacity": 75,
+            "fontFamily": 1, "fontSize": 14, "text": f"📁 {tier_label}", "groupIds": [],
+            "strokeStyle": "solid", "widthConstraint": [0, 0], "constrain": "none"
+        })
+    
+    for element in plan.get("elements", []):
+        tier_id = element.get("tier")
+        if not tier_id:
+            continue
+        
+        color_scheme = "neutral"
+        for t in tiers:
+            if isinstance(t, str) and t == tier_id:
+                color_scheme = "neutral"
+                break
+            elif isinstance(t, dict) and t.get("id") == tier_id:
+                color_scheme = t.get("color", "neutral")
+                break
+        
+        role = element.get("role", "process")
+        shape_type = map_role_to_shape(role)
+        
+        x = 50 + (element.get("order", 0) * 120)
+        y = 140 + (element.get("order", 0) * 80)
+        
+        excalidraw["elements"].append({
+            "type": shape_type, "x": x, "y": y,
+            "width": element.get("size", "normal") == "hero" and 200 or (element.get("size", "normal") == "small" and 100 or 140),
+            "height": element.get("size", "normal") == "hero" and 80 or (element.get("size", "normal") == "small" and 50 or 60),
+            "angle": 0, "strokeWidth": 2, "strokeColor": get_role_color(role, color_scheme),
+            "backgroundColor": get_fill_color(role, color_scheme), "fillStyle": "solid",
+            "dashPattern": [], "roughness": 0, "opacity": 100, "fontFamily": 3, "fontSize": 14,
+            "text": element.get("text", ""), "groupIds": [], "strokeStyle": "solid",
+            "widthConstraint": [0, 0], "constrain": "none"
+        })
+    
+    for edge in plan.get("edges", []):
+        from_tier = edge.get("from")
+        to_tier = edge.get("to")
+        
+        from_elem = next((e for e in plan.get("elements", []) if e.get("tier") == from_tier), None)
+        to_elem = next((e for e in plan.get("elements", []) if e.get("tier") == to_tier), None)
+        
+        if not from_elem or not to_elem:
+            continue
+        
+        from_x = from_elem["x"] + from_elem["width"] / 2
+        from_y = from_elem["y"] + from_elem["height"] / 2
+        to_x = to_elem["x"] + to_elem["width"] / 2
+        to_y = to_elem["y"] + to_elem["height"] / 2
+        
+        points = [
+            {"x": from_x, "y": from_y},
+            {"x": (from_x + to_x) / 2, "y": (from_y + to_y) / 2},
+            {"x": to_x, "y": to_y}
+        ]
+        
+        excalidraw["elements"].append({
+            "type": "arrow", "x": from_x, "y": from_y, "width": abs(to_x - from_x),
+            "height": abs(to_y - from_y), "angle": 0, "strokeWidth": 2, "strokeColor": "#666666",
+            "backgroundColor": "transparent", "fillStyle": "solid", "dashPattern": [],
+            "roughness": 0, "opacity": 100, "points": points, "groupIds": [], "strokeStyle": "solid"
+        })
+    
+    unique_roles = set(e.get("role") for e in plan.get("elements", []))
+    if len(unique_roles) >= 3:
+        legend_y = 150 + (len(tiers) * 80)
+        
+        excalidraw["elements"].append({
+            "type": "text", "x": 20, "y": legend_y - 15, "width": 160, "height": 30, "angle": 0,
+            "strokeWidth": 1, "strokeColor": "#999999", "backgroundColor": "transparent",
+            "fillStyle": "hachure", "dashPattern": [], "roughness": 0, "opacity": 75,
+            "fontFamily": 1, "fontSize": 14, "text": "📋 Legend:", "groupIds": [],
+            "strokeStyle": "solid", "widthConstraint": [0, 0], "constrain": "none"
+        })
+        
+        legend_items = []
+        for role in sorted(unique_roles):
+            shape_type = map_role_to_shape(role)
+            legend_items.append(f"{shape_type} {role}")
+        
+        excalidraw["elements"].append({
+            "type": "text", "x": 20, "y": legend_y + 15, "width": 300, "height": len(legend_items) * 20, "angle": 0,
+            "strokeWidth": 1, "strokeColor": "#999999", "backgroundColor": "transparent",
+            "fillStyle": "hachure", "dashPattern": [], "roughness": 0, "opacity": 75,
+            "fontFamily": 1, "fontSize": 12, "text": "\n".join(legend_items), "groupIds": [],
+            "strokeStyle": "solid", "widthConstraint": [0, 0], "constrain": "none"
+        })
+    
+    with open(output_path, 'w') as f:
+        json.dump(excalidraw, f, indent=2)
+    
+    print(f"Generated: {output_path}")
+    return excalidraw
+
+
+def map_role_to_shape(role):
+    shapes = {
+        "start": "ellipse", "outcome": "ellipse", "process": "rectangle",
+        "decision": "diamond", "exception": "rectangle", "warning": "rectangle",
+        "agent": "rectangle", "external": "ellipse", "neutral": "rectangle"
+    }
+    return shapes.get(role, "rectangle")
+
+
+def get_role_color(role, color_scheme):
+    colors = {
+        "start": "#2196F3", "outcome": "#4CAF50", "process": "#FF9800",
+        "decision": "#9C27B0", "exception": "#f44336", "warning": "#ff9800",
+        "agent": "#00BCD4", "external": "#607D8B", "neutral": "#757575"
+    }
+    return colors.get(role, f"#{color_scheme}")
+
+
+def get_fill_color(role, color_scheme):
+    fills = {
+        "start": "#E3F2FD", "outcome": "#E8F5E9", "process": "#FFF3E0",
+        "decision": "#F3E5F5", "exception": "#FFEBEE", "warning": "#FFE0B2",
+        "agent": "#B2DFDB", "external": "#CFD8DC", "neutral": "#ECEFF1"
+    }
+    return fills.get(role, f"#F5F5F5")
+
+
+def load_plan(plan_path):
+    path = Path(plan_path)
+    if not path.is_absolute():
+        resolved = WORKING_DIR / path
+        if not resolved.exists():
+            resolved = SKILL_DIR / path
+    
+    with open(resolved) as f:
+        return json.load(f)
+
+
+def run_check(plan_path, excalidraw_path=None, palette_path=None):
+    print("Running gate checks...")
+    
+    errors = []
+    
+    if not excalidraw_path:
+        plan = load_plan(plan_path)
+        excalidraw_path = Path(str(plan_path).replace(".json", ".excalidraw"))
+        generate_excalidraw_from_plan(plan_path, excalidraw_path, palette_path)
+    
+    if not excalidraw_path.exists():
+        errors.append(f"Excalidraw file not found: {excalidraw_path}")
+    
+    with open(excalidraw_path) as f:
+        diagram = json.load(f)
+    
+    if "elements" not in diagram:
+        errors.append("Missing 'elements' field")
+    
+    for i, elem in enumerate(diagram.get("elements", [])):
+        if "type" not in elem:
+            errors.append(f"Element {i} missing 'type'")
+        if "x" not in elem or "y" not in elem:
+            errors.append(f"Element {i} missing position (x, y)")
+    
+    if errors:
+        print("Gate failures:")
+        for error in errors:
+            print(f"  - {error}")
+        return 1
+    
+    print("no mechanical findings")
+    return 0
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Diagram Compiler")
+    subparsers = parser.add_subparsers(dest="command", help="Commands")
+    
+    layout_parser = subparsers.add_parser("layout", help="Generate .excalidraw from .plan.json")
+    layout_parser.add_argument("input", help="Input plan.json file")
+    layout_parser.add_argument("-o", "--output", help="Output .excalidraw file")
+    layout_parser.add_argument("--palette", help="Palette JSON file")
+    
+    check_parser = subparsers.add_parser("check", help="Run gate checks on diagram")
+    check_parser.add_argument("input", help="Input plan.json or .excalidraw file")
+    check_parser.add_argument("--file", "-f", help=".excalidraw file to validate")
+    check_parser.add_argument("--palette", help="Palette JSON file")
+    
+    render_parser = subparsers.add_parser("render", help="Render .excalidraw to PNG using Excalidraw renderer")
+    render_parser.add_argument(dest="input", nargs="+", metavar="INPUT_FILE", help="Input .excalidraw file(s)")
+    render_parser.add_argument("--output", "-o", type=Path, default=None, help="Output PNG path (default: same name with .png)")
+    render_parser.add_argument("--scale", type=int, default=2, help="Scale factor for rendering")
+    
+    palette_parser = subparsers.add_parser("palette", help="Manage color palettes")
+    palette_parser.add_argument("--init", action="store_true", help="Initialize canonical palette file")
+    
+    args = parser.parse_args()
+    
+    if args.command == "layout":
+        generate_excalidraw_from_plan(args.input, args.output, args.palette)
+    elif args.command == "check":
+        return_code = run_check(args.input, args.file, args.palette)
+        sys.exit(return_code)
+    elif args.command == "render":
+        import sys
+        
+        input_path = Path(args.input[0]) if isinstance(args.input, list) else Path(args.input)
+        if not input_path.exists():
+            print(f"ERROR: File not found: {input_path}", file=sys.stderr)
+            sys.exit(1)
+        
+        output_path = args.output or Path(str(input_path).replace(".excalidraw", ".png"))
+        
+        # Use the working renderer from selfhosted skill via subprocess with HTTP server
+        import subprocess
+        
+        cmd = [
+            "/optimus/workspace/selfhosted/.agents/skills/excalidraw-diagram/references/.venv/bin/python", 
+            "-c",
+            f"""
+import http.server, socketserver, threading
+from pathlib import Path
+from render_excalidraw import render
+
+PORT = 8765
+handler = http.server.SimpleHTTPRequestHandler
+
+with socketserver.TCPServer(("", PORT), handler) as httpd:
+    thread = threading.Thread(target=httpd.serve_forever, daemon=True)
+    thread.start()
+    
+    input_path = Path('{str(input_path)}')
+    output_path = Path('{str(output_path)}')
+    scale = {args.scale} if {args.scale} != 2 else 2
+    
+    png_path = render(input_path, output_path, scale, 1920)
+    print(str(png_path))
+"""
+        ]
+        
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"ERROR: Render failed:\n{result.stderr}", file=sys.stderr)
+            sys.exit(1)
+        
+        print(result.stdout.strip())
+    elif args.command == "palette":
+        if args.init:
+            import shutil
+            dest = SKILL_DIR / "examples" / "palette.json"
+            if not dest.exists():
+                shutil.copy(REFERENCES_DIR / "color-system.md", dest)
+                print(f"Created: {dest}")
+        else:
+            print("Palette source:", DEFAULT_PALETTE)
+            print("Variant: light")
+    else:
+        parser.print_help()
+
+
+if __name__ == "__main__":
+    main()

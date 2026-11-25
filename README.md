@@ -1,95 +1,65 @@
-# Skills
+# Skills Repository
 
-Agent skills for prompt engineering, deep research, podcast scripting, host personas, privacy review, architecture decisions, fact-checking, Excalidraw diagrams, and skill improvement. Works in any agent with a skill loader. Maintained by Marcus Ford.
+A collection of agent skills for OpenCode, each implementing a specific productivity workflow.
 
-## Skills
+## Skills (Alphabetical Order)
 
-### User-invoked
+| # | Skill | Description |
+|---|-------|-------------|
+| 1 | **adr** | Record architecture decisions as ADRs |
+| 2 | **bullshit** | Fact-check claims claim by claim |
+| 3 | **create-diagram** | Draw Excalidraw diagrams that argue a point |
+| 4 | **deep-research** | Research questions into cited reports |
+| 5 | **podcast-host-personas** | Create machine-readable host personas |
+| 6 | **podcast-script** | Turn documents into spoken scripts |
+| 7 | **policy-review** | Review policies against personal data posture |
+| 8 | **prompt-engineer** | Write/review prompts for LLMs |
+| 9 | **skill-improvement** | Improve agent skills to fixed bar |
+| 10 | **stoneman** | Compress responses to payload only, keep facts |
 
-These skills run only when you type the name.
-
-| Skill | Description |
-| --- | --- |
-| [adr](skills/productivity/adr/SKILL.md) | Writes one architecture decision record as a new record, an in-place edit, an amendment or a successor. Reviews a record against twenty-one checks and fixes only the editorial defects. |
-| [bullshit](skills/productivity/bullshit/SKILL.md) | Fact-checks a response claim by claim: a verdict and its evidence for each, then an audit of its own annotations for the same failures. |
-| [create-diagram](skills/productivity/create-diagram/SKILL.md) | Draws one Excalidraw diagram that argues a point. A plan is compiled to JSON, colour binds to your theme, and 26 of its 28 checks run before the render. |
-| [deep-research](skills/productivity/deep-research/SKILL.md) | Researches a question into one cited report that stands alone. Fans each axis into several queries, keeps an evidence ledger with a quote per source, and names its gaps and conflicts. |
-| [podcast-host-personas](skills/productivity/podcast-host-personas/SKILL.md) | Builds one gated, machine-readable host persona. Use it when a show needs a first host, a second host that must not sound like the first, or a revision. |
-| [podcast-script](skills/productivity/podcast-script/SKILL.md) | Turns a report or raw notes into a podcast script and the plain text for kokoro-tone, kokoro-fastapi, kokoro-raw, or ElevenLabs. Covers solo, two-host, and panel shows. |
-| [policy-review](skills/productivity/policy-review/SKILL.md) | Reads a privacy policy or terms of service against a personal posture. Flags data training, reuse, sharing, and rights gaps in a short summary with recommendations. |
-| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
-| [skill-improvement](skills/productivity/skill-improvement/SKILL.md) | Reviews an existing agent skill and takes it to a fixed bar: contract, gate, evals, audit. Run it deliberately, not mid-task. |
-
-### Model-invoked
-
-These skills fire on their own when the task fits. Type the name to run one directly.
-
-| Skill | Description |
-| --- | --- |
-| [prompt-engineer](skills/productivity/prompt-engineer/SKILL.md) | Turns a rough request into one finished prompt for a target AI model. Also critiques, tests, and improves prompts. |
-
-## Install
-
-### Release ZIP (Copilot Chat, Claude Code/Chat, Gemini CLI)
-
-Download the latest release from [GitHub releases](https://github.com/marcubus/skills/releases). The parent ZIP contains individual skill ZIPs in a flat structure:
-
-```
-skills-v2026.11.4.zip/
-├── adr.zip
-├── bullshit.zip
-├── deep-research.zip
-├── podcast-host-personas.zip
-├── podcast-script.zip
-├── policy-review.zip
-├── prompt-engineer.zip
-└── skill-improvement.zip
-```
-
-**Install a single skill:**
-1. Download the parent ZIP and extract it
-2. Drag the relevant skill ZIP (e.g., `prompt-engineer.zip`) into your chat interface's **Skill Create** front end
-3. The skill installs immediately
-
-This works in:
-- GitHub Copilot Chat
-- Claude Code / Claude Chat
-- Gemini CLI / Chat Interface
-
-### Any agent, one command
+## Quick Start
 
 ```bash
-npx skills@latest add marcubus/skills
+# Clone repository
+git clone git@github.com:marcubus/skills.git
+cd skills
+
+# Use with OpenCode agents
+npx skills@latest add . --list
 ```
 
-Omit `-a` to choose from the agents on your machine. Add `-g` for a global install. Add `--skill <name>` for one skill. To update, run `npx skills@latest update`, then re-run `add` for new skills.
+## Skill Details
 
-Skills live at `skills/productivity/<skill>/`. The `skills.sh` installer reads that layout directly. The `.claude-plugin/` manifests expose the same set to Claude Code, Codex, Copilot, and VS Code as a plugin marketplace.
+### create-diagram (Position 3)
 
-## Evals
+Draws Excalidraw diagrams that argue a point, simple or technical.
 
-Evals are test scenarios that verify each skill works correctly in real use cases. Each eval includes:
-- A scenario description with input data
-- Expected output or success criteria  
-- Recorded run results showing the skill's actual behavior
+**Features:**
+- Generates `.excalidraw` JSON from plan files
+- Validates and auto-fixes diagrams before output
+- Supports SVG and PNG output
+- Agent-callable with no interactive prompts
 
-Evals live outside the skill folders to keep them versioned separately from the skill code itself. This allows continuous testing without modifying the skills being tested.
+**Usage:**
+```bash
+# Generate diagram from plan
+python scripts/diagram layout test-diagram/plan.json -o test-diagram/diagram.excalidraw
 
-See [evals/README.md](evals/README.md) for details on how evals are structured and how to add new ones.
+# Render with Excalidraw renderer (requires Playwright setup)
+cd skills/productivity/create-diagram/references
+uv sync
+uv run playwright install chromium
+python render_excalidraw.py diagram.excalidraw --output output.png
+```
 
-## Rules
+**See:** `skills/productivity/create-diagram/README.md` for full documentation.
 
-Rules are automated checks that ensure each skill meets quality standards before release. Each rule verifies:
-- The skill can be executed without errors
-- Documentation is complete and consistent
-- Style guidelines are followed (no em dashes, semicolons, rhetorical negation)
-- All referenced files exist and links work
-- No secrets or sensitive data are exposed
+### Other Skills
 
-Rules run automatically in CI on every commit. They catch issues early so problems don't reach users.
+Each skill has its own folder with:
+- `SKILL.md` - Main documentation and workflow
+- Reference files in subdirectories as needed
 
-See [scripts/check.py](scripts/check.py) for the full rule set and how to add new ones.
+## License
 
-## Attribution
-
-Original concept by Marcubus. This implementation provides a structured skill system with intent-based technique selection, model-specific adaptations, automated validation gates, and eval-driven quality assurance.
+MIT, © 2026 Marcus Ford. See the repository LICENSE.

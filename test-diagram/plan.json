@@ -1,0 +1,23 @@
+{
+  "title": "Create Diagram Skill Logic",
+  "shape": "stack",
+  "page": "a4",
+  "tiers": ["edge", "public", "private"],
+  "elements": [
+    {"id": "user_input", "role": "external", "tier": "edge", "order": 0, "text": "User Request", "size": "normal"},
+    {"id": "analyze_silently", "role": "process", "tier": "public", "order": 1, "text": "Analyze Silently", "size": "small"},
+    {"id": "resolve_ambiguity", "role": "process", "tier": "public", "order": 2, "text": "Resolve Ambiguity", "size": "small"},
+    {"id": "build_prompt", "role": "agent", "tier": "private", "order": 3, "text": "Build Prompt", "size": "hero"},
+    {"id": "check_gate", "role": "process", "tier": "private", "order": 4, "text": "Check with GATE.md", "size": "small"},
+    {"id": "refine_critique", "role": "process", "tier": "private", "order": 5, "text": "Refine or Critique", "size": "small"},
+    {"id": "deliver_output", "role": "outcome", "tier": "private", "order": 6, "text": "Deliver Prompt", "size": "normal"}
+  ],
+  "edges": [
+    {"id": "e1", "from": "user_input", "to": "analyze_silently", "kind": "primary"},
+    {"id": "e2", "from": "analyze_silently", "to": "resolve_ambiguity", "kind": "primary"},
+    {"id": "e3", "from": "resolve_ambiguity", "to": "build_prompt", "kind": "primary"},
+    {"id": "e4", "from": "build_prompt", "to": "check_gate", "kind": "primary"},
+    {"id": "e5", "from": "check_gate", "to": "refine_critique", "kind": "secondary"},
+    {"id": "e6", "from": "refine_critique", "to": "deliver_output", "kind": "primary"}
+  ]
+}

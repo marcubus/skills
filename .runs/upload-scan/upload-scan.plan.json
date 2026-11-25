@@ -1,0 +1,104 @@
+{
+  "title": "Upload, scan, quarantine",
+  "shape": "stack",
+  "page": "a4",
+  "tiers": [
+    {
+      "id": "upload",
+      "label": "Upload"
+    },
+    {
+      "id": "intake",
+      "label": "Intake"
+    },
+    {
+      "id": "scan",
+      "label": "Scan"
+    },
+    {
+      "id": "disposition",
+      "label": "Disposition"
+    }
+  ],
+  "elements": [
+    {
+      "id": "uploader",
+      "role": "external",
+      "tier": "upload",
+      "order": 0,
+      "text": "Uploader",
+      "note": "person or client",
+      "size": "small"
+    },
+    {
+      "id": "endpoint",
+      "role": "start",
+      "tier": "intake",
+      "order": 1,
+      "text": "Upload endpoint",
+      "note": "accepts the file"
+    },
+    {
+      "id": "verdict",
+      "role": "decision",
+      "tier": "scan",
+      "order": 1,
+      "text": "Scan verdict",
+      "note": "virus scan: pass or fail"
+    },
+    {
+      "id": "quarantine",
+      "role": "exception",
+      "tier": "disposition",
+      "order": 0,
+      "text": "Quarantine",
+      "note": "held, never served"
+    },
+    {
+      "id": "store",
+      "role": "outcome",
+      "tier": "disposition",
+      "order": 1,
+      "text": "Document store",
+      "note": "released to readers"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "rule",
+      "text": "a failed scan withholds the document; it is never released",
+      "x": 60,
+      "y": 1000,
+      "tone": "muted"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_file",
+      "from": "uploader",
+      "to": "endpoint",
+      "kind": "primary",
+      "label": "file"
+    },
+    {
+      "id": "e_scan",
+      "from": "endpoint",
+      "to": "verdict",
+      "kind": "primary"
+    },
+    {
+      "id": "e_fail",
+      "from": "verdict",
+      "to": "quarantine",
+      "kind": "exception",
+      "label": "scan failed"
+    },
+    {
+      "id": "e_clean",
+      "from": "verdict",
+      "to": "store",
+      "kind": "primary",
+      "label": "clean"
+    }
+  ]
+}

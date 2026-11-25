@@ -1,0 +1,10 @@
+F1  client speaks HTTPS                              rfc-editor.org/rfc/rfc9110#section-4.2
+F2  the gateway authenticates and rate-limits         docs.example.com/gateway/api#limits
+F3  orders writes state                               docs.example.com/orders/README#writes
+F4  a failed request goes to a retry queue            docs.example.com/queue/consumer#retry
+F5  the commit is a parameterised insert              docs.example.com/orders/schema#commit
+    INSERT INTO orders (id, total) VALUES ($1, $2);
+F6  the client is a browser                           docs.example.com/orders/request-path#client
+F7  the queue delivers asynchronously                 docs.example.com/queue/consumer#delivery
+F8  Postgres stores the order                         docs.example.com/orders/schema#orders-table
+F9  the table holds one row per order                  docs.example.com/orders/schema#orders-table

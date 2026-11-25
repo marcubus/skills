@@ -1,0 +1,104 @@
+{
+  "title": "A request, end to end",
+  "shape": "stack",
+  "page": "a4",
+  "tiers": [
+    {
+      "id": "edge",
+      "label": "Outside"
+    },
+    {
+      "id": "public",
+      "label": "Public"
+    },
+    {
+      "id": "private",
+      "label": "Private network"
+    },
+    {
+      "id": "data",
+      "label": "Data"
+    }
+  ],
+  "elements": [
+    {
+      "id": "client",
+      "role": "external",
+      "tier": "edge",
+      "order": 0,
+      "text": "Client",
+      "note": "browser",
+      "size": "small"
+    },
+    {
+      "id": "gateway",
+      "role": "process",
+      "tier": "public",
+      "order": 1,
+      "text": "API gateway",
+      "note": "auth + rate limit"
+    },
+    {
+      "id": "service",
+      "role": "process",
+      "tier": "private",
+      "order": 0,
+      "text": "Orders",
+      "note": "writes state"
+    },
+    {
+      "id": "queue",
+      "role": "neutral",
+      "tier": "private",
+      "order": 1,
+      "text": "Retry queue",
+      "note": "async"
+    },
+    {
+      "id": "db",
+      "role": "outcome",
+      "tier": "data",
+      "order": 0,
+      "text": "Postgres",
+      "note": "one row per order"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "evidence",
+      "text": "INSERT INTO orders (id, total) VALUES ($1, $2);",
+      "x": 120,
+      "y": 970,
+      "tone": "muted"
+    }
+  ],
+  "edges": [
+    {
+      "id": "e_client",
+      "from": "client",
+      "to": "gateway",
+      "kind": "primary",
+      "label": "HTTPS"
+    },
+    {
+      "id": "e_service",
+      "from": "gateway",
+      "to": "service",
+      "kind": "primary"
+    },
+    {
+      "id": "e_queue",
+      "from": "gateway",
+      "to": "queue",
+      "kind": "secondary",
+      "label": "on failure"
+    },
+    {
+      "id": "e_db",
+      "from": "service",
+      "to": "db",
+      "kind": "primary",
+      "label": "commit"
+    }
+  ]
+}
